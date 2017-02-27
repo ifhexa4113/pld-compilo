@@ -16,6 +16,10 @@
 #
 #---------------------------------------------------------------
 
+#Fonctions------------------------------------------------------
+# Wildcard recursif
+rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
+
 #Variables generales--------------------------------------------
 OSUNIX = unix
 OSWIN = win
@@ -35,8 +39,8 @@ EXEFILE = exe
 DEBUG = yes
 
 SRCPATH = src
-SRC = $(wildcard $(SRCPATH)/*.$(SRCFILE)) $(wildcard $(SRCPATH)/*/*.$(SRCFILE)) $(wildcard $(SRCPATH)/*/*/*.$(SRCFILE)) $(wildcard $(SRCPATH)/*/*/*/*.$(SRCFILE))
-HEAD = $(wildcard $(SRCPATH)/*.$(HEADFILE)) $(wildcard $(SRCPATH)/*/*.$(HEADFILE)) $(wildcard $(SRCPATH)/*/*/*.$(HEADFILE)) $(wildcard $(SRCPATH)/*/*/*/*.$(HEADFILE))
+SRC = $(call rwildcard,$(SRCPATH)/,*.$(SRCFILE))
+HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJPATH = build/
 OUTDIR_ROOT = build
 OUTDIR = $(OUTDIR_ROOT)
@@ -45,7 +49,7 @@ WORKINGDIR =
 ALLDIRCMD =
 
 EXEPATH = $(OBJPATH)
-EXE1 = $(OBJPATH)tp-compilo.$(EXEFILE)
+EXE1 = $(OBJPATH)pld-compilo.$(EXEFILE)
 EXE2 =
 EXECS = $(EXE1) $(EXE2)
 #---------------------------------------------------------------
