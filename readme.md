@@ -32,6 +32,34 @@ may help.
 _For windows, this may be complicated.
 See the previous section called **About Windows**_.
 
+## Build and run
+### Windows
+```shell
+git clone https://github.com/ifhexa4113/pld-compilo.git
+cd pld-compilo
+make
+build\pld-compilo.exe
+```
+
+### *nix
+```shell
+git clone https://github.com/ifhexa4113/pld-compilo.git
+cd pld-compilo
+make OS=unix
+./build/pld-compilo.exe
+```
+
+### Make rules
+* **all** (default): build the whole project.
+* **makedir**: create build folder and subfolders.
+* **clean**: remove all .o files.
+* **mrproper**: remove whole build folder.
+* **print-%**: show a makefile variable. Example: `make print-DEBUG` -> `yes`
+
+Notes:
+* Any rule on *nix: `make <rule> OS=unix`
+* Release mode (default: debug): `make DEBUG=no`
+
 ## About IDEs
 ### CLion
 CLion natively uses CMake,
