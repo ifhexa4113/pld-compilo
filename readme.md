@@ -50,6 +50,6 @@ Take a look at [this link](http://gnuwin32.sourceforge.net/packages/make.htm).
 
 ## About compilers for this compiler
 Of course, this project will use Regex,
-which are a little buggy with some version of **gcc** and **g++**.
+which are a little buggy with some versions of **gcc** and **g++**.
 
-At first sight, **Visual C(++)** and **Clang** are fine.
+At first sight, **Visual C(++)** and **Clang** look fine.
