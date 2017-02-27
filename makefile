@@ -21,7 +21,9 @@ OSUNIX = unix
 OSWIN = win
 OS = $(OSWIN)
 DEL =
+DELDIR =
 DELOPT =
+DELDIROPT =
 MAKEDIR =
 CC = g++
 MAINFILE = main
@@ -32,12 +34,15 @@ EXEFILE = exe
 
 DEBUG = yes
 
-SRCPATH = src/
-SRC = $(wildcard */*.$(SRCFILE))
-HEAD = $(wildcard */*.$(HEADFILE))
+SRCPATH = src
+SRC = $(wildcard $(SRCPATH)/*.$(SRCFILE))
+HEAD = $(wildcard $(SRCPATH)/*.$(HEADFILE))
 OBJPATH = build/
-OUT_DIR = build
-OBJ = $(addprefix $(OBJPATH),$(notdir $(SRC:.$(SRCFILE)=.$(OFILE))))
+OUTDIR_ROOT = build
+OUTDIR = $(OUTDIR_ROOT)
+OBJ = $(addprefix $(OBJPATH), $(SRC:$(SRCPATH)/%.$(SRCFILE)=%.$(OFILE)))
+WORKINGDIR =
+ALLDIRCMD =
 
 EXEPATH = $(OBJPATH)
 EXE1 = $(OBJPATH)tp-compilo.$(EXEFILE)
@@ -56,16 +61,29 @@ CFLAGS =
 #Compilation conditionnelle-------------------------------------
 ifeq ($(OS),$(OSWIN))
 	DEL += del
+	DELDIR += rd
 	DELOPT += /s
-	MAKEDIR += if not exist $(OUT_DIR) mkdir
+	DELDIROPT += /s /q
+	MAKEDIR += if not exist $(OUTDIR_ROOT) mkdir
+	WORKINGDIR = $(shell echo %cd%)
+	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
+	ALLDIR=$(shell $(ALLDIRCMD))
+    OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
 else ifeq ($(OS),$(OSUNIX))
 	DEL += rm
+	DELDIR += rm
 	DELOPT += -rf
+	DELDIROPT += -rf
 	MAKEDIR += mkdir -p
+	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
+	ALLDIRCMD = find ./$(SRCPATH) -type d
+	ALLDIR=$(shell $(ALLDIRCMD))
+    OUTDIR += $(subst ./,$(OUTDIR_ROOT)/,$(ALLDIR))
 else
 	echo Unknown OS
 	exit 1
 endif
+
 
 ifeq ($(DEBUG),yes)
 	CFLAGS += $(W) $(WA) $(STDLIB)
@@ -74,7 +92,7 @@ else
 endif
 
 #---------------------------------------------------------------
-	
+
 
 
 #Variables pour les options d'edition des liens-----------------
@@ -102,26 +120,22 @@ $(EXE1): $(OBJ)
 $(EXE2):
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(OBJPATH)$(MAINFILE).$(OFILE): $(SRCPATH)$(MAINFILE).$(SRCFILE) $(HEAD)
+$(OBJPATH)$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CFLAGS)
-$(OBJPATH)%.$(OFILE) : $(SRCPATH)%.$(SRCFILE) $(SRCPATH)%.$(HEADFILE)
+$(OBJPATH)%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 makedir:
-	$(MAKEDIR) $(OUT_DIR)
+	$(MAKEDIR) $(OUTDIR)
 
 #Regles de nettoyage
 clean:
 	$(DEL) $(DELOPT) *.$(OFILE)
-	
-mrproper: clean
-	$(DEL) $(DELOPT) $(notdir $(EXECS))
+
+mrproper:
+	$(DELDIR) $(DELDIROPT) $(OUTDIR_ROOT)
 
 
 #Regles de debuggage
 print-% :
 	@echo $* = $($*)
-
-
-
-
