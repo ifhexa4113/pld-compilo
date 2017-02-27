@@ -35,8 +35,8 @@ EXEFILE = exe
 DEBUG = yes
 
 SRCPATH = src
-SRC = $(wildcard $(SRCPATH)/*.$(SRCFILE))
-HEAD = $(wildcard $(SRCPATH)/*.$(HEADFILE))
+SRC = $(wildcard $(SRCPATH)/*.$(SRCFILE)) $(wildcard $(SRCPATH)/*/*.$(SRCFILE)) $(wildcard $(SRCPATH)/*/*/*.$(SRCFILE)) $(wildcard $(SRCPATH)/*/*/*/*.$(SRCFILE))
+HEAD = $(wildcard $(SRCPATH)/*.$(HEADFILE)) $(wildcard $(SRCPATH)/*/*.$(HEADFILE)) $(wildcard $(SRCPATH)/*/*/*.$(HEADFILE)) $(wildcard $(SRCPATH)/*/*/*/*.$(HEADFILE))
 OBJPATH = build/
 OUTDIR_ROOT = build
 OUTDIR = $(OUTDIR_ROOT)
@@ -69,6 +69,7 @@ ifeq ($(OS),$(OSWIN))
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
+    TEST = $(subst $(WORKINGDIR)\,,$(ALLDIR))
 else ifeq ($(OS),$(OSUNIX))
 	DEL += rm
 	DELDIR += rm
