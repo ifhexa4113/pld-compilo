@@ -132,6 +132,7 @@ makedir:
 #Regles de nettoyage
 clean:
 	$(DEL) $(DELOPT) $(OUTDIRPATH)*.$(OFILE)
+	$(DEL) $(DELOPT) $(OUTDIRPATH)*.$(OHFILE)
 
 #Regles de debuggage
 print-% :
