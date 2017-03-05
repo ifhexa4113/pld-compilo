@@ -29,21 +29,24 @@ DELDIR =
 DELOPT =
 DELDIROPT =
 MAKEDIR =
-CC = g++
-MAINFILE = main
-OFILE = o
-SRCFILE = cpp
-HEADFILE = h
-EXEFILE = exe
+MV =
+CC = bison
+MAINFILE =
+OFILE = tab.c
+OHFILE = tab.h
+SRCFILE = y
+HEADFILE =
+EXEFILE =
 
 DEBUG = yes
 
-SRCPATH = src
+SRCPATH = .
 SRC = $(call rwildcard,$(SRCPATH)/,*.$(SRCFILE))
-HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
-OBJPATH = build/
-OUTDIR_ROOT = build
+HEAD =
+OBJPATH = ../../parser-lib/
+OUTDIR_ROOT = ../../parser-lib
 OUTDIR = $(OUTDIR_ROOT)
+OUTDIRPATH = $(OUTDIR_ROOT)/
 OBJ = $(addprefix $(OBJPATH), $(SRC:$(SRCPATH)/%.$(SRCFILE)=%.$(OFILE)))
 WORKINGDIR =
 ALLDIRCMD =
@@ -68,17 +71,21 @@ ifeq ($(OS),$(OSWIN))
 	DELDIR += rd
 	DELOPT += /s
 	DELDIROPT += /s /q
+	MV += move
 	MAKEDIR += if not exist $(OUTDIR_ROOT) mkdir
 	WORKINGDIR = $(shell echo %cd%)
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    TEST = $(subst $(WORKINGDIR)\,,$(ALLDIR))
+    OUTDIR := $(subst /,\,$(OUTDIR))
+    OUTDIR_ROOT := $(subst /,\,$(OUTDIR_ROOT))
+    OUTDIRPATH := $(subst /,\,$(OUTDIRPATH))
 else ifeq ($(OS),$(OSUNIX))
 	DEL += rm
 	DELDIR += rm
 	DELOPT += -rf
 	DELDIROPT += -rf
+	MV += mv
 	MAKEDIR += mkdir -p
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find ./$(SRCPATH) -type d
@@ -87,13 +94,6 @@ else ifeq ($(OS),$(OSUNIX))
 else
 	echo Unknown OS
 	exit 1
-endif
-
-
-ifeq ($(DEBUG),yes)
-	CFLAGS += $(W) $(WA) $(STDLIB)
-else
-	CFLAGS = $(STDLIB)
 endif
 
 #---------------------------------------------------------------
@@ -106,7 +106,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir parser
+.PHONY: clean mrproper print-%
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
@@ -121,28 +121,17 @@ else
 endif
 
 $(EXE1): $(OBJ)
-	$(CC) -o $@ $^ $(LDFLAGS)
-$(EXE2):
-	$(CC) -o $@ $^ $(LDFLAGS)
+	@echo Parser built.
 
-$(OBJPATH)$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
-	$(CC) -o $@ -c $< $(CFLAGS)
-$(OBJPATH)%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
-	$(CC) -o $@ -c $< $(CFLAGS)
+$(OBJPATH)%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE)
+	$(CC) -o $@ -d $($@:%.$(OFILE)=%.$(OHFILE)) $<
 
 makedir:
 	$(MAKEDIR) $(OUTDIR)
 
-parser:
-	cd src/parser && make -f flex.makefile
-	cd src/parser && make -f bison.makefile
-
 #Regles de nettoyage
 clean:
-	$(DEL) $(DELOPT) *.$(OFILE)
-
-mrproper:
-	$(DELDIR) $(DELDIROPT) $(OUTDIR_ROOT)
+	$(DEL) $(DELOPT) $(OUTDIRPATH)*.$(OFILE)
 
 #Regles de debuggage
 print-% :
