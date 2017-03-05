@@ -113,12 +113,15 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Regles de construction
-all: makedir $(EXECS)
+all: makedir parser
+	make build
 ifeq ($(DEBUG),yes)
 	@echo Projet compile en mode debug
 else
 	@echo Projet compile en mode release
 endif
+
+build: $(EXECS)
 
 $(EXE1): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
@@ -139,9 +142,13 @@ parser:
 
 #Regles de nettoyage
 clean:
+	cd src/parser && make -f flex.makefile clean
+	cd src/parser && make -f bison.makefile clean
 	$(DEL) $(DELOPT) *.$(OFILE)
 
 mrproper:
+	cd src/parser && make -f flex.makefile clean
+	cd src/parser && make -f bison.makefile clean
 	$(DELDIR) $(DELDIROPT) $(OUTDIR_ROOT)
 
 #Regles de debuggage
