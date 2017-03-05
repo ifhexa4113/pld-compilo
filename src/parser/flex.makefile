@@ -32,7 +32,7 @@ MAKEDIR =
 MV =
 CC = flex
 MAINFILE =
-OFILE = yy.c
+OFILE = yy.cpp
 SRCFILE = l
 HEADFILE =
 EXEFILE =
@@ -121,13 +121,12 @@ LDFLAGS =
 #Regles de construction
 all: makedir $(EXECS)
 ifeq ($(DEBUG),yes)
-	@echo Projet compile en mode debug
+	@echo Flex execute en mode debug
 else
-	@echo Projet compile en mode release
+	@echo Flex execute en mode release
 endif
 
 $(EXE1): $(OBJ)
-	@echo Parser built.
 
 $(OBJPATH)%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE)
 	$(CC) -t $<>$@

@@ -32,7 +32,7 @@ MAKEDIR =
 MV =
 CC = bison
 MAINFILE =
-OFILE = tab.c
+OFILE = tab.cpp
 OHFILE = tab.h
 SRCFILE = y
 HEADFILE =
@@ -115,16 +115,15 @@ LDFLAGS =
 #Regles de construction
 all: makedir $(EXECS)
 ifeq ($(DEBUG),yes)
-	@echo Projet compile en mode debug
+	@echo Bison execute en mode debug
 else
-	@echo Projet compile en mode release
+	@echo Bison execute en mode release
 endif
 
 $(EXE1): $(OBJ)
-	@echo Parser built.
 
 $(OBJPATH)%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE)
-	$(CC) -o $@ -d $($@:%.$(OFILE)=%.$(OHFILE)) $<
+	$(CC) -o $@ --defines=$(subst $(OFILE),$(OHFILE),$@) $<
 
 makedir:
 	$(MAKEDIR) $(OUTDIR)
@@ -137,3 +136,5 @@ clean:
 #Regles de debuggage
 print-% :
 	@echo $* = $($*)
+
+TEST = $(OBJ:%.$(OFILE)=%.$(OHFILE))
