@@ -39,12 +39,16 @@ EXEFILE = exe
 DEBUG = yes
 
 SRCPATH = src
+PARSERPATH = parser-lib
 SRC = $(call rwildcard,$(SRCPATH)/,*.$(SRCFILE))
+SRC += $(call rwildcard,$(PARSERPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
+HEAD += $(call rwildcard,$(PARSERPATH)/,*.$(HEADFILE))
 OBJPATH = build/
 OUTDIR_ROOT = build
 OUTDIR = $(OUTDIR_ROOT)
-OBJ = $(addprefix $(OBJPATH), $(SRC:$(SRCPATH)/%.$(SRCFILE)=%.$(OFILE)))
+TEMPOBJ = $(SRC:$(PARSERPATH)/%.$(SRCFILE)=parser/%.$(OFILE))
+OBJ = $(addprefix $(OBJPATH), $(TEMPOBJ:$(SRCPATH)/%.$(SRCFILE)=%.$(OFILE)))
 WORKINGDIR =
 ALLDIRCMD =
 
@@ -57,7 +61,7 @@ EXECS = $(EXE1) $(EXE2)
 #Variables pour les options de compilation----------------------
 W = -W
 WA = -Wall
-STDLIB = -std=c++11
+STDLIB = -std=gnu++11
 
 CFLAGS =
 #---------------------------------------------------------------
@@ -131,6 +135,10 @@ $(EXE2):
 $(OBJPATH)$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CFLAGS)
 $(OBJPATH)%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
+	$(CC) -o $@ -c $< $(CFLAGS)
+$(OBJPATH)parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE) $(PARSERPATH)/%.$(HEADFILE)
+	$(CC) -o $@ -c $< $(CFLAGS)
+$(OBJPATH)parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 makedir:

@@ -1,10 +1,10 @@
 %{
-#include <stdio.h>
+#include<cstdio>
 void yyerror(int *, const char *);
 int yylex(void);
 %}
 %union {
-   int ival; 
+   int ival;
 }
 
 %token PLUS MOINS DIV OPEN CLOSE MUL
@@ -34,12 +34,5 @@ expr : expr PLUS expr { $$ = $1 + $3; }
 
 void yyerror(int * res, const char * msg) {
    printf("Syntax error : %s\n",msg);
-}
-
-int main(void) {
-   int res = 0;
-   yyparse(&res);
-   printf("Résutlat : %d\n",res);
-   return 0;
 }
 
