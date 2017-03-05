@@ -45,17 +45,19 @@ SRC += $(call rwildcard,$(PARSERPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 HEAD += $(call rwildcard,$(PARSERPATH)/,*.$(HEADFILE))
 OBJPATH = build/
-OUTDIR_ROOT = build
-OUTDIR = $(OUTDIR_ROOT)
 TEMPOBJ = $(SRC:$(PARSERPATH)/%.$(SRCFILE)=parser/%.$(OFILE))
 OBJ = $(addprefix $(OBJPATH), $(TEMPOBJ:$(SRCPATH)/%.$(SRCFILE)=%.$(OFILE)))
 WORKINGDIR =
 ALLDIRCMD =
 
-EXEPATH = $(OBJPATH)
-EXE1 = $(OBJPATH)pld-compilo.$(EXEFILE)
+EXEROOT = bin
+EXEPATH = $(EXEROOT)/
+EXE1 = $(EXEPATH)pld-compilo.$(EXEFILE)
 EXE2 =
 EXECS = $(EXE1) $(EXE2)
+
+OUTDIR_ROOT = build
+OUTDIR = $(OUTDIR_ROOT) bin
 #---------------------------------------------------------------
 
 #Variables pour les options de compilation----------------------
@@ -153,11 +155,13 @@ clean:
 	cd src/parser && make -f flex.makefile clean
 	cd src/parser && make -f bison.makefile clean
 	$(DEL) $(DELOPT) *.$(OFILE)
+	$(DEL) $(DELOPT) *.$(EXEFILE)
 
 mrproper:
 	cd src/parser && make -f flex.makefile clean
 	cd src/parser && make -f bison.makefile clean
 	$(DELDIR) $(DELDIROPT) $(OUTDIR_ROOT)
+	$(DELDIR) $(DELDIROPT) $(EXEROOT)
 
 #Regles de debuggage
 print-% :
