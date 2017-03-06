@@ -65,6 +65,7 @@ make OS=unix
 * **makedir**: create build and bin folders and subfolders.
 * **parser**: build the parser thanks to bison and flex.
 * **build**: build the project assuming the parser has already been built.
+* **run**: Build and run the project.
 * **clean**: remove all .o files.
 * **mrproper**: remove whole build folder.
 * **print-%**: show a makefile variable. Example: `make print-DEBUG` -> `yes`
