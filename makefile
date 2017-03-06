@@ -143,6 +143,9 @@ $(OBJPATH)parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE) $(PARSERPATH)/%.$(HEADF
 $(OBJPATH)parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
+run: all
+	$(EXE1)
+	
 makedir:
 	$(MAKEDIR) $(OUTDIR)
 
