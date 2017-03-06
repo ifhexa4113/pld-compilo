@@ -89,7 +89,7 @@ else ifeq ($(OS),$(OSUNIX))
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find ./$(SRCPATH) -type d
 	ALLDIR=$(shell $(ALLDIRCMD))
-    OUTDIR += $(subst ./,$(OUTDIR_ROOT)/,$(ALLDIR))
+    OUTDIR += $(subst ./$(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
 else
 	echo Unknown OS
 	exit 1
