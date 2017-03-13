@@ -10,7 +10,7 @@ bin/
 # Libs
 lib/*/build/
 lib/*/temp/
-lib/*/head/
+lib/*/include/
 
 #In case of bad manipulation
 *.o
