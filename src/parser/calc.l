@@ -23,9 +23,6 @@ key_while   while
 key_for     for
 
 %%
-/*
- * VARIABLES
- */
 {ignored}     { /* ignore */ }
 {int}         { yylval.ival = atoi(yytext); return V_INT; }
 {char_single} { yyval.ival = yytext[1] ; return V_CHAR};
@@ -43,17 +40,11 @@ key_for     for
 "'\\''"       { yyval.ival = '\''; return V_CHAR; }
 "'\\\\'"      { yyval.ival = '\\'; return V_CHAR; }
 
-/*
- * TYPES
- */
 {type_char}   { return T_CHAR; }
 {type_int32}  { return T_INT32; }
 {type_int64}  { return T_INT64; }
 {type_void}   { return T_VOID; }
 
-/*
- * KEYWORDS
- */
 {key_break}   { return K_BREAK; }
 {key_cont}    { return K_CONTINUE; }
 {key_return}  { return K_RETURN; }
@@ -62,9 +53,6 @@ key_for     for
 {key_while}   { return K_WHILE; }
 {key_for}     { return K_FOR; }
 
-/*
- * OPERATORS
- */
 "+"           { return OP_PLUS; }
 "-"           { return OP_MINUS; }
 "/"           { return OP_DIV; }
@@ -110,9 +98,6 @@ key_for     for
 "++"          { return OP_UN_INC; }
 "--"          { return OP_UN_DEC; }
 
-/*
- * OTHER SYMBOLS
- */
 "("           { return SYM_OPEN; }
 ")"           { return SYM_CLOSE; }
 "{"           { return SYM_BLOCK_OPEN; }
@@ -121,3 +106,5 @@ key_for     for
 "]"           { return SYM_TAB_CLOSE; }
 ";"           { return SYM_SEMICOLON; }
 ","           { return SYM_COMMA; }
+
+%%
