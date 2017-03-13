@@ -113,7 +113,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Regles de construction
-all: makedir $(EXECS)
+all: $(EXECS)
 ifeq ($(DEBUG),yes)
 	@echo Bison execute en mode debug
 else
@@ -136,5 +136,3 @@ clean:
 #Regles de debuggage
 print-% :
 	@echo $* = $($*)
-
-TEST = $(OBJ:%.$(OFILE)=%.$(OHFILE))

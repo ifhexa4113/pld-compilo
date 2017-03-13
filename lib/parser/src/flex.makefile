@@ -119,7 +119,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Regles de construction
-all: makedir $(EXECS)
+all: $(EXECS)
 ifeq ($(DEBUG),yes)
 	@echo Flex execute en mode debug
 else

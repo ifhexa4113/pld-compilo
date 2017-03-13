@@ -133,8 +133,9 @@ LDFLAGS =
 
 #Regles de construction
 all: makedir flex bison
-	make build
-	make deploy
+	make OS=$(OS) DEBUG=$(DEBUG) build
+	make OS=$(OS) DEBUG=$(DEBUG) deploy
+
 ifeq ($(DEBUG),yes)
 	@echo Parser lib compile en mode debug
 else
