@@ -63,7 +63,7 @@ make OS=unix
 ### Make rules
 * **all** (default): build the whole project.
 * **makedir**: create build and bin folders and subfolders.
-* **parser**: build the parser thanks to bison and flex.
+* **libs**: build the needed libs, and in particular the parser with bison and flex.
 * **build**: build the project assuming the parser has already been built.
 * **run**: Build and run the project.
 * **clean**: remove all .o files.
