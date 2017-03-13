@@ -69,11 +69,14 @@ int yylex(void);
 %token SYM_SEMICOLON
 %token SYM_COMMA
 
+%token IDENTIFIER
+%token ERROR
+
 %left OP_PLUS OP_MINUS OP_TIMES OP_DIV OP_MOD
 %left OP_OR OP_AND OP_XOR OP_GREATER OP_LESSER OP_NOT
-%left OP_EQ OP_EQ_NOT OP_EQ_GREATER OP_EQ_LESSER OP_EQ_NOT
-%left OP_BIN_OR OP_BIN_OR OP_BIN_AND OP_BIN_AND OP_BIN_XOR OP_BIN_XOR OP_BIN_NOT OP_BIN_NOT OP_BIN_RSHIFT OP_BIN_LSHIFT
-%left OP_ASSIGN OP_ASSIGN_ADD OP_ASSIGN_MINUS OP_ASSIGN_DIV OP_ASSIGN_TIMES OP_ASSIGN_MOD OP_ASSIGN_OR OP_ASSIGN_OR OP_ASSIGN_AND OP_ASSIGN_AND OP_ASSIGN_XOR OP_ASSIGN_XOR OP_ASSIGN_RSHIFT OP_ASSIGN_LSHIFT
+%left OP_EQ OP_EQ_NOT OP_EQ_GREATER OP_EQ_LESSER
+%left OP_BIN_OR OP_BIN_AND OP_BIN_XOR OP_BIN_NOT OP_BIN_RSHIFT OP_BIN_LSHIFT
+%left OP_ASSIGN OP_ASSIGN_ADD OP_ASSIGN_MINUS OP_ASSIGN_DIV OP_ASSIGN_TIMES OP_ASSIGN_MOD OP_ASSIGN_OR OP_ASSIGN_AND OP_ASSIGN_XOR OP_ASSIGN_RSHIFT OP_ASSIGN_LSHIFT
 %left OP_UN_INC OP_UN_DEC
 
 %parse-param { int * resultat }
@@ -121,7 +124,7 @@ Decl_Arg  : Decl_Arg SYM_COMMA Type Decl_var_arg
           |
           ;
           
-Decl_func : Type_retour Nom SYM_OPEN Decl_Arg SYM_CLOSE
+Decl_func : Type_retour IDENTIFIER SYM_OPEN Decl_Arg SYM_CLOSE
           ;
           
 Def_func  : Decl_func Bloc
@@ -131,16 +134,16 @@ Decl_var_arg  : Decl_var
               |
               ;
 
-Decl_var  : Nom
-          | Nom SYM_TAB_OPEN SYM_TAB_CLOSE
-          | Nom SYM_TAB_OPEN const SYM_TAB_CLOSE
+Decl_var  : IDENTIFIER
+          | IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE
+          | IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE
           ;
 
 Def_prim  : Decl_var OP_ASSIGN Expr
           ;
           
-Const_list  : Const_list SYM_COMMA const
-            | const
+Const_list  : Const_list SYM_COMMA V_INT
+            | V_INT
             ;
 
 Def_tab   : Decl_var OP_ASSIGN SYM_BLOCK_OPEN Const_list SYM_BLOCK_CLOSE
@@ -222,9 +225,9 @@ Expr      : L_val
           | Function_Expr
           ;
           
-Function_Expr : Nom_Func SYM_OPEN Args SYM_CLOSE
-              | Nom_Func SYM_OPEN T_VOID SYM_CLOSE
-              | Nom_Func SYM_OPEN SYM_CLOSE
+Function_Expr : IDENTIFIER SYM_OPEN Args SYM_CLOSE
+              | IDENTIFIER SYM_OPEN T_VOID SYM_CLOSE
+              | IDENTIFIER SYM_OPEN SYM_CLOSE
               ;
               
 Args      : Args SYM_COMMA Expr
@@ -234,8 +237,8 @@ Args      : Args SYM_COMMA Expr
 Const_char  : V_CHAR
             ;
 
-L_val     : Nom
-          | Nom SYM_BLOCK_OPEN Expr SYM_BLOCK_CLOSE
+L_val     : IDENTIFIER
+          | IDENTIFIER SYM_BLOCK_OPEN Expr SYM_BLOCK_CLOSE
           ;
 
 Expr_or_null  : Expr

@@ -43,8 +43,8 @@ DEBUG = yes
 SRCPATH = .
 SRC = $(call rwildcard,$(SRCPATH)/,*.$(SRCFILE))
 HEAD =
-OBJPATH = ../../parser-lib/
-OUTDIR_ROOT = ../../parser-lib
+OBJPATH = ../temp/
+OUTDIR_ROOT = ../temp
 OUTDIR = $(OUTDIR_ROOT)
 OUTDIRPATH = $(OUTDIR_ROOT)/
 OBJ = $(addprefix $(OBJPATH), $(SRC:$(SRCPATH)/%.$(SRCFILE)=%.$(OFILE)))

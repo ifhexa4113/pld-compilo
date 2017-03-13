@@ -6,7 +6,7 @@ int string_char_hex_to_int (char * str)
 {
 	int length = strlen(str);
 	int size = length - 4 + 1;
-	char * buffer = malloc(size);
+	char * buffer = (char *)malloc(size);
 	_memccpy(buffer, &str[3],'\0',size - 1);
 	buffer[size - 1] = '\0';
 	
@@ -19,9 +19,9 @@ int string_char_hex_to_int (char * str)
 
 int string_char_oct_to_int (char * str)
 {
-		int length = strlen(str);
+    int length = strlen(str);
 	int size = length - 4 + 1;
-	char * buffer = malloc(size);
+	char * buffer = (char *)malloc(size);
 	_memccpy(buffer, &str[3],'\0',size - 1);
 	buffer[size - 1] = '\0';
 	

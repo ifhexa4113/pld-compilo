@@ -29,37 +29,47 @@ DELDIR =
 DELOPT =
 DELDIROPT =
 MAKEDIR =
-MV =
-CC = flex
-MAINFILE =
-OFILE = yy.cpp
-SRCFILE = l
-HEADFILE =
-EXEFILE =
+CP =
+CPOPT =
+SUBSEPARATOR =
 
+MAINFILE = main
+OFILE = o
+SRCFILE = cpp
+HEADFILE = h
+EXEFILE = exe
+
+CC = g++
 DEBUG = yes
 
-SRCPATH = .
+SRCPATH = src
+TEMPPATH = temp
+OBJPATH = build
+HEADPATH = head
 SRC = $(call rwildcard,$(SRCPATH)/,*.$(SRCFILE))
-HEAD =
-OBJPATH = ../../parser-lib/
-OUTDIR_ROOT = ../../parser-lib
-OUTDIR = $(OUTDIR_ROOT)
-OUTDIRPATH = $(OUTDIR_ROOT)/
-OBJ = $(addprefix $(OBJPATH), $(SRC:$(SRCPATH)/%.$(SRCFILE)=%.$(OFILE)))
+TEMPSRC = $(call rwildcard,$(TEMPPATH)/,*.$(SRCFILE))
+HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
+TEMPHEAD = $(call rwildcard,$(TEMPPATH)/,*.$(HEADFILE))
+OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+TEMPOBJ = $(TEMPSRC:$(TEMPPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
 ALLDIRCMD =
 
-EXEPATH = $(OBJPATH)
-EXE1 = $(OBJPATH)pld-compilo.$(EXEFILE)
+HEADREGEX =
+EXEROOT =
+EXEPATH = $(EXEROOT)/
+EXE1 = $(EXEPATH)pld-compilo.$(EXEFILE)
 EXE2 =
 EXECS = $(EXE1) $(EXE2)
+
+OUTDIR_ROOT = $(OBJPATH)
+OUTDIR = $(OUTDIR_ROOT) $(TEMPPATH) $(HEADPATH)
 #---------------------------------------------------------------
 
 #Variables pour les options de compilation----------------------
 W = -W
 WA = -Wall
-STDLIB = -std=c++11
+STDLIB = -std=gnu++11
 
 CFLAGS =
 #---------------------------------------------------------------
@@ -70,26 +80,29 @@ ifeq ($(OS),$(OSWIN))
 	DELDIR += rd
 	DELOPT += /s
 	DELDIROPT += /s /q
-	MV += move
 	MAKEDIR += if not exist $(OUTDIR_ROOT) mkdir
 	WORKINGDIR = $(shell echo %cd%)
+	CP += copy
+	CPOPT +=
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    OUTDIR := $(subst /,\,$(OUTDIR))
-    OUTDIR_ROOT := $(subst /,\,$(OUTDIR_ROOT))
-    OUTDIRPATH := $(subst /,\,$(OUTDIRPATH))
+    HEAD := $(subst /,\, $(HEAD))
+    TEMPHEAD := $(subst /,\, $(TEMPHEAD))
+    SUBSEPARATOR = "\"
+    SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
 else ifeq ($(OS),$(OSUNIX))
 	DEL += rm
 	DELDIR += rm
 	DELOPT += -rf
 	DELDIROPT += -rf
-	MV += mv
 	MAKEDIR += mkdir -p
+	CP += cp
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find ./$(SRCPATH) -type d
 	ALLDIR=$(shell $(ALLDIRCMD))
-    OUTDIR += $(subst ./,$(OUTDIR_ROOT)/,$(ALLDIR))
+    OUTDIR += $(subst ./$(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
+    SUBSEPARATOR = /
 else
 	echo Unknown OS
 	exit 1
@@ -112,31 +125,58 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-%
+.PHONY: clean mrproper print-% makedir flex bison deploy
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
 #---------------------------------------------------------------
 
 #Regles de construction
-all: makedir $(EXECS)
+all: makedir flex bison
+	make build
+	make deploy
 ifeq ($(DEBUG),yes)
-	@echo Flex execute en mode debug
+	@echo Parser lib compile en mode debug
 else
-	@echo Flex execute en mode release
+	@echo Parser lib compile en mode release
 endif
 
-$(EXE1): $(OBJ)
+build: $(EXECS)
 
-$(OBJPATH)%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE)
-	$(CC) -t $<>$@
+$(EXE1): $(OBJ) $(TEMPOBJ)
+
+$(EXE2):
+
+$(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
+	$(CC) -o $@ -c $< $(CFLAGS)
+$(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
+	$(CC) -o $@ -c $< $(CFLAGS)
+$(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE) $(TEMPPATH)/%.$(HEADFILE)
+	$(CC) -o $@ -c $< $(CFLAGS)
+$(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE)
+	$(CC) -o $@ -c $< $(CFLAGS)
 
 makedir:
 	$(MAKEDIR) $(OUTDIR)
 
+flex:
+	cd $(SRCPATH) && make -f flex.makefile
+
+bison:
+	cd $(SRCPATH) && make -f bison.makefile
+
+deploy:
+	$(CP) $(CPOPT) $(SRCPATH)$(SUBSEPARATOR)*.$(HEADFILE) $(HEADPATH)
+	$(CP) $(CPOPT) $(TEMPPATH)$(SUBSEPARATOR)*.$(HEADFILE) $(HEADPATH)
+
 #Regles de nettoyage
 clean:
-	$(DEL) $(DELOPT) $(OUTDIRPATH)*.$(OFILE)
+	cd $(SRCPATH) && make -f flex.makefile clean
+	cd $(SRCPATH) && make -f bison.makefile clean
+	$(DEL) $(DELOPT) *.$(OFILE)
+
+mrproper: clean
+	$(DELDIR) $(DELDIROPT) $(OUTDIR)
 
 #Regles de debuggage
 print-% :

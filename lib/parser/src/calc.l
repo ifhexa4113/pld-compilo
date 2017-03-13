@@ -1,7 +1,7 @@
 %{
 #include "calc.tab.h"
-#include "char_literal_parse.h"
-#include "errors.h"
+#include "../src/char_literal_parse.h"
+#include "../src/errors.h"
 %}
 %option noyywrap
 
@@ -23,30 +23,30 @@ char_octal  '\\[0-8]{1,3}'
 char_hexa   '(\\x([0-9a-fA-F][0-9a-fA-F])+)'
 ignored     [\n\r\t ]
 
-id_name_error  [0-9][a-Z_]+    
-id_name        [A-z_][A-z_0-9]*
+id_error    [0-9][A-z_][A-z_0-9]*
+id_name     [A-z_][A-z_0-9]*
 
 
 %%
 {ignored}     { /* ignore */ }
-{int}         { yylval->ival = atoi(yytext); return V_INT; }
-{char_single} { yylval->ival = yytext[1] ; return V_CHAR};
-{char_octal}  { yylval->ival = string_char_oct_to_int(yytext) ; return V_CHAR ;}
-{char_hexa}   { yylval->ival = string_char_oct_to_int(yytext) ; return V_CHAR ;}
-"'\\n'"       { yylval->ival = '\n'; return V_CHAR; }
-"'\\a'"       { yylval->ival = '\a'; return V_CHAR; }
-"'\\b'"       { yylval->ival = '\b'; return V_CHAR; }
-"'\\t'"       { yylval->ival = '\t'; return V_CHAR; }
-"'\\n'"       { yylval->ival = '\n'; return V_CHAR; }
-"'\\v'"       { yylval->ival = '\v'; return V_CHAR; }
-"'\\f'"       { yylval->ival = '\f'; return V_CHAR; }
-"'\\r'"       { yylval->ival = '\r'; return V_CHAR; }
-"'\\e'"       { yylval->ival = '\e'; return V_CHAR; }
-"'\\''"       { yylval->ival = '\''; return V_CHAR; }
-"'\\\\'"      { yylval->ival = '\\'; return V_CHAR; }
+{int}         { yylval.ival = atoi(yytext); return V_INT; }
+{char_single} { yylval.ival = yytext[1]; return V_CHAR; }
+{char_octal}  { yylval.ival = string_char_oct_to_int(yytext); return V_CHAR; }
+{char_hexa}   { yylval.ival = string_char_oct_to_int(yytext); return V_CHAR; }
+"'\\n'"       { yylval.ival = '\n'; return V_CHAR; }
+"'\\a'"       { yylval.ival = '\a'; return V_CHAR; }
+"'\\b'"       { yylval.ival = '\b'; return V_CHAR; }
+"'\\t'"       { yylval.ival = '\t'; return V_CHAR; }
+"'\\n'"       { yylval.ival = '\n'; return V_CHAR; }
+"'\\v'"       { yylval.ival = '\v'; return V_CHAR; }
+"'\\f'"       { yylval.ival = '\f'; return V_CHAR; }
+"'\\r'"       { yylval.ival = '\r'; return V_CHAR; }
+"'\\e'"       { yylval.ival = '\e'; return V_CHAR; }
+"'\\''"       { yylval.ival = '\''; return V_CHAR; }
+"'\\\\'"      { yylval.ival = '\\'; return V_CHAR; }
 
-id_name_error  { yylval->ival = errorCode.ERROR_UNEXPECTED_NUMBER_SUFFIX ; return ERROR; }
-id_name        { yylval->sval = strdup(yytext); return IDENTIFIER}
+{id_error}    { yylval.ival = ERROR_UNEXPECTED_NUMBER_SUFFIX; return ERROR; }
+{id_name}     { yylval.sval = strdup(yytext); return IDENTIFIER; }
 
 {type_char}   { return T_CHAR; }
 {type_int32}  { return T_INT32; }
