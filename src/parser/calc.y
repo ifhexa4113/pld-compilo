@@ -7,6 +7,7 @@ int yylex(void);
 
 %union {
    int ival;
+   char * sval;
 }
 
 %token OP_PLUS
