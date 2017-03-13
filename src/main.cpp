@@ -2,7 +2,7 @@
 #include <cstdio>
 #include "module1/module1.h"
 #include "module1/submodule1/module1.h"
-#include "../parser-lib/calc.tab.h"
+#include "calc.tab.h"
 
 using namespace std;
 
@@ -12,6 +12,6 @@ int main() {
     std::cout << test2() << std::endl;
     int res = 0;
     yyparse(&res);
-    printf("Résutlat : %d\n",res);
+    printf("Result : %d\n",res);
     return 0;
 }
