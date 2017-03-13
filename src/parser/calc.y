@@ -1,14 +1,82 @@
 %{
 #include<cstdio>
+
 void yyerror(int *, const char *);
 int yylex(void);
 %}
+
 %union {
    int ival;
 }
 
-%token PLUS MOINS DIV OPEN CLOSE MUL
-%token <ival> ENTIER
+%token OP_PLUS
+%token OP_MINUS
+%token OP_DIV
+%token OP_TIMES
+%token OP_MOD
+%token OP_ASSIGN
+%token OP_NOT
+%token OP_NOT
+%token OP_GREATER
+%token OP_LESSER
+%token OP_EQ
+%token OP_EQ_GREATER
+%token OP_EQ_LESSER
+%token OP_EQ_NOT
+%token OP_EQ_NOT
+%token OP_AND
+%token OP_AND
+%token OP_OR
+%token OP_OR
+%token OP_BIN_OR
+%token OP_BIN_OR
+%token OP_BIN_AND
+%token OP_BIN_AND
+%token OP_BIN_XOR
+%token OP_BIN_XOR
+%token OP_BIN_NOT
+%token OP_BIN_NOT
+%token OP_BIN_RSHIFT
+%token OP_BIN_LSHIFT
+%token OP_ASSIGN_ADD
+%token OP_ASSIGN_MINUS
+%token OP_ASSIGN_DIV
+%token OP_ASSIGN_TIMES
+%token OP_ASSIGN_MOD
+%token OP_ASSIGN_OR
+%token OP_ASSIGN_OR
+%token OP_ASSIGN_AND
+%token OP_ASSIGN_AND
+%token OP_ASSIGN_XOR
+%token OP_ASSIGN_XOR
+%token OP_ASSIGN_RSHIFT
+%token OP_ASSIGN_LSHIFT
+%token OP_UN_INC
+%token OP_UN_DEC
+
+%token <ival> T_CHAR
+%token <ival> T_INT32
+%token <ival> T_INT64
+%token T_VOID
+
+%token V_CHAR
+%token V_INT
+
+%token K_BREAK
+%token K_CONTINUE
+%token K_RETURN
+%token K_IF
+%token K_ELSE
+%token K_WHILE
+%token K_FOR
+
+%token SYM_OPEN
+%token SYM_CLOSE
+%token SYM_BLOCK_OPEN
+%token SYM_BLOCK_CLOSE
+%token SYM_TAB_CLOSE
+%token SYM_TAB_CLOSE
+%token SYM_SEMICOLON
 
 %type <ival> expr
 
