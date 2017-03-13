@@ -1,10 +1,12 @@
 %{
 #include "calc.tab.h"
+#include "char_litteral_parse.h"
 %}
 %option noyywrap
 
 int         [0-9]+
 /*char        '([^\\\n\r\t]|\\[a-zA-Z0-9]+|\\.)'*/
+char_single '[^\\\t\n\r]'
 char_octal  '\\[0-8]{1,3}'
 char_hexa   '(\\x([0-9a-fA-F][0-9a-fA-F])+)'
 ignored     [\n\r\t ]
@@ -27,17 +29,17 @@ key_for     for
 {ignored}     { /* ignore */ }
 {int}         { yylval.ival = atoi(yytext); return V_INT; }
 /*{char}        { yylval.cval = atoi(yytext); return V_CHAR; }*/
-"'\\n'"       { yyval.cval = '\n'; return V_CHAR; }
-"'\\a'"       { yyval.cval = '\a'; return V_CHAR; }
-"'\\b'"       { yyval.cval = '\b'; return V_CHAR; }
-"'\\t'"       { yyval.cval = '\t'; return V_CHAR; }
-"'\\n'"       { yyval.cval = '\n'; return V_CHAR; }
-"'\\v'"       { yyval.cval = '\v'; return V_CHAR; }
-"'\\f'"       { yyval.cval = '\f'; return V_CHAR; }
-"'\\r'"       { yyval.cval = '\r'; return V_CHAR; }
-"'\\e'"       { yyval.cval = '\e'; return V_CHAR; }
-"'\\''"       { yyval.cval = '\''; return V_CHAR; }
-"'\\\\'"      { yyval.cval = '\\'; return V_CHAR; }
+"'\\n'"       { yyval.ival = '\n'; return V_CHAR; }
+"'\\a'"       { yyval.ival = '\a'; return V_CHAR; }
+"'\\b'"       { yyval.ival = '\b'; return V_CHAR; }
+"'\\t'"       { yyval.ival = '\t'; return V_CHAR; }
+"'\\n'"       { yyval.ival = '\n'; return V_CHAR; }
+"'\\v'"       { yyval.ival = '\v'; return V_CHAR; }
+"'\\f'"       { yyval.ival = '\f'; return V_CHAR; }
+"'\\r'"       { yyval.ival = '\r'; return V_CHAR; }
+"'\\e'"       { yyval.ival = '\e'; return V_CHAR; }
+"'\\''"       { yyval.ival = '\''; return V_CHAR; }
+"'\\\\'"      { yyval.ival = '\\'; return V_CHAR; }
 
 /*
  * TYPES
@@ -54,6 +56,12 @@ key_for     for
 {key_while}   { return K_WHILE }
 {key_for}     { return K_FOR }
 
+/*
+* LITTERALS
+*/
+{char_single}	{yyval.ival = yytext[1] ; return V_CHAR};
+{char_ocal} 	{yyval.ival = string_char_oct_to_int(yytext) ; return V_CHAR ;}
+{char_hexa} 	{yyval.ival = string_char_oct_to_int(yytext) ; return V_CHAR ;}
 /*
  * OPERATORS
  */
