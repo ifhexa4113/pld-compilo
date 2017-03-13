@@ -42,17 +42,21 @@ key_for     for
 /*
  * TYPES
  */
-{type_char}   { return T_CHAR }
-{type_int32}  { return T_INT32 }
-{type_int64}  { return T_INT64 }
-{type_void}   { return T_VOID }
-{key_break}   { return K_BREAK }
-{key_cont}    { return K_CONTINUE }
-{key_return}  { return K_RETURN }
-{key_if}      { return K_IF }
-{key_else}    { return K_ELSE }
-{key_while}   { return K_WHILE }
-{key_for}     { return K_FOR }
+{type_char}   { return T_CHAR; }
+{type_int32}  { return T_INT32; }
+{type_int64}  { return T_INT64; }
+{type_void}   { return T_VOID; }
+
+/*
+ * KEYWORDS
+ */
+{key_break}   { return K_BREAK; }
+{key_cont}    { return K_CONTINUE; }
+{key_return}  { return K_RETURN; }
+{key_if}      { return K_IF; }
+{key_else}    { return K_ELSE; }
+{key_while}   { return K_WHILE; }
+{key_for}     { return K_FOR; }
 
 /*
  * OPERATORS
