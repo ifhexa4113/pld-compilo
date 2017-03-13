@@ -1,6 +1,6 @@
 %{
 #include "calc.tab.h"
-#include "char_litteral_parse.h"
+#include "char_literal_parse.h"
 %}
 %option noyywrap
 
@@ -28,7 +28,9 @@ key_for     for
  */
 {ignored}     { /* ignore */ }
 {int}         { yylval.ival = atoi(yytext); return V_INT; }
-/*{char}        { yylval.cval = atoi(yytext); return V_CHAR; }*/
+{char_single} { yyval.ival = yytext[1] ; return V_CHAR};
+{char_octal}  { yyval.ival = string_char_oct_to_int(yytext) ; return V_CHAR ;}
+{char_hexa}   { yyval.ival = string_char_oct_to_int(yytext) ; return V_CHAR ;}
 "'\\n'"       { yyval.ival = '\n'; return V_CHAR; }
 "'\\a'"       { yyval.ival = '\a'; return V_CHAR; }
 "'\\b'"       { yyval.ival = '\b'; return V_CHAR; }
@@ -60,12 +62,6 @@ key_for     for
 {key_while}   { return K_WHILE; }
 {key_for}     { return K_FOR; }
 
-/*
-* LITTERALS
-*/
-{char_single}	{yyval.ival = yytext[1] ; return V_CHAR};
-{char_ocal} 	{yyval.ival = string_char_oct_to_int(yytext) ; return V_CHAR ;}
-{char_hexa} 	{yyval.ival = string_char_oct_to_int(yytext) ; return V_CHAR ;}
 /*
  * OPERATORS
  */
