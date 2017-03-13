@@ -18,7 +18,6 @@ key_while   while
 key_for     for
 
 int         [0-9]+
-/*char        '([^\\\n\r\t]|\\[a-zA-Z0-9]+|\\.)'*/
 char_single '[^\\\t\n\r]'
 char_octal  '\\[0-8]{1,3}'
 char_hexa   '(\\x([0-9a-fA-F][0-9a-fA-F])+)'
