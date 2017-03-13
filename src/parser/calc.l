@@ -29,9 +29,6 @@ id_name        [A-z_][A-z_0-9]*
 
 
 %%
-/*
- * VARIABLES
- */
 {ignored}     { /* ignore */ }
 {int}         { yylval->ival = atoi(yytext); return V_INT; }
 {char_single} { yylval->ival = yytext[1] ; return V_CHAR};
@@ -52,17 +49,11 @@ id_name        [A-z_][A-z_0-9]*
 id_name_error  { yylval->ival = errorCode.ERROR_UNEXPECTED_NUMBER_SUFFIX ; return ERROR; }
 id_name        { yylval->sval = strdup(yytext); return IDENTIFIER}
 
-/*
- * TYPES
- */
 {type_char}   { return T_CHAR; }
 {type_int32}  { return T_INT32; }
 {type_int64}  { return T_INT64; }
 {type_void}   { return T_VOID; }
 
-/*
- * KEYWORDS
- */
 {key_break}   { return K_BREAK; }
 {key_cont}    { return K_CONTINUE; }
 {key_return}  { return K_RETURN; }
@@ -71,9 +62,6 @@ id_name        { yylval->sval = strdup(yytext); return IDENTIFIER}
 {key_while}   { return K_WHILE; }
 {key_for}     { return K_FOR; }
 
-/*
- * OPERATORS
- */
 "+"           { return OP_PLUS; }
 "-"           { return OP_MINUS; }
 "/"           { return OP_DIV; }
@@ -119,9 +107,6 @@ id_name        { yylval->sval = strdup(yytext); return IDENTIFIER}
 "++"          { return OP_UN_INC; }
 "--"          { return OP_UN_DEC; }
 
-/*
- * OTHER SYMBOLS
- */
 "("           { return SYM_OPEN; }
 ")"           { return SYM_CLOSE; }
 "{"           { return SYM_BLOCK_OPEN; }
@@ -129,3 +114,6 @@ id_name        { yylval->sval = strdup(yytext); return IDENTIFIER}
 "["           { return SYM_TAB_CLOSE; }
 "]"           { return SYM_TAB_CLOSE; }
 ";"           { return SYM_SEMICOLON; }
+","           { return SYM_COMMA; }
+
+%%
