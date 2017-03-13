@@ -120,3 +120,4 @@ key_for     for
 "["           { return SYM_TAB_CLOSE; }
 "]"           { return SYM_TAB_CLOSE; }
 ";"           { return SYM_SEMICOLON; }
+","           { return SYM_COMMA; }
