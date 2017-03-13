@@ -28,7 +28,10 @@ DEL =
 DELDIR =
 DELOPT =
 DELDIROPT =
+MKDIR =s
 MAKEDIR =
+SEVERAL_CMD =
+
 CC = g++
 MAINFILE = main
 OFILE = o
@@ -39,20 +42,19 @@ EXEFILE = exe
 DEBUG = yes
 
 SRCPATH = src
-PARSERPATH = parser-lib
+OBJPATH = build
+LIBPATH = lib
+EXEPATH = bin
+INCLUDEPATH = $(wildcard $(LIBPATH)/*/include)
 SRC = $(call rwildcard,$(SRCPATH)/,*.$(SRCFILE))
-SRC += $(call rwildcard,$(PARSERPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
-HEAD += $(call rwildcard,$(PARSERPATH)/,*.$(HEADFILE))
-OBJPATH = build/
-TEMPOBJ = $(SRC:$(PARSERPATH)/%.$(SRCFILE)=parser/%.$(OFILE))
-OBJ = $(addprefix $(OBJPATH), $(TEMPOBJ:$(SRCPATH)/%.$(SRCFILE)=%.$(OFILE)))
+OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+LIBOBJ = $(call rwildcard,$(LIBPATH)/,*.$(OFILE))
 WORKINGDIR =
 ALLDIRCMD =
+LIBS = $(wildcard $(LIBPATH)/*)
 
-EXEROOT = bin
-EXEPATH = $(EXEROOT)/
-EXE1 = $(EXEPATH)pld-compilo.$(EXEFILE)
+EXE1 = $(EXEPATH)/pld-compilo.$(EXEFILE)
 EXE2 =
 EXECS = $(EXE1) $(EXE2)
 
@@ -64,32 +66,36 @@ OUTDIR = $(OUTDIR_ROOT) bin
 W = -W
 WA = -Wall
 STDLIB = -std=gnu++11
+INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib))
 
-CFLAGS =
+CFLAGS = $(INCLUDES)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
 ifeq ($(OS),$(OSWIN))
-	DEL += del
-	DELDIR += rd
-	DELOPT += /s
-	DELDIROPT += /s /q
-	MAKEDIR += if not exist $(OUTDIR_ROOT) mkdir
+	DEL = del
+	DELDIR = rd
+	MKDIR = mkdir
+	DELOPT = /s
+	DELDIROPT = /s /q
 	WORKINGDIR = $(shell echo %cd%)
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
-    OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    TEST = $(subst $(WORKINGDIR)\,,$(ALLDIR))
+    OUTDIR := $(OUTDIR) $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
+    SEVERAL_CMD = &
+    MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
 else ifeq ($(OS),$(OSUNIX))
-	DEL += rm
-	DELDIR += rm
-	DELOPT += -rf
-	DELDIROPT += -rf
-	MAKEDIR += mkdir -p
+	DEL = rm
+	DELDIR = rm
+	MKDIR = mkdir
+	DELOPT = -rf
+	DELDIROPT = -rf
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find ./$(SRCPATH) -type d
 	ALLDIR=$(shell $(ALLDIRCMD))
-    OUTDIR += $(subst ./$(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
+    OUTDIR := $(OUTDIR) $(subst ./$(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
+    MAKEDIR := mkdir -p $(OUTDIR)
+    SEVERAL_CMD = ;
 else
 	echo Unknown OS
 	exit 1
@@ -99,7 +105,7 @@ endif
 ifeq ($(DEBUG),yes)
 	CFLAGS += $(W) $(WA) $(STDLIB)
 else
-	CFLAGS = $(STDLIB)
+	CFLAGS += $(STDLIB)
 endif
 
 #---------------------------------------------------------------
@@ -112,15 +118,15 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir parser
+.PHONY: clean mrproper print-% makedir libs test
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
 #---------------------------------------------------------------
 
 #Regles de construction
-all: makedir parser
-	make build
+all: makedir libs
+	make OS=$(OS) DEBUG=$(DEBUG) build
 ifeq ($(DEBUG),yes)
 	@echo Projet compile en mode debug
 else
@@ -129,42 +135,39 @@ endif
 
 build: $(EXECS)
 
-$(EXE1): $(OBJ)
+$(EXE1): $(OBJ) $(LIBOBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 $(EXE2):
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(OBJPATH)$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
+$(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CFLAGS)
-$(OBJPATH)%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
+$(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
-$(OBJPATH)parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE) $(PARSERPATH)/%.$(HEADFILE)
+$(OBJPATH)/parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE) $(PARSERPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
-$(OBJPATH)parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE)
+$(OBJPATH)/parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 run: all
 	$(EXE1)
 	
 makedir:
-	$(MAKEDIR) $(OUTDIR)
+	$(MAKEDIR)
 
-parser:
-	cd src/parser && make -f flex.makefile
-	cd src/parser && make -f bison.makefile
+libs:
+	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) DEBUG=$(DEBUG) $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
 
 #Regles de nettoyage
 clean:
-	cd src/parser && make -f flex.makefile clean
-	cd src/parser && make -f bison.makefile clean
+	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) clean $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
 	$(DEL) $(DELOPT) *.$(OFILE)
 	$(DEL) $(DELOPT) *.$(EXEFILE)
 
 mrproper:
-	cd src/parser && make -f flex.makefile clean
-	cd src/parser && make -f bison.makefile clean
+	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) mrproper $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
 	$(DELDIR) $(DELDIROPT) $(OUTDIR_ROOT)
-	$(DELDIR) $(DELDIROPT) $(EXEROOT)
+	$(DELDIR) $(DELDIROPT) $(EXEPATH)
 
 #Regles de debuggage
 print-% :
