@@ -1,9 +1,16 @@
+# IDE related
 .idea/
 cmake-build-debug/
+CMakeLists.txt
+
+# Build
 build/
 bin/
-parser-lib
-CMakeLists.txt
+
+# Libs
+lib/*/build/
+lib/*/temp/
+lib/*/head/
 
 #In case of bad manipulation
 *.o
