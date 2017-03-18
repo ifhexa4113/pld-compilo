@@ -83,165 +83,161 @@ int yylex(void);
 
 %%
 
-Prog_c--  : Prog_c-- Def_func
-          | Prog_c-- Decl_func
+prog_c--  : prog_c-- def_func
+          | prog_c-- decl_func
           |
           ;
           
-Type      : T_CHAR
+type      : T_CHAR
           | T_INT32
           | T_INT64
           ;
           
-Type_retour : Type
+type_retour : type
             | T_VOID
             ;
 
-Bloc      : SYM_BLOCK_OPEN Bloc_expr SYM_BLOCK_CLOSE
+bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE
           | SYM_BLOCK_OPEN SYM_BLOCK_CLOSE
           ;
           
-Bloc_expr : Bloc_expr Statement
-          | Statement
+bloc_expr : bloc_expr statement
+          | statement
           ;
 
-Statement : Decl_Def_stat SYM_SEMICOLON
-          | If_bloc
-          | For_stat
-          | While_stat
-          | Expr SYM_SEMICOLON
-          | Bloc
+statement : decl_def_stat SYM_SEMICOLON
+          | if_bloc
+          | for_stat
+          | while_stat
+          | expr SYM_SEMICOLON
+          | bloc
           | K_BREAK SYM_SEMICOLON
           | K_CONTINUE SYM_SEMICOLON
           | K_RETURN SYM_SEMICOLON
-          | K_RETURN Expr SYM_SEMICOLON
+          | K_RETURN expr SYM_SEMICOLON
           | SYM_SEMICOLON
           ;
           
-Decl_Arg  : Decl_Arg SYM_COMMA Type Decl_var_arg
-          | Type Decl_var_arg
+decl_arg  : decl_arg SYM_COMMA type decl_var_arg
+          | type decl_var_arg
           | T_VOID
           |
           ;
           
-Decl_func : Type_retour IDENTIFIER SYM_OPEN Decl_Arg SYM_CLOSE
+decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE
           ;
           
-Def_func  : Decl_func Bloc
+def_func  : decl_func bloc
           ;
 
-Decl_var_arg  : Decl_var
+decl_var_arg  : decl_var
               |
               ;
 
-Decl_var  : IDENTIFIER
+decl_var  : IDENTIFIER
           | IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE
           | IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE
           ;
 
-Def_prim  : Decl_var OP_ASSIGN Expr
+def_prim  : decl_var OP_ASSIGN expr
           ;
-          
-Const_list  : Const_list SYM_COMMA V_INT
-            | V_INT
-            ;
 
-Def_tab   : Decl_var OP_ASSIGN SYM_BLOCK_OPEN Const_list SYM_BLOCK_CLOSE
-          | Decl_var OP_ASSIGN Expr
+def_tab   : decl_var OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
+          | decl_var OP_ASSIGN expr
           ;
           
-Def_var   : Def_prim
-          | Def_tab
+def_var   : def_prim
+          | def_tab
           ;
           
-Decl_Def_var  : Decl_var
-              | Def_var
+decl_def_var  : decl_var
+              | def_var
               ;
               
-Decl_Def_stat : Decl_Def_stat SYM_COMMA Decl_Def_var
-              | Type Decl_Def_var
+decl_def_stat : decl_def_stat SYM_COMMA decl_def_var
+              | type decl_def_var
               ;
               
-If_stat   : K_IF SYM_OPEN Expr SYM_CLOSE Statement
+if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
           ;
           
-Else_stat : K_ELSE Statement
+else_stat : K_ELSE statement
           |
           ;
           
-If_bloc   : If_stat Else_stat
+if_bloc   : if_stat else_stat
           ;
 
-For_init  : Decl_var
-          | Expr
-          | Def_var
+for_init  : decl_var
+          | expr
+          | def_var
           |
           ;
           
-For_stat  : K_FOR SYM_OPEN For_init SYM_SEMICOLON Expr_or_null SYM_SEMICOLON Expr_or_null SYM_CLOSE Statement
+for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON expr_or_null SYM_CLOSE statement
           ;
 
-While_stat  : K_WHILE SYM_OPEN Expr SYM_CLOSE Statement
+while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement
             ;
 
-Expr      : L_val
+expr      : l_val
           | V_INT 
-          | OP_NOT Expr
-          | L_val OP_UN_INC
-          | L_val OP_UN_DEC
-          | OP_UN_INC L_val
-          | OP_UN_DEC L_val
-          | OP_MINUS Expr
-          | OP_BIN_NOT Expr
-          | Expr OP_BIN_XOR Expr
-          | Expr OP_BIN_OR Expr
-          | Expr OP_BIN_AND Expr 
-          | Expr OP_BIN_LSHIFT Expr
-          | Expr OP_BIN_RSHIFT Expr
-          | Expr OP_PLUS Expr
-          | Expr OP_MINUS Expr
-          | Expr OP_TIMES Expr
-          | Expr OP_DIV Expr
-          | Expr OP_MOD Expr 
-          | L_val OP_ASSIGN Expr
-          | L_val OP_ASSIGN_AND Expr
-          | L_val OP_ASSIGN_MINUS Expr
-          | L_val OP_ASSIGN_TIMES Expr
-          | L_val OP_ASSIGN_DIV Expr
-          | L_val OP_ASSIGN_MOD Expr
-          | L_val OP_ASSIGN_XOR Expr
-          | L_val OP_ASSIGN_OR Expr
-          | L_val OP_ASSIGN_AND Expr
-          | Expr OP_OR Expr
-          | Expr OP_AND Expr 
-          | Expr OP_GREATER Expr
-          | Expr OP_EQ_LESSER Expr
-          | Expr OP_EQ_GREATER Expr
-          | Expr OP_EQ_NOT Expr
-          | Expr OP_EQ Expr
-          | Expr OP_LESSER Expr
-          | SYM_OPEN Expr SYM_CLOSE
-          | Const_char
-          | Function_Expr
+          | OP_NOT expr
+          | l_val OP_UN_INC
+          | l_val OP_UN_DEC
+          | OP_UN_INC l_val
+          | OP_UN_DEC l_val
+          | OP_MINUS expr
+          | OP_BIN_NOT expr
+          | expr OP_BIN_XOR expr
+          | expr OP_BIN_OR expr
+          | expr OP_BIN_AND expr 
+          | expr OP_BIN_LSHIFT expr
+          | expr OP_BIN_RSHIFT expr
+          | expr OP_PLUS expr
+          | expr OP_MINUS expr
+          | expr OP_TIMES expr
+          | expr OP_DIV expr
+          | expr OP_MOD expr 
+          | l_val OP_ASSIGN expr
+          | l_val OP_ASSIGN_AND expr
+          | l_val OP_ASSIGN_MINUS expr
+          | l_val OP_ASSIGN_TIMES expr
+          | l_val OP_ASSIGN_DIV expr
+          | l_val OP_ASSIGN_MOD expr
+          | l_val OP_ASSIGN_XOR expr
+          | l_val OP_ASSIGN_OR expr
+          | l_val OP_ASSIGN_AND expr
+          | expr OP_OR expr
+          | expr OP_AND expr 
+          | expr OP_GREATER expr
+          | expr OP_EQ_LESSER expr
+          | expr OP_EQ_GREATER expr
+          | expr OP_EQ_NOT expr
+          | expr OP_EQ expr
+          | expr OP_LESSER expr
+          | SYM_OPEN expr SYM_CLOSE
+          | const_char
+          | function_expr
           ;
           
-Function_Expr : IDENTIFIER SYM_OPEN Args SYM_CLOSE
+function_expr : IDENTIFIER SYM_OPEN args SYM_CLOSE
               | IDENTIFIER SYM_OPEN T_VOID SYM_CLOSE
               | IDENTIFIER SYM_OPEN SYM_CLOSE
               ;
               
-Args      : Args SYM_COMMA Expr
-          | Expr
+args      : args SYM_COMMA expr
+          | expr
           ;
 
-Const_char  : V_CHAR
+const_char  : V_CHAR
             ;
 
-L_val     : IDENTIFIER
-          | IDENTIFIER SYM_BLOCK_OPEN Expr SYM_BLOCK_CLOSE
+l_val     : IDENTIFIER
+          | IDENTIFIER SYM_BLOCK_OPEN expr SYM_BLOCK_CLOSE
           ;
 
-Expr_or_null  : Expr
+expr_or_null  : expr
               |
               ;
 %%
