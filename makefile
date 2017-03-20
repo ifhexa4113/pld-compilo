@@ -141,9 +141,10 @@ else
 	@echo Projet compile en mode release
 endif
 
-build: $(EXECS)
+build: $(EXE1)
 
 tests: libs $(EXE2)
+	$(EXE2)
 
 $(EXE1): $(OBJ) $(LIBOBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
@@ -160,7 +161,7 @@ $(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(SRCPATH)/$(MAINSRCTESTFILE
 $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
 
-run: all
+run: $(EXE1)
 	$(EXE1)
 	
 makedir:
