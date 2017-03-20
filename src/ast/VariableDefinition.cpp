@@ -1,12 +1,9 @@
-#ifdef DEBUG
-    #include <iostream>
-#endif
-
 #include "VariableDefinition.h"
 
-VariableDefinition::VariableDefinition(Expression* expression) : 
+VariableDefinition::VariableDefinition(std::string name, Expression* rexpression) : 
     AstNode(),
-    this->expression(expression)
+    this->name(name),
+    this->rexpression(rexpression)
 {
     
 }

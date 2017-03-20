@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "AstNode.h"
-#include "block/FunctionDefinition.h"
+#include "block/block-class/FunctionDefinition.h"
 
 class CmmProgram : public AstNode {
 
