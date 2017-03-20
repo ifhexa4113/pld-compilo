@@ -14,3 +14,8 @@ BinaryAffection::~BinaryAffection()
     delete lexpression;
     delete rexpression;
 }
+
+int BinaryAffection::walkTree()
+{
+    
+}
