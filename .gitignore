@@ -7,10 +7,12 @@ CMakeLists.txt
 build/
 bin/
 
-# Libs
+# Libs (default)
 lib/*/build/
 lib/*/temp/
 lib/*/include/
+# Libs (specific cases)
+!lib/catch/include/
 
 #In case of bad manipulation
 *.o
