@@ -5,12 +5,13 @@
 
 #include "AstNode.h"
 #include "block/block-class/FunctionDefinition.h"
+#include "symbol_table/SymbolTable.h"
 
 class CmmProgram : public AstNode {
 
 public:
     CmmProgram();
-    virtual ~CmmProgramm();
+    virtual ~CmmProgram();
 
     virtual int walkTree();
     void addFunction(FunctionDefinition* function);

@@ -2,18 +2,18 @@
 #define UNARY_BINARY_OPERATION_ON_VARIABLE_H
 
 #include "UnaryBinaryOperation.h"
-#include "Variable.h"
+#include "VariableExpression.h"
 
 class UnaryBinaryOperationOnVariable : public UnaryBinaryOperation
 {
 public:
-    UnaryBinaryOperationOnVariable(UnaryBinaryOperator op, Variable* variable);
+    UnaryBinaryOperationOnVariable(UnaryBinaryOperator op_, VariableExpression* variable_);
     ~UnaryBinaryOperationOnVariable();
 
     virtual int walkTree();
 
 protected:
-    Variable* variable;
+    VariableExpression* variable;
 };
 
 #endif

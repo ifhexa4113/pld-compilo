@@ -2,18 +2,19 @@
 #ifndef CONDITIONALSTRUCTURE_H
 #define CONDITIONALSTRUCTURE_H
 
-#include "BlockClass.h"
+#include "../BlockClass.h"
+#include "../../../expression/Expression.h"
 
 class ConditionalStructure: public BlockClass{
 
 public:
-    ConditionalStructure();
-    ~ConditionalStructure();
+    ConditionalStructure(Block* block_, Expression* condition_);
+    virtual ~ConditionalStructure();
 
-    virtual int WalkTree();
+    virtual int walkTree();
 
 protected:
-    Expression condition;
+    Expression* condition;
 };
 
 #endif //CONDITIONALSTRUCTURE_H

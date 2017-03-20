@@ -1,14 +1,17 @@
 #include "Else.h"
 
-Else::Else()
+Else::Else(Block* block_) :
+    BlockClass(block_)
 {
-#ifdef DEBUG
-    id = AstNode.IdMax++;
-        std::cout << "Creating Else node, id: " << id << std::endl;
-#endif
+
 }
 
 Else::~Else()
+{
+
+}
+
+int Else::walkTree()
 {
 
 }

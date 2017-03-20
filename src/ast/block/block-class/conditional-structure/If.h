@@ -3,13 +3,15 @@
 #define IF_H
 
 #include "ConditionalStructure.h"
+#include "../../../expression/Expression.h"
 
-class BlockClass: public ConditionalStructure{
+class If: public ConditionalStructure {
 
 public:
-    If();
+    If(Block* block_, Expression* condition_);
     ~If();
-    virtual int WalkTree();
+
+    virtual int walkTree();
 
 };
 

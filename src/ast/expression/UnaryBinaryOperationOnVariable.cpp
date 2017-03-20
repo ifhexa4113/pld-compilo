@@ -1,8 +1,8 @@
 #include "UnaryBinaryOperationOnVariable.h"
 
-UnaryBinaryOperationOnVariable::UnaryBinaryOperationOnVariable(UnaryBinaryOperator op, Variable* variable) :
-    UnaryBinaryOperator(op),
-    this->variable(variable)
+UnaryBinaryOperationOnVariable::UnaryBinaryOperationOnVariable(UnaryBinaryOperator op_, VariableExpression* variable_) :
+    UnaryBinaryOperation(op_),
+    variable(variable_)
 {
 
 }

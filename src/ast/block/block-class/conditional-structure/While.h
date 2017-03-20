@@ -3,13 +3,14 @@
 #define WHILE_H
 
 #include "ConditionalStructure.h"
+#include "../../../expression/Expression.h"
 
 class While: public ConditionalStructure{
 
 public:
-    While();
+    While(Block* block_, Expression* condition_);
     ~While();
-    virtual int WalkTree();
+    virtual int walkTree();
 
 };
 

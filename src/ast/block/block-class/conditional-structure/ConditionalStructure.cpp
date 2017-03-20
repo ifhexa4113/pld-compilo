@@ -1,14 +1,18 @@
 #include "ConditionalStructure.h"
 
-BlockClass::BlockClass()
+ConditionalStructure::ConditionalStructure(Block* block_, Expression* condition_) : 
+        BlockClass(block_),
+        condition(condition_)
 {
-#ifdef DEBUG
-        id = AstNode.IdMax++;
-        std::cout << "Creating ConditionalStructure node, id: " << id << std::endl;
-#endif
+
 }
 
-BlockClass::~BlockClass()
+ConditionalStructure::~ConditionalStructure()
 {
+        delete condition;
+}
 
+int ConditionalStructure::walkTree()
+{
+        
 }

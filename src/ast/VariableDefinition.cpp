@@ -1,16 +1,16 @@
 #include "VariableDefinition.h"
 
-VariableDefinition::VariableDefinition(std::string name, Expression* rexpression) : 
+VariableDefinition::VariableDefinition(std::string name_, Expression* rexpression_) : 
     AstNode(),
-    this->name(name),
-    this->rexpression(rexpression)
+    name(name_),
+    rexpression(rexpression_)
 {
     
 }
 
 VariableDefinition::~VariableDefinition()
 {
-    delete expression;
+    delete rexpression;
 }
 
 int VariableDefinition::walkTree()

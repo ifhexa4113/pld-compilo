@@ -1,16 +1,18 @@
-
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "AstNode.h"
+#include <vector>
+
+#include "../AstNode.h"
+#include "../symbol_table/SymbolTable.h"
 
 class Block: public AstNode{
 
 public:
     Block();
     ~Block();
-    virtual int WalkTree();
-    void addChild();
+    virtual int walkTree();
+    void addChild(AstNode* child);
 
 protected:
     SymbolTable symbolTable;

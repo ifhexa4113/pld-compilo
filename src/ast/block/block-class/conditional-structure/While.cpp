@@ -1,13 +1,16 @@
 #include "While.h"
 
-BlockClass::BlockClass()
+While::While(Block* block_, Expression* condition_) : 
+        ConditionalStructure(block_, condition_)
 {
-#ifdef DEBUG
-        id = AstNode.IdMax++;
-        std::cout << "Creating While node, id: " << id << std::endl;
-#endif
+
 }
 
-BlockClass::~BlockClass()
+While::~While()
 {
+}
+
+int While::walkTree()
+{
+
 }

@@ -2,15 +2,16 @@
 #ifndef BLOCKCLASS_H
 #define BLOCKCLASS_H
 
-#include "AstNode.h"
+#include "../../AstNode.h"
+#include "../Block.h"
 
 class BlockClass: public AstNode{
 
 public:
-    BlockClass();
+    BlockClass(Block* block_);
     ~BlockClass();
 
-    virtual int WalkTree();
+    virtual int walkTree();
 
 protected:
     Block* block;

@@ -8,14 +8,14 @@
 class LiteralNumber : public Expression
 {
 public:
-    LiteralNumber(int64_t value);
+    LiteralNumber(int64_t value_);
     virtual ~LiteralNumber(){};
 
-    virtual int walTree();
-    std::string getValue() { return value; };
+    virtual int walkTree();
+    int64_t getValue() { return value; };
 
 protected:
     int64_t value;
-}
+};
 
 #endif

@@ -1,14 +1,18 @@
 #include "BlockClass.h"
 
-BlockClass::BlockClass()
+BlockClass::BlockClass(Block* block_) : 
+        AstNode(),
+        block(block_)
 {
-#ifdef DEBUG
-        id = AstNode.IdMax++;
-        std::cout << "Creating BlockClass node, id: " << id << std::endl;
-#endif
+
 }
 
 BlockClass::~BlockClass()
 {
         delete block;
+}
+
+int BlockClass::walkTree()
+{
+
 }

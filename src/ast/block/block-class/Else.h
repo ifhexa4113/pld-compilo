@@ -4,12 +4,12 @@
 
 #include "BlockClass.h"
 
-class Else: public BlockClass{
+class Else : public BlockClass {
 
 public:
-    Else();
+    Else(Block* block_);
     ~Else();
-    virtual int WalkTree();
+    virtual int walkTree();
 
 };
 

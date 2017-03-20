@@ -4,11 +4,12 @@
 #include <string>
 
 #include "AstNode.h"
+#include "expression/Expression.h"
 
 class VariableDefinition : public AstNode
 {
 public:
-    VariableDefinition(std::string name, Expression* rexpression);
+    VariableDefinition(std::string name_, Expression* rexpression_);
     virtual ~VariableDefinition();
 
     virtual int walkTree();

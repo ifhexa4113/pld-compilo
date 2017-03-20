@@ -1,8 +1,8 @@
 #include "UnaryBinaryOperationOnExpression.h"
 
-UnaryBinaryOperationOnExpression::UnaryBinaryOperationOnExpression(UnaryBinaryOperator op, Expression* expression) :
-    UnaryBinaryOperator(op),
-    this->expression(expression)
+UnaryBinaryOperationOnExpression::UnaryBinaryOperationOnExpression(UnaryBinaryOperator op_, Expression* expression_) :
+    UnaryBinaryOperation(op_),
+    expression(expression_)
 {
 
 }

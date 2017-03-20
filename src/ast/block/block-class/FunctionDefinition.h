@@ -8,7 +8,7 @@
 class FunctionDefinition : public BlockClass
 {
 public:
-    FunctionDefinition(std::string name);
+    FunctionDefinition(Block* block_, std::string name_);
 
     virtual int walkTree();
 

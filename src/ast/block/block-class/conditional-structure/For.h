@@ -3,18 +3,19 @@
 #define FOR_H
 
 #include "ConditionalStructure.h"
+#include "../../../expression/Expression.h"
 
 class For: public ConditionalStructure{
 
 public:
-    For();
+    For(Block* block_, Expression* condition_, Expression* initialization_, Expression* increment_);
     ~For();
 
-    virtual int WalkTree();
+    virtual int walkTree();
 
 protected:
-    Expression initialization;
-    Expression increment;
+    Expression* initialization;
+    Expression* increment;
 };
 
 #endif //FOR_H

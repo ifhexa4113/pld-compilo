@@ -1,15 +1,21 @@
 
 #include "For.h"
 
-For::For()
+For::For(Block* block_, Expression* condition_, Expression* initialization_, Expression* increment_) :
+        ConditionalStructure(block_, condition_),
+        initialization(initialization_),
+        increment(increment_)
 {
-#ifdef DEBUG
-        id = AstNode.IdMax++;
-        std::cout << "Creating For node, id: " << id << std::endl;
-#endif
+
 }
 
 For::~For()
 {
+        delete initialization;
+        delete increment;
+}
 
+int For::walkTree()
+{
+        
 }

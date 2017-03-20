@@ -1,15 +1,17 @@
-
 #include "If.h"
 
-If::If()
+If::If(Block* block_, Expression* condition_) :
+        ConditionalStructure(block_, condition_)
 {
-#ifdef DEBUG
-        id = AstNode.IdMax++;
-        std::cout << "Creating If node, id: " << id << std::endl;
-#endif
+
 }
 
 If::~If()
+{
+
+}
+
+int If::walkTree()
 {
 
 }

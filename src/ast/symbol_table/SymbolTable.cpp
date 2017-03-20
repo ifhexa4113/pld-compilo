@@ -7,11 +7,11 @@ SymbolTable::SymbolTable()
 
 SymbolTable::~SymbolTable()
 {
-    for(auto key : table)
-        delete table[key];
+    for(auto& pair : table)
+        delete pair.second;
 }
 
-Symbole* SymbolTable::get(std::string name)
+Symbol* SymbolTable::get(std::string name)
 {
     return table[name];
 }

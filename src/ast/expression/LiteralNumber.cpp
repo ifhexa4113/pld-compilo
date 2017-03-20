@@ -1,8 +1,8 @@
 #include "LiteralNumber.h"
 
-LiteralNumber::LiteralNumber(int64_t value) :
+LiteralNumber::LiteralNumber(int64_t value_) :
     Expression(),
-    this->value(value)
+    value(value_)
 {
 
 }

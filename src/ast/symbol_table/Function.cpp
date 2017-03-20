@@ -1,6 +1,6 @@
 #include "Function.h"
 
-Function::Function(Type type) : type(type)
+Function::Function(Type type) : returnType(type)
 {
 
 }
@@ -12,7 +12,7 @@ Function::~Function()
 
 Type Function::getType()
 {
-    return type;
+    return returnType;
 }
 
 int Function::getNbArgs()
