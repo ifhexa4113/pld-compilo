@@ -171,10 +171,10 @@ makedir:
 	$(MAKEDIR)
 
 libs:
-	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) DEBUG=$(DEBUG) $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
+	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 
 libs-tests:
-	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) DEBUG=$(DEBUG) tests $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
+	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) tests $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 
 #Regles de nettoyage
 clean:
