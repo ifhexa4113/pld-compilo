@@ -4,12 +4,13 @@
 #include <vector>
 
 #include "AstNode.h"
+#include "expression/Expression.h"
 
 class ArrayListDefinition : public AstNode
 {
 public:
     ArrayListDefinition(std::vector<Expression*> list);
-    ~ArrayList();
+    ~ArrayListDefinition();
 
     virtual int walkTree();
 

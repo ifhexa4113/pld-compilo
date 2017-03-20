@@ -6,7 +6,7 @@ Variable::Variable(std::string name) :
 
 }
 
-int Variable::walTree()
+int Variable::walkTree()
 {
 
 }

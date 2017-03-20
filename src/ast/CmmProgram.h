@@ -4,12 +4,13 @@
 #include <vector>
 
 #include "AstNode.h"
+#include "block/FunctionDefinition.h"
 
 class CmmProgram : public AstNode {
 
 public:
     CmmProgram();
-    ~CmmProgramm();
+    ~CmmProgram();
 
     virtual int walkTree();
     void addFunction(FunctionDefinition* function);

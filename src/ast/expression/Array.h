@@ -7,7 +7,9 @@ class Array : public LValue
 {
 public:
     Array(std::string name, Expression* index)
-    ~Array();
+    virtual ~Array();
+
+    virtual int walkTree();
 
 protected:
     Expression* index;

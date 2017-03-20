@@ -7,7 +7,7 @@ LValue::LValue(std::string name) :
 
 }
 
-int LValue::walTree()
+int LValue::walkTree()
 {
 
 }
