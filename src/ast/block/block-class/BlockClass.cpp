@@ -1,9 +1,14 @@
-//
-// Created by Ruben on 27/02/2017.
-//
+#include "BlockClass.h"
 
-#include "AstNode.h"
+BlockClass::BlockClass()
+{
+#ifdef DEBUG
+        id = AstNode.IdMax++;
+        std::cout << "Creating BlockClass node, id: " << id << std::endl;
+#endif
+}
 
-void addChild(AstNode child){
-        this.childrens.add(child);
-};
+BlockClass::~BlockClass()
+{
+        delete block;
+}

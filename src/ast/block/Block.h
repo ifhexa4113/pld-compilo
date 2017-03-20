@@ -9,12 +9,12 @@ class Block: public AstNode{
 public:
     Block();
     ~Block();
-    virtual void WalkTree();
+    virtual int WalkTree();
     void addChild();
 
 protected:
     SymbolTable symbolTable;
-    std::vector<AstNode> childrens;
+    std::vector<AstNode*> childrens;
 };
 
 #endif //BLOCK_H

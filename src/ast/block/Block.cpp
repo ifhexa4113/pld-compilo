@@ -1,9 +1,20 @@
-//
-// Created by Ruben on 27/02/2017.
-//
+#include "Block.h"
 
-#include "AstNode.h"
+Block::Block()
+{
+#ifdef DEBUG
+    id = AstNode.IdMax++;
+        std::cout << "Creating Block node, id: " << id << std::endl;
+#endif
+}
 
-void addChild(AstNode child){
-        this.childrens.add(child);
+Block::~Block()
+{
+    delete symbolTable;
+    for(auto child : childrens)
+        delete child;
+}
+
+void Block::addChild(AstNode* child){
+        this.childrens.push_back(child);
 };

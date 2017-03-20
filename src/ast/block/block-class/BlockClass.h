@@ -1,21 +1,19 @@
 
-#ifndef BLOCK_H
-#define BLOCK_H
+#ifndef BLOCKCLASS_H
+#define BLOCKCLASS_H
 
 #include "AstNode.h"
 
 class BlockClass: public AstNode{
 
 public:
-    Block();
-    ~Block();
+    BlockClass();
+    ~BlockClass();
 
-    virtual void WalkTree();
-    void addChild();
+    virtual int WalkTree();
 
 protected:
-    SymbolTable symbolTable;
-    std::vector<AstNode> childrens;
+    Block* block;
 };
 
-#endif //BLOCK_H
+#endif //BLOCKCLASS_H
