@@ -178,7 +178,7 @@ libs-tests:
 
 #Regles de nettoyage
 clean:
-	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) clean $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
+	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) clean $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 	$(DEL) $(DELOPT) *.$(OFILE)
 	$(DEL) $(DELOPT) *.$(EXEFILE)
 
