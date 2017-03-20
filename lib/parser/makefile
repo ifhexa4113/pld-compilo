@@ -88,7 +88,6 @@ ifeq ($(OS),$(OSWIN))
 	DELDIR += rd
 	DELOPT += /s
 	DELDIROPT += /s /q
-	MAKEDIR += if not exist $(OUTDIR_ROOT) mkdir
 	WORKINGDIR = $(shell echo %cd%)
 	CP += copy
 	CPOPT +=
@@ -96,6 +95,7 @@ ifeq ($(OS),$(OSWIN))
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(HEADPATH),$(ALLDIR))
+    MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
     HEAD := $(subst /,\, $(HEAD))
     TEMPHEAD := $(subst /,\, $(TEMPHEAD))
     SUBSEPARATOR = "\"
@@ -106,12 +106,12 @@ else ifeq ($(OS),$(OSUNIX))
 	DELDIR += rm
 	DELOPT += -rf
 	DELDIROPT += -rf
-	MAKEDIR += mkdir -p
 	CP += cp
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find ./$(SRCPATH) -type d
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst ./$(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
+    MAKEDIR := mkdir -p $(OUTDIR)
     SUBSEPARATOR = /
     SEVERAL_CMD = ;
 else
@@ -172,7 +172,7 @@ $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(H
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 makedir:
-	$(MAKEDIR) $(OUTDIR)
+	$(MAKEDIR)
 
 flex:
 	cd $(SRCPATH) && make -f flex.makefile
