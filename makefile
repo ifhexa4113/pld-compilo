@@ -126,7 +126,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir libs test
+.PHONY: clean mrproper print-% makedir test libs libs-tests
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
@@ -143,7 +143,10 @@ endif
 
 build: $(EXE1)
 
-tests: makedir libs $(EXE2)
+build-test: $(EXE2)
+
+tests: makedir libs libs-tests
+	make OS=$(OS) DEBUG=$(DEBUG) build-test
 	$(EXE2)
 
 $(EXE1): $(OBJ) $(LIBOBJ)
@@ -170,6 +173,9 @@ makedir:
 libs:
 	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) DEBUG=$(DEBUG) $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
 
+libs-tests:
+	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) DEBUG=$(DEBUG) tests $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
+
 #Regles de nettoyage
 clean:
 	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) clean $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
@@ -182,5 +188,7 @@ mrproper:
 	$(DELDIR) $(DELDIROPT) $(EXEPATH)
 
 #Regles de debuggage
-print-% :
+print-%:
 	@echo $* = $($*)
+
+test:
