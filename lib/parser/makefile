@@ -51,7 +51,7 @@ OBJPATH = build
 LIBPATH = ..
 HEADPATH = include
 INCLUDEFOLDER = include
-SRC = SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
+SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
 SRCTEST = $(call rwildcard,$(SRCPATH)/,*.$(SRCTESTFILE))
 TEMPSRC = $(call rwildcard,$(TEMPPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
