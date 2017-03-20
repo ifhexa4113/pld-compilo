@@ -1,12 +1,14 @@
+#ifdef DEBUG
+    #include <iostream>
+#endif
+
 #include "VariableDefinition.h"
 
 VariableDefinition::VariableDefinition(Expression* expression) : 
+    AstNode(),
     this->expression(expression)
 {
-    #ifdef DEBUG
-        id = AstNode.IdMax++;
-        std::cout << "Creating VariableDefinition node, id: " << id << std::endl;
-    #endif
+    
 }
 
 VariableDefinition::~VariableDefinition()
@@ -16,5 +18,5 @@ VariableDefinition::~VariableDefinition()
 
 int VariableDefinition::walkTree()
 {
-    
+
 }

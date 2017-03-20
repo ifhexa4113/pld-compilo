@@ -1,18 +1,12 @@
-#include <iostream>
-
 #include "CmmProgram.h"
 
-CmmProgram::CmmProgram()
+CmmProgram::CmmProgram() : AstNode()
 {
-    #ifdef DEBUG
-        id = AstNode.IdMax++;
-        std::cout << "Creating CmmProgram node, id: " << id << std::endl;
-    #endif
+
 }
 
 CmmProgram::~CmmProgram()
 {
-    delete symbolTable;
     for(auto function : functions)
         delete function;
 }

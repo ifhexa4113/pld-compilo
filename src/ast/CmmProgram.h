@@ -15,7 +15,7 @@ public:
     void addFunction(FunctionDefinition* function);
 
 protected:
-    SymbolTable* symbolTable;
+    SymbolTable symbolTable;
     std::vector<FunctionDefinition*> functions;
 };
 
