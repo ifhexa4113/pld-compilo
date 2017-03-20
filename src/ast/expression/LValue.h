@@ -9,7 +9,7 @@ class LValue : public Expression
 {
 public:
     Expression(std::string name);
-    ~Expression(){};
+    virtual ~Expression(){};
 
     virtual int walTree();
     std::string getName() { return name; };

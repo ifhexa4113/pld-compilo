@@ -9,7 +9,7 @@ class Variable : public LValue
 {
 public:
     Variable(std::string name);
-    ~Variable(){};
+    virtual ~Variable(){};
 
     virtual int walTree();
 

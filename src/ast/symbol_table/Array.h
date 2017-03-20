@@ -6,11 +6,8 @@
 class Array : public LValue
 {
 public:
-    Array(std::string name, Expression* index)
+    Array(Type type) : LValue(type){};
     virtual ~Array();
-
-protected:
-    Expression* index;
 };
 
 #endif

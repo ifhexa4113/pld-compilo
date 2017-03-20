@@ -6,6 +6,9 @@
 class Expression : public AstNode
 {
 public:
+    Expression() {};
+    virtual ~Expression() {};
+
     virtual int walkTree() = 0;
 };
 

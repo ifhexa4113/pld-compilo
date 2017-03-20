@@ -9,7 +9,7 @@ class ArrayListDefinition : public AstNode
 {
 public:
     ArrayListDefinition(std::vector<Expression*> list);
-    ~ArrayList();
+    virtual ~ArrayList();
 
     virtual int walkTree();
 

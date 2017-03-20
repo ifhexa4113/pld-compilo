@@ -10,7 +10,7 @@ class SymbolTable
 {
 public:
     SymbolTable();
-    ~SymbolTable();
+    virtual ~SymbolTable();
 
     Symbol* get(std::string name);
     void put(std::string name,Symbol* symbol);
