@@ -61,13 +61,14 @@ make OS=unix
 ```
 
 ### Make rules
-* **all** (default): build the whole project.
+* **all** (default): build the whole project, but not the tests.
 * **makedir**: create build and bin folders and subfolders.
 * **libs**: build the needed libs, and in particular the parser with bison and flex.
 * **build**: build the project assuming the parser has already been built.
-* **run**: Build and run the project.
+* **run**: build and run the project.
+* **tests**: build and run the tests.
 * **clean**: remove all .o files.
-* **mrproper**: remove whole build folder.
+* **mrproper**: remove whole build and bin folders.
 * **print-%**: show a makefile variable. Example: `make print-DEBUG` -> `yes`
 
 Notes:
