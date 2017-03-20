@@ -144,7 +144,7 @@ endif
 
 build: $(EXE1)
 
-tests: libs $(EXE2)
+tests: makedir libs $(EXE2)
 	$(EXE2)
 
 $(EXE1): $(OBJ) $(LIBOBJ)
