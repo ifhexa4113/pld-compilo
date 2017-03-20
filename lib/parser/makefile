@@ -32,6 +32,7 @@ MAKEDIR =
 CP =
 CPOPT =
 SUBSEPARATOR =
+SEVERAL_CMD =
 
 MAINFILE = main
 OFILE = o
@@ -87,10 +88,12 @@ ifeq ($(OS),$(OSWIN))
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
+    OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(HEADPATH),$(ALLDIR))
     HEAD := $(subst /,\, $(HEAD))
     TEMPHEAD := $(subst /,\, $(TEMPHEAD))
     SUBSEPARATOR = "\"
     SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
+    SEVERAL_CMD = &
 else ifeq ($(OS),$(OSUNIX))
 	DEL += rm
 	DELDIR += rm
@@ -103,6 +106,7 @@ else ifeq ($(OS),$(OSUNIX))
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst ./$(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
     SUBSEPARATOR = /
+    SEVERAL_CMD = ;
 else
 	echo Unknown OS
 	exit 1
@@ -167,7 +171,7 @@ bison:
 	cd $(SRCPATH) && make -f bison.makefile
 
 deploy:
-	$(CP) $(CPOPT) $(SRCPATH)$(SUBSEPARATOR)*.$(HEADFILE) $(HEADPATH)
+	$(foreach head,$(HEAD),$(CP) $(CPOPT) $(head) $(subst $(SRCPATH),$(HEADPATH),$(head)) $(SEVERAL_CMD))
 	$(CP) $(CPOPT) $(TEMPPATH)$(SUBSEPARATOR)*.$(HEADFILE) $(HEADPATH)
 
 #Regles de nettoyage
