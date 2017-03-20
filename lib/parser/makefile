@@ -39,6 +39,8 @@ OFILE = o
 SRCFILE = cpp
 HEADFILE = h
 EXEFILE = exe
+TESTFILE = spec
+SRCTESTFILE = $(TESTFILE).$(SRCFILE)
 
 CC = g++
 DEBUG = yes
@@ -46,13 +48,17 @@ DEBUG = yes
 SRCPATH = src
 TEMPPATH = temp
 OBJPATH = build
+LIBPATH = ..
 HEADPATH = include
-SRC = $(call rwildcard,$(SRCPATH)/,*.$(SRCFILE))
+INCLUDEFOLDER = include
+SRC = SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
+SRCTEST = $(call rwildcard,$(SRCPATH)/,*.$(SRCTESTFILE))
 TEMPSRC = $(call rwildcard,$(TEMPPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 TEMPHEAD = $(call rwildcard,$(TEMPPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 TEMPOBJ = $(TEMPSRC:$(TEMPPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
 ALLDIRCMD =
 
@@ -73,6 +79,7 @@ WA = -Wall
 STDLIB = -std=gnu++11
 
 CFLAGS =
+CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
@@ -148,9 +155,9 @@ endif
 
 build: $(EXECS)
 
-$(EXE1): $(OBJ) $(TEMPOBJ)
+tests: $(TESTOBJ)
 
-$(EXE2):
+$(EXE1): $(OBJ) $(TEMPOBJ)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CFLAGS)
@@ -160,6 +167,9 @@ $(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE) $(TEMPPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 $(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
+
+$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
+	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 makedir:
 	$(MAKEDIR) $(OUTDIR)
