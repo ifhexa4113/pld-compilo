@@ -77,6 +77,7 @@ STDLIB = -std=gnu++11
 INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib))
 
 CFLAGS = $(INCLUDES)
+CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
@@ -157,9 +158,9 @@ $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 $(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(SRCPATH)/$(MAINSRCTESTFILE).$(SRCTESTFILE) $(HEAD)
-	$(CC) -o $@ -c $< $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
+	$(CC) -o $@ -c $< $(CTESTFLAGS)
 $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
-	$(CC) -o $@ -c $< $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
+	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 run: $(EXE1)
 	$(EXE1)
