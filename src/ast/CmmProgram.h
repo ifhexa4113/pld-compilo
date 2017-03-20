@@ -10,7 +10,7 @@ class CmmProgram : public AstNode {
 
 public:
     CmmProgram();
-    ~CmmProgram();
+    virtual ~CmmProgramm();
 
     virtual int walkTree();
     void addFunction(FunctionDefinition* function);

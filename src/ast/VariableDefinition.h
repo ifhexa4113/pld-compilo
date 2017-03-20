@@ -7,7 +7,7 @@ class VariableDefinition : public AstNode
 {
 public:
     VariableDefinition(Expression* expression);
-    ~VariableDefinition();
+    virtual ~VariableDefinition();
 
     virtual int walkTree();
 
