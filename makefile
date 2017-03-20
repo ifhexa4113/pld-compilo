@@ -34,10 +34,13 @@ SEVERAL_CMD =
 
 CC = g++
 MAINFILE = main
+MAINSRCTESTFILE = main
 OFILE = o
 SRCFILE = cpp
 HEADFILE = h
 EXEFILE = exe
+TESTFILE = spec
+SRCTESTFILE = $(TESTFILE).$(SRCFILE)
 
 DEBUG = yes
 
@@ -45,21 +48,26 @@ SRCPATH = src
 OBJPATH = build
 LIBPATH = lib
 EXEPATH = bin
-INCLUDEPATH = $(wildcard $(LIBPATH)/*/include)
-SRC = $(call rwildcard,$(SRCPATH)/,*.$(SRCFILE))
+INCLUDEFOLDER = include
+INCLUDEPATH = $(wildcard $(LIBPATH)/*/$(INCLUDEFOLDER))
+INCLUDEPATH := $(subst $(LIBPATH)/catch/$(INCLUDEFOLDER),,$(INCLUDEPATH))
+SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
+SRCTEST = $(call rwildcard,$(SRCPATH)/,*.$(SRCTESTFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
+HEADTEST = $(filter-out %$(MAINSRCTESTFILE).$(HEADFILE),$(SRCTEST:%.$(SRCTESTFILE)=%.$(HEADFILE)))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 LIBOBJ = $(call rwildcard,$(LIBPATH)/,*.$(OFILE))
+TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
 ALLDIRCMD =
 LIBS = $(wildcard $(LIBPATH)/*)
 
 EXE1 = $(EXEPATH)/pld-compilo.$(EXEFILE)
-EXE2 =
+EXE2 = $(EXEPATH)/tests.$(EXEFILE)
 EXECS = $(EXE1) $(EXE2)
 
 OUTDIR_ROOT = build
-OUTDIR = $(OUTDIR_ROOT) bin
+OUTDIR = $(OUTDIR_ROOT) $(EXEPATH)
 #---------------------------------------------------------------
 
 #Variables pour les options de compilation----------------------
@@ -135,19 +143,22 @@ endif
 
 build: $(EXECS)
 
+tests: libs $(EXE2)
+
 $(EXE1): $(OBJ) $(LIBOBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
-$(EXE2):
+$(EXE2): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(TESTOBJ) $(LIBOBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CFLAGS)
 $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
-$(OBJPATH)/parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE) $(PARSERPATH)/%.$(HEADFILE)
-	$(CC) -o $@ -c $< $(CFLAGS)
-$(OBJPATH)/parser/%.$(OFILE) : $(PARSERPATH)/%.$(SRCFILE)
-	$(CC) -o $@ -c $< $(CFLAGS)
+
+$(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(SRCPATH)/$(MAINSRCTESTFILE).$(SRCTESTFILE) $(HEAD)
+	$(CC) -o $@ -c $< $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
+$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
+	$(CC) -o $@ -c $< $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
 
 run: all
 	$(EXE1)
