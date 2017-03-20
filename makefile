@@ -99,8 +99,8 @@ else ifeq ($(OS),$(OSUNIX))
 	DELOPT = -rf
 	DELDIROPT = -rf
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
-	ALLDIRCMD = find ./$(SRCPATH) -type d
-	ALLDIR=$(shell $(ALLDIRCMD))
+	ALLDIRCMD = find $(SRCPATH) -type d
+	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
     OUTDIR := $(OUTDIR) $(subst ./$(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
     MAKEDIR := mkdir -p $(OUTDIR)
     SEVERAL_CMD = ;
