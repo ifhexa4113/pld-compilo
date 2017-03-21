@@ -16,9 +16,9 @@ class BinaryBinaryOperation : public Expression
 {
 public:
     BinaryBinaryOperation(BinaryBinaryOperator op_, Expression* lexpression_, Expression* rexpression_);
-    ~BinaryBinaryOperation();
+    virtual ~BinaryBinaryOperation();
 
-    int walkTree();
+    virtual int walkTree();
 
 protected:
     BinaryBinaryOperator op;

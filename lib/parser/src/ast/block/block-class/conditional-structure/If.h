@@ -9,7 +9,7 @@ class If: public ConditionalStructure {
 
 public:
     If(Block* block_, Expression* condition_);
-    ~If();
+    virtual ~If();
 
     virtual int walkTree();
 

@@ -16,9 +16,9 @@ class BinaryArithmetic : public Expression
 {
 public:
     BinaryArithmetic(ArithmeticOperator op_, Expression* lexpression_, Expression* rexpression_);
-    ~BinaryArithmetic();
+    virtual ~BinaryArithmetic();
 
-    int walkTree();
+    virtual int walkTree();
 
 protected:
     ArithmeticOperator op;

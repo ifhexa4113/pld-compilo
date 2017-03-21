@@ -8,7 +8,7 @@ class UnaryBinaryOperationOnExpression : public UnaryBinaryOperation
 {
 public:
     UnaryBinaryOperationOnExpression(UnaryBinaryOperator op_, Expression* expression_);
-    ~UnaryBinaryOperationOnExpression();
+    virtual ~UnaryBinaryOperationOnExpression();
 
     virtual int walkTree();
 
