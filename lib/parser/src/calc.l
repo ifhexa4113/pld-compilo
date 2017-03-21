@@ -45,7 +45,6 @@ id_name     [A-z_][A-z_0-9]*
 "'\\a'"       { yylval.ival = '\a'; return V_CHAR; }
 "'\\b'"       { yylval.ival = '\b'; return V_CHAR; }
 "'\\t'"       { yylval.ival = '\t'; return V_CHAR; }
-"'\\n'"       { yylval.ival = '\n'; return V_CHAR; }
 "'\\v'"       { yylval.ival = '\v'; return V_CHAR; }
 "'\\f'"       { yylval.ival = '\f'; return V_CHAR; }
 "'\\r'"       { yylval.ival = '\r'; return V_CHAR; }
