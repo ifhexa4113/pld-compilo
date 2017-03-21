@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ifhexa4113/pld-compilo.svg?branch=master)](https://travis-ci.org/ifhexa4113/pld-compilo)
+
 # PLD Compilo
 Compiler for a C subset - School project
 
@@ -49,7 +51,7 @@ Be sure that everything will work with it.
 git clone https://github.com/ifhexa4113/pld-compilo.git
 cd pld-compilo
 make
-bin\pld-compilo.exe
+make run
 ```
 
 ### *nix
@@ -57,7 +59,7 @@ bin\pld-compilo.exe
 git clone https://github.com/ifhexa4113/pld-compilo.git
 cd pld-compilo
 make OS=unix
-./bin/pld-compilo.exe
+make OS=unix run
 ```
 
 ### Make rules
@@ -67,6 +69,7 @@ make OS=unix
 * **build**: build the project assuming the parser has already been built.
 * **run**: build and run the project.
 * **tests**: build and run the tests.
+* **test-tree**: copy the folders' tree in `src` under `test`. Same for libs.
 * **clean**: remove all .o files.
 * **mrproper**: remove whole build and bin folders.
 * **print-%**: show a makefile variable. Example: `make print-DEBUG` -> `yes`

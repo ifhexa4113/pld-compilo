@@ -28,7 +28,9 @@ DEL =
 DELDIR =
 DELOPT =
 DELDIROPT =
+MKDIR =
 MAKEDIR =
+MAKETESTDIR =
 CP =
 CPOPT =
 SUBSEPARATOR =
@@ -50,16 +52,19 @@ TEMPPATH = temp
 OBJPATH = build
 LIBPATH = ..
 HEADPATH = include
+TESTPATH = test
 INCLUDEFOLDER = include
 SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
-SRCTEST = $(call rwildcard,$(SRCPATH)/,*.$(SRCTESTFILE))
-TEMPSRC = $(call rwildcard,$(TEMPPATH)/,*.$(SRCFILE))
+SRCTEST = $(call rwildcard,$(TESTPATH)/,*.$(SRCTESTFILE))
+SRCTEMP = $(call rwildcard,$(TEMPPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
-TEMPHEAD = $(call rwildcard,$(TEMPPATH)/,*.$(HEADFILE))
+HEADTEMP = $(call rwildcard,$(TEMPPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-TEMPOBJ = $(TEMPSRC:$(TEMPPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+OBJTEMP = $(SRCTEMP:$(TEMPPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+OBJTEST = $(SRCTEST:$(TESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
+ALLDIR =
+TESTDIR =
 ALLDIRCMD =
 
 HEADREGEX =
@@ -80,7 +85,7 @@ STDLIB = -std=gnu++11
 
 CFLAGS =
 CFLEXBISONFLAGS = $(CFLAGS) -I $(SRCPATH)
-CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
+CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
@@ -89,17 +94,19 @@ ifeq ($(OS),$(OSWIN))
 	DELDIR += rd
 	DELOPT += /s
 	DELDIROPT += /s /q
-	WORKINGDIR = $(shell echo %cd%)
 	CP += copy
 	CPOPT +=
-	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
+	WORKINGDIR = $(shell echo %cd%)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(HEADPATH),$(ALLDIR))
+    TESTDIR = $(TESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(TESTPATH),$(ALLDIR))
+    ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
     SEVERAL_CMD = &
     MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
+    MAKETESTDIR := $(foreach dir,$(TESTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
     HEAD := $(subst /,\, $(HEAD))
-    TEMPHEAD := $(subst /,\, $(TEMPHEAD))
+    HEADTEMP := $(subst /,\, $(HEADTEMP))
     SUBSEPARATOR = "\"
     SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
 else ifeq ($(OS),$(OSUNIX))
@@ -109,13 +116,15 @@ else ifeq ($(OS),$(OSUNIX))
 	DELDIROPT += -rf
 	CP += cp
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
-	ALLDIRCMD = find $(SRCPATH) -type d
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
-    OUTDIR += $(subst $(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
+    OUTDIR += $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     OUTDIR += $(subst $(SRCPATH),$(HEADPATH),$(ALLDIR))
+    TESTDIR = $(TESTPATH) $(subst $(SRCPATH),$(TESTPATH),$(ALLDIR))
     MAKEDIR := mkdir -p $(OUTDIR)
+    MAKETESTDIR = mkdir -p $(TESTDIR)
+    ALLDIRCMD = find $(SRCPATH) -type d
+	SEVERAL_CMD = ;
     SUBSEPARATOR = /
-    SEVERAL_CMD = ;
 else
 	echo Unknown OS
 	exit 1
@@ -138,7 +147,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir flex bison deploy
+.PHONY: clean mrproper print-% test makedir flex bison deploy test-tree
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
@@ -157,9 +166,9 @@ endif
 
 build: $(EXECS)
 
-tests: $(TESTOBJ)
+tests: $(OBJTEST)
 
-$(EXE1): $(OBJ) $(TEMPOBJ)
+$(EXE1): $(OBJ) $(OBJTEMP)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CFLAGS)
@@ -170,11 +179,14 @@ $(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE) $(TEMPPATH)/%.$(HEADFILE)
 $(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE)
 	$(CC) -o $@ -c $< $(CFLEXBISONFLAGS)
 
-$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
+$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(TESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 makedir:
 	$(MAKEDIR)
+
+test-tree:
+	$(MAKETESTDIR)
 
 flex:
 	cd $(SRCPATH) && make -f flex.makefile
@@ -198,3 +210,5 @@ mrproper: clean
 #Regles de debuggage
 print-% :
 	@echo $* = $($*)
+
+test:
