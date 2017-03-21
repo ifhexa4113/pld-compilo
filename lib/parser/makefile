@@ -54,13 +54,13 @@ HEADPATH = include
 TESTPATH = test
 INCLUDEFOLDER = include
 SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
-SRCTEST = $(call rwildcard,$(SRCPATH)/,*.$(SRCTESTFILE))
+SRCTEST = $(call rwildcard,$(TESTPATH)/,*.$(SRCTESTFILE))
 TEMPSRC = $(call rwildcard,$(TEMPPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 TEMPHEAD = $(call rwildcard,$(TEMPPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 TEMPOBJ = $(TEMPSRC:$(TEMPPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+TESTOBJ = $(SRCTEST:$(TESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
 ALLDIR =
 TESTDIR =
@@ -83,7 +83,7 @@ WA = -Wall
 STDLIB = -std=gnu++11
 
 CFLAGS =
-CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
+CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
@@ -177,7 +177,7 @@ $(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE) $(TEMPPATH)/%.$(HEADFILE)
 $(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
+$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(TESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 makedir:

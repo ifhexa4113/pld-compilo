@@ -58,7 +58,7 @@ SRCTEST = $(call rwildcard,$(TESTPATH)/,*.$(SRCTESTFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 LIBOBJ = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
-TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+TESTOBJ = $(SRCTEST:$(TESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 LIBTESTOBJ = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
 WORKINGDIR =
 ALLDIR =
@@ -81,7 +81,7 @@ STDLIB = -std=gnu++11
 INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib))
 
 CFLAGS = $(INCLUDES)
-CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
+CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
@@ -168,9 +168,9 @@ $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-$(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(SRCPATH)/$(MAINSRCTESTFILE).$(SRCTESTFILE) $(HEAD)
+$(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(TESTPATH)/$(MAINSRCTESTFILE).$(SRCTESTFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
-$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
+$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(TESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 run: $(EXE1)
