@@ -57,6 +57,7 @@ HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 LIBOBJ = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
 TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+LIBTESTOBJ = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
 WORKINGDIR =
 ALLDIRCMD =
 LIBS = $(wildcard $(LIBPATH)/*)
@@ -151,7 +152,7 @@ tests: makedir libs libs-tests
 
 $(EXE1): $(OBJ) $(LIBOBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
-$(EXE2): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(TESTOBJ) $(LIBOBJ)
+$(EXE2): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(TESTOBJ) $(LIBOBJ) $(LIBTESTOBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
