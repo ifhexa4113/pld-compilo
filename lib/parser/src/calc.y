@@ -12,13 +12,16 @@
 #include <cstdio>
 #include <deque>
 #include <string>
+#include <iostring>
 
 #include "ast/AstNode.h"
 #include "ast/CmmProgram.h"
 #include "ast/block/block-class/FunctionDefinition.h"
 #include "ast/Return.h"
 
-void yyerror(CmmProgram&, char const*);
+void yyerror(CmmProgram& cmmp, char const* s) {
+    std::cout << "Error with " << s << std::endl;
+}
 int yylex(void);
 %}
 
