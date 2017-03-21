@@ -54,7 +54,7 @@ INCLUDEFOLDER = include
 INCLUDEPATH = $(wildcard $(LIBPATH)/*/$(INCLUDEFOLDER))
 INCLUDEPATH := $(subst $(LIBPATH)/catch/$(INCLUDEFOLDER),,$(INCLUDEPATH))
 SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
-SRCTEST = $(call rwildcard,$(SRCPATH)/,*.$(SRCTESTFILE))
+SRCTEST = $(call rwildcard,$(TESTPATH)/,*.$(SRCTESTFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 LIBOBJ = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
