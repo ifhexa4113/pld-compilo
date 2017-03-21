@@ -29,6 +29,7 @@ DELDIR =
 DELOPT =
 DELDIROPT =
 MAKEDIR =
+MAKETESTDIR =
 CP =
 CPOPT =
 SUBSEPARATOR =
@@ -50,6 +51,7 @@ TEMPPATH = temp
 OBJPATH = build
 LIBPATH = ..
 HEADPATH = include
+TESTPATH = test
 INCLUDEFOLDER = include
 SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
 SRCTEST = $(call rwildcard,$(SRCPATH)/,*.$(SRCTESTFILE))
@@ -60,6 +62,8 @@ OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 TEMPOBJ = $(TEMPSRC:$(TEMPPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
+ALLDIR =
+TESTDIR =
 ALLDIRCMD =
 
 HEADREGEX =
@@ -95,8 +99,10 @@ ifeq ($(OS),$(OSWIN))
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(HEADPATH),$(ALLDIR))
+    TESTDIR = $(TESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(TESTPATH),$(ALLDIR))
     SEVERAL_CMD = &
     MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
+    MAKETESTDIR := $(foreach dir,$(TESTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
     HEAD := $(subst /,\, $(HEAD))
     TEMPHEAD := $(subst /,\, $(TEMPHEAD))
     SUBSEPARATOR = "\"
@@ -110,9 +116,11 @@ else ifeq ($(OS),$(OSUNIX))
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find $(SRCPATH) -type d
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
-    OUTDIR += $(subst $(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
+    OUTDIR += $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     OUTDIR += $(subst $(SRCPATH),$(HEADPATH),$(ALLDIR))
+    TESTDIR = $(TESTPATH) $(subst $(SRCPATH),$(TESTPATH),$(ALLDIR))
     MAKEDIR := mkdir -p $(OUTDIR)
+    MAKETESTDIR = mkdir -p $(TESTDIR)
     SUBSEPARATOR = /
     SEVERAL_CMD = ;
 else
@@ -137,7 +145,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir flex bison deploy
+.PHONY: clean mrproper print-% test makedir flex bison deploy test-tree
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
@@ -175,6 +183,9 @@ $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(H
 makedir:
 	$(MAKEDIR)
 
+test-tree:
+	$(MAKETESTDIR)
+
 flex:
 	cd $(SRCPATH) && make -f flex.makefile
 
@@ -197,3 +208,5 @@ mrproper: clean
 #Regles de debuggage
 print-% :
 	@echo $* = $($*)
+
+test:

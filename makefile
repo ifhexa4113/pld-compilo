@@ -30,6 +30,7 @@ DELOPT =
 DELDIROPT =
 MKDIR =
 MAKEDIR =
+MAKETESTDIR =
 SEVERAL_CMD =
 
 CC = g++
@@ -48,6 +49,7 @@ SRCPATH = src
 OBJPATH = build
 LIBPATH = lib
 EXEPATH = bin
+TESTPATH = test
 INCLUDEFOLDER = include
 INCLUDEPATH = $(wildcard $(LIBPATH)/*/$(INCLUDEFOLDER))
 INCLUDEPATH := $(subst $(LIBPATH)/catch/$(INCLUDEFOLDER),,$(INCLUDEPATH))
@@ -59,6 +61,8 @@ LIBOBJ = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OF
 TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 LIBTESTOBJ = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
 WORKINGDIR =
+ALLDIR =
+TESTDIR =
 ALLDIRCMD =
 LIBS = $(wildcard $(LIBPATH)/*)
 
@@ -66,7 +70,7 @@ EXE1 = $(EXEPATH)/pld-compilo.$(EXEFILE)
 EXE2 = $(EXEPATH)/tests.$(EXEFILE)
 EXECS = $(EXE1) $(EXE2)
 
-OUTDIR_ROOT = build
+OUTDIR_ROOT = $(OBJPATH)
 OUTDIR = $(OUTDIR_ROOT) $(EXEPATH)
 #---------------------------------------------------------------
 
@@ -91,8 +95,10 @@ ifeq ($(OS),$(OSWIN))
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR := $(OUTDIR) $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
+    TESTDIR = $(TESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(TESTPATH),$(ALLDIR))
     SEVERAL_CMD = &
     MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
+    MAKETESTDIR := $(foreach dir,$(TESTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
 else ifeq ($(OS),$(OSUNIX))
 	DEL = rm
 	DELDIR = rm
@@ -102,8 +108,10 @@ else ifeq ($(OS),$(OSUNIX))
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find $(SRCPATH) -type d
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
-    OUTDIR := $(OUTDIR) $(subst $(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
+    OUTDIR := $(OUTDIR) $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
+    TESTDIR = $(TESTPATH) $(subst $(SRCPATH),$(TESTPATH),$(ALLDIR))
     MAKEDIR := mkdir -p $(OUTDIR)
+    MAKETESTDIR = mkdir -p $(TESTDIR)
     SEVERAL_CMD = ;
 else
 	echo Unknown OS
@@ -127,7 +135,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir test libs libs-tests
+.PHONY: clean mrproper print-% makedir test libs libs-tests test-tree libs-test-tree
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
@@ -170,6 +178,12 @@ run: $(EXE1)
 	
 makedir:
 	$(MAKEDIR)
+
+test-tree: libs-test-tree
+	$(MAKETESTDIR)
+
+libs-test-tree:
+	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) test-tree $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 
 libs:
 	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
