@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ifhexa4113/pld-compilo.svg?branch=master)](https://travis-ci.org/ifhexa4113/pld-compilo)
+
 # PLD Compilo
 Compiler for a C subset - School project
 
