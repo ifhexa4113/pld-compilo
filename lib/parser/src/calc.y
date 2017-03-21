@@ -142,7 +142,7 @@ statement : decl_def_stat SYM_SEMICOLON
           | K_CONTINUE SYM_SEMICOLON { /*$$ = new Continue();*/ }
           | K_RETURN SYM_SEMICOLON { $$ = new Return(); }
           | K_RETURN expr SYM_SEMICOLON { /*$$ = new Return($2);*/ }
-          | SYM_SEMICOLON
+          | SYM_SEMICOLON { /* ?? */ }
           ;
           
 decl_arg  : decl_arg SYM_COMMA type decl_var_arg

@@ -45,16 +45,12 @@ id_name     [A-z_][A-z_0-9]*
 "'\\a'"       { yylval.ival = '\a'; return V_CHAR; }
 "'\\b'"       { yylval.ival = '\b'; return V_CHAR; }
 "'\\t'"       { yylval.ival = '\t'; return V_CHAR; }
-"'\\n'"       { yylval.ival = '\n'; return V_CHAR; }
 "'\\v'"       { yylval.ival = '\v'; return V_CHAR; }
 "'\\f'"       { yylval.ival = '\f'; return V_CHAR; }
 "'\\r'"       { yylval.ival = '\r'; return V_CHAR; }
 "'\\e'"       { yylval.ival = '\e'; return V_CHAR; }
 "'\\''"       { yylval.ival = '\''; return V_CHAR; }
 "'\\\\'"      { yylval.ival = '\\'; return V_CHAR; }
-
-{id_error}    { yylval.ival = ERROR_UNEXPECTED_NUMBER_SUFFIX; return ERROR; }
-{id_name}     { yylval.sval = strdup(yytext); return IDENTIFIER; }
 
 {type_char}   { return T_CHAR; }
 {type_int32}  { return T_INT32; }
@@ -69,6 +65,9 @@ id_name     [A-z_][A-z_0-9]*
 {key_while}   { return K_WHILE; }
 {key_for}     { return K_FOR; }
 
+{id_error}    { yylval.ival = ERROR_UNEXPECTED_NUMBER_SUFFIX; return ERROR; }
+{id_name}     { yylval.sval = strdup(yytext); return IDENTIFIER; }
+
 "+"           { return OP_PLUS; }
 "-"           { return OP_MINUS; }
 "/"           { return OP_DIV; }
@@ -76,26 +75,18 @@ id_name     [A-z_][A-z_0-9]*
 "%"           { return OP_MOD; }
 "="           { return OP_ASSIGN; }
 "!"           { return OP_NOT; }
-"not"         { return OP_NOT; }
 ">"           { return OP_GREATER; }
 "<"           { return OP_LESSER; }
 "=="          { return OP_EQ; }
 ">="          { return OP_EQ_GREATER; }
 "<="          { return OP_EQ_LESSER; }
 "!="          { return OP_EQ_NOT; }
-"not_eq"      { return OP_EQ_NOT; }
 "&&"          { return OP_AND; }
-"and"         { return OP_AND; }
 "||"          { return OP_OR; }
-"or"          { return OP_OR; }
 "|"           { return OP_BIN_OR; }
-"bitor"       { return OP_BIN_OR; }
 "&"           { return OP_BIN_AND; }
-"bitand"      { return OP_BIN_AND; }
 "^"           { return OP_BIN_XOR; }
-"bitxor"      { return OP_BIN_XOR; }
 "~"           { return OP_BIN_NOT; }
-"compl"       { return OP_BIN_NOT; }
 ">>"          { return OP_BIN_RSHIFT; }
 "<<"          { return OP_BIN_LSHIFT; }
 "+="          { return OP_ASSIGN_ADD; }
@@ -104,11 +95,8 @@ id_name     [A-z_][A-z_0-9]*
 "*="          { return OP_ASSIGN_TIMES; }
 "%="          { return OP_ASSIGN_MOD; }
 "|="          { return OP_ASSIGN_OR; }
-"or_eq"       { return OP_ASSIGN_OR; }
 "&="          { return OP_ASSIGN_AND; }
-"and_eq"      { return OP_ASSIGN_AND; }
 "^="          { return OP_ASSIGN_XOR; }
-"xor_eq"      { return OP_ASSIGN_XOR; }
 ">>="         { return OP_ASSIGN_RSHIFT; }
 "<<="         { return OP_ASSIGN_LSHIFT; }
 "++"          { return OP_UN_INC; }
@@ -118,7 +106,7 @@ id_name     [A-z_][A-z_0-9]*
 ")"           { return SYM_CLOSE; }
 "{"           { return SYM_BLOCK_OPEN; }
 "}"           { return SYM_BLOCK_CLOSE; }
-"["           { return SYM_TAB_CLOSE; }
+"["           { return SYM_TAB_OPEN; }
 "]"           { return SYM_TAB_CLOSE; }
 ";"           { return SYM_SEMICOLON; }
 ","           { return SYM_COMMA; }
