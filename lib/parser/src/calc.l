@@ -1,4 +1,12 @@
 %{
+#include <deque>
+#include <string>
+
+#include "ast/AstNode.h"
+#include "ast/CmmProgram.h"
+#include "ast/block/block-class/FunctionDefinition.h"
+#include "ast/Return.h"
+
 #include "calc.tab.h"
 #include "../src/char_literal_parse.h"
 #include "../src/errors.h"

@@ -118,7 +118,7 @@ bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block($2); }
           | SYM_BLOCK_OPEN SYM_BLOCK_CLOSE { $$ = new Block(); }
           ;
           
-bloc_expr : bloc_expr statement { $$ = $1->push_front($2); }
+bloc_expr : bloc_expr statement { $1->push_front($2); $$ = $1; }
           | statement { $$ = new std::deque<AstNode*>(1, $1); }
           ;
 
