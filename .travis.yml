@@ -12,6 +12,7 @@ addons:
       - g++-5
 
 before_install:
+  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
   - sudo apt-get update -qq
   - sudo apt-get install bison flex
 
