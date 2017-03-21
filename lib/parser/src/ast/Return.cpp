@@ -9,7 +9,8 @@ Return::Return(Expression* value_) :
 
 Return::~Return()
 {
-    delete value;
+    if(value != nullptr)
+        delete value;
 }
 
 int Return::walkTree()

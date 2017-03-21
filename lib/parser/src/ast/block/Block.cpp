@@ -1,20 +1,19 @@
 #include "Block.h"
 
-Block::Block() : 
-    AstNode()
+Block::Block(std::deque<AstNode*>* childrens_) :
+    AstNode(),
+    childrens(childrens_)
 {
 
 }
 
 Block::~Block()
 {
-    for(auto child : childrens)
-        delete child;
+    for(auto it = childrens->begin(); it != childrens->end(); ++it)
+        delete (*it);
+    if(childrens != nullptr)
+        delete childrens;
 }
-
-void Block::addChild(AstNode* child){
-        childrens.push_back(child);
-};
 
 int Block::walkTree()
 {

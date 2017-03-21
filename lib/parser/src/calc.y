@@ -1,5 +1,11 @@
 %{
-#include<cstdio>
+#include <cstdio>
+#include <deque>
+#include <string>
+
+#include "ast/AstNode.h"
+#include "ast/CmmProgram.h"
+#include "ast/blockblock-class/FunctionDefinition.h"
 
 void yyerror(int *, const char *);
 int yylex(void);
@@ -8,7 +14,19 @@ int yylex(void);
 %union {
    int ival;
    char * sval;
+
+   std::string string;
+
+   AstNode* statement_type;
+   std::deque<AstNode*> bloc_expr_type;
+   Block* bloc_type;
+   FunctionDefinition* def_func_type;
 }
+
+%type <statement_type> statement
+%type <bloc_expr_type> bloc_expr
+%type <bloc_type> bloc
+%type <def_func_type> def_func
 
 %token OP_PLUS
 %token OP_MINUS
@@ -69,7 +87,7 @@ int yylex(void);
 %token SYM_SEMICOLON
 %token SYM_COMMA
 
-%token IDENTIFIER
+%token <string> IDENTIFIER
 %token ERROR
 
 %left OP_PLUS OP_MINUS OP_TIMES OP_DIV OP_MOD
@@ -79,11 +97,11 @@ int yylex(void);
 %left OP_ASSIGN OP_ASSIGN_ADD OP_ASSIGN_MINUS OP_ASSIGN_DIV OP_ASSIGN_TIMES OP_ASSIGN_MOD OP_ASSIGN_OR OP_ASSIGN_AND OP_ASSIGN_XOR OP_ASSIGN_RSHIFT OP_ASSIGN_LSHIFT
 %left OP_UN_INC OP_UN_DEC
 
-%parse-param { int * resultat }
+%parse-param { CmmProgram& program }
 
 %%
 
-prog_c--  : prog_c-- def_func
+prog_c--  : prog_c-- def_func  { program.addFunction($2); }
           | prog_c-- decl_func
           |
           ;
@@ -97,24 +115,24 @@ type_retour : type
             | T_VOID
             ;
 
-bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE
-          | SYM_BLOCK_OPEN SYM_BLOCK_CLOSE
+bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block($2); }
+          | SYM_BLOCK_OPEN SYM_BLOCK_CLOSE { $$ = new Block(); }
           ;
           
-bloc_expr : bloc_expr statement
-          | statement
+bloc_expr : bloc_expr statement { $$ = $1->push_front($2); }
+          | statement { $$ = new std::deque<AstNode*>(1, $1); }
           ;
 
-statement : decl_def_stat SYM_SEMICOLON
-          | if_bloc
-          | for_stat
-          | while_stat
-          | expr SYM_SEMICOLON
-          | bloc
-          | K_BREAK SYM_SEMICOLON
-          | K_CONTINUE SYM_SEMICOLON
-          | K_RETURN SYM_SEMICOLON
-          | K_RETURN expr SYM_SEMICOLON
+statement : decl_def_stat SYM_SEMICOLON // ??
+          | if_bloc { /*$$ = $1;*/ }
+          | for_stat { /*$$ = $1;*/ }
+          | while_stat { /*$$ = $1;*/ }
+          | expr SYM_SEMICOLON { /*$$ = $1;*/ }
+          | bloc { $$ = $1; }
+          | K_BREAK SYM_SEMICOLON { /*$$ = new Break();*/ }
+          | K_CONTINUE SYM_SEMICOLON { /*$$ = new Continue();*/ }
+          | K_RETURN SYM_SEMICOLON { $$ = new Return(); }
+          | K_RETURN expr SYM_SEMICOLON { /*$$ = new Return($2);*/ }
           | SYM_SEMICOLON
           ;
           
@@ -126,8 +144,9 @@ decl_arg  : decl_arg SYM_COMMA type decl_var_arg
           
 decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE
           ;
-          
-def_func  : decl_func bloc
+
+// TODO replace by def_func : decl_func bloc        
+def_func  : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE bloc  { $$ = new FunctionDefinition($6, $2); }
           ;
 
 decl_var_arg  : decl_var

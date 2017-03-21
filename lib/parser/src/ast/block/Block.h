@@ -1,22 +1,22 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <vector>
+#include <deque>
 
 #include "../AstNode.h"
 #include "../symbol_table/SymbolTable.h"
 
-class Block: public AstNode{
+class Block: public AstNode {
 
 public:
-    Block();
+    Block(std::deque<AstNode*>* childrens_ = nullptr);
     virtual ~Block();
+    
     virtual int walkTree();
-    void addChild(AstNode* child);
 
 protected:
     SymbolTable symbolTable;
-    std::vector<AstNode*> childrens;
+    std::deque<AstNode*>* childrens;
 };
 
 #endif //BLOCK_H
