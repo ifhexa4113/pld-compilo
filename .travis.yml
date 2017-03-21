@@ -5,10 +5,13 @@ notifications:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install bison flex g++-5
+  - sudo apt-get install bison flex
 
 before_script:
+  - make --version
   - g++ --version
+  - bison --version
+  - flex --version
 
 script:
   - make OS=unix tests
