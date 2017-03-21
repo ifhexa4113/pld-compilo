@@ -235,7 +235,6 @@ expr      : l_val
           | l_val OP_ASSIGN_MOD expr
           | l_val OP_ASSIGN_XOR expr
           | l_val OP_ASSIGN_OR expr
-          | l_val OP_ASSIGN_AND expr
           | expr OP_OR expr
           | expr OP_AND expr 
           | expr OP_GREATER expr
