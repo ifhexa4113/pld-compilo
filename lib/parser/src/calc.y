@@ -18,7 +18,7 @@
 #include "ast/block/block-class/FunctionDefinition.h"
 #include "ast/Return.h"
 
-void yyerror(CmmProgram&, const char *);
+void yyerror(CmmProgram&, char const*);
 int yylex(void);
 %}
 
