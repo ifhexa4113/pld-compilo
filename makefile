@@ -57,9 +57,9 @@ SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
 SRCTEST = $(call rwildcard,$(TESTPATH)/,*.$(SRCTESTFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-LIBOBJ = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
-TESTOBJ = $(SRCTEST:$(TESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-LIBTESTOBJ = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
+OBJLIB = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
+OBJTEST = $(SRCTEST:$(TESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+OBJLIBTEST = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
 WORKINGDIR =
 ALLDIR =
 TESTDIR =
@@ -158,9 +158,9 @@ tests: makedir libs libs-tests
 	make OS=$(OS) DEBUG=$(DEBUG) build-test
 	$(EXE2)
 
-$(EXE1): $(OBJ) $(LIBOBJ)
+$(EXE1): $(OBJ) $(OBJLIB)
 	$(CC) -o $@ $^ $(LDFLAGS)
-$(EXE2): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(TESTOBJ) $(LIBOBJ) $(LIBTESTOBJ)
+$(EXE2): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(OBJTEST) $(OBJLIB) $(OBJLIBTEST)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)

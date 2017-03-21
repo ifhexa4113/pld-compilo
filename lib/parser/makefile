@@ -28,6 +28,7 @@ DEL =
 DELDIR =
 DELOPT =
 DELDIROPT =
+MKDIR =
 MAKEDIR =
 MAKETESTDIR =
 CP =
@@ -55,12 +56,12 @@ TESTPATH = test
 INCLUDEFOLDER = include
 SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
 SRCTEST = $(call rwildcard,$(TESTPATH)/,*.$(SRCTESTFILE))
-TEMPSRC = $(call rwildcard,$(TEMPPATH)/,*.$(SRCFILE))
+SRCTEMP = $(call rwildcard,$(TEMPPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
-TEMPHEAD = $(call rwildcard,$(TEMPPATH)/,*.$(HEADFILE))
+HEADTEMP = $(call rwildcard,$(TEMPPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-TEMPOBJ = $(TEMPSRC:$(TEMPPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-TESTOBJ = $(SRCTEST:$(TESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+OBJTEMP = $(SRCTEMP:$(TEMPPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+OBJTEST = $(SRCTEST:$(TESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
 ALLDIR =
 TESTDIR =
@@ -92,19 +93,19 @@ ifeq ($(OS),$(OSWIN))
 	DELDIR += rd
 	DELOPT += /s
 	DELDIROPT += /s /q
-	WORKINGDIR = $(shell echo %cd%)
 	CP += copy
 	CPOPT +=
-	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
+	WORKINGDIR = $(shell echo %cd%)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(HEADPATH),$(ALLDIR))
     TESTDIR = $(TESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(TESTPATH),$(ALLDIR))
+    ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
     SEVERAL_CMD = &
     MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
     MAKETESTDIR := $(foreach dir,$(TESTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
     HEAD := $(subst /,\, $(HEAD))
-    TEMPHEAD := $(subst /,\, $(TEMPHEAD))
+    HEADTEMP := $(subst /,\, $(HEADTEMP))
     SUBSEPARATOR = "\"
     SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
 else ifeq ($(OS),$(OSUNIX))
@@ -114,15 +115,15 @@ else ifeq ($(OS),$(OSUNIX))
 	DELDIROPT += -rf
 	CP += cp
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
-	ALLDIRCMD = find $(SRCPATH) -type d
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
     OUTDIR += $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     OUTDIR += $(subst $(SRCPATH),$(HEADPATH),$(ALLDIR))
     TESTDIR = $(TESTPATH) $(subst $(SRCPATH),$(TESTPATH),$(ALLDIR))
     MAKEDIR := mkdir -p $(OUTDIR)
     MAKETESTDIR = mkdir -p $(TESTDIR)
+    ALLDIRCMD = find $(SRCPATH) -type d
+	SEVERAL_CMD = ;
     SUBSEPARATOR = /
-    SEVERAL_CMD = ;
 else
 	echo Unknown OS
 	exit 1
@@ -164,9 +165,9 @@ endif
 
 build: $(EXECS)
 
-tests: $(TESTOBJ)
+tests: $(OBJTEST)
 
-$(EXE1): $(OBJ) $(TEMPOBJ)
+$(EXE1): $(OBJ) $(OBJTEMP)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CFLAGS)
