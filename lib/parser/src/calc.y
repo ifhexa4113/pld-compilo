@@ -12,7 +12,7 @@
 #include <cstdio>
 #include <deque>
 #include <string>
-#include <iostring>
+#include <iostream>
 
 #include "ast/AstNode.h"
 #include "ast/CmmProgram.h"
