@@ -95,12 +95,12 @@ ifeq ($(OS),$(OSWIN))
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(HEADPATH),$(ALLDIR))
+    SEVERAL_CMD = &
     MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
     HEAD := $(subst /,\, $(HEAD))
     TEMPHEAD := $(subst /,\, $(TEMPHEAD))
     SUBSEPARATOR = "\"
     SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
-    SEVERAL_CMD = &
 else ifeq ($(OS),$(OSUNIX))
 	DEL += rm
 	DELDIR += rm
