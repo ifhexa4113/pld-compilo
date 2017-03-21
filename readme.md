@@ -51,7 +51,7 @@ Be sure that everything will work with it.
 git clone https://github.com/ifhexa4113/pld-compilo.git
 cd pld-compilo
 make
-bin\pld-compilo.exe
+make run
 ```
 
 ### *nix
@@ -59,7 +59,7 @@ bin\pld-compilo.exe
 git clone https://github.com/ifhexa4113/pld-compilo.git
 cd pld-compilo
 make OS=unix
-./bin/pld-compilo.exe
+make OS=unix run
 ```
 
 ### Make rules
