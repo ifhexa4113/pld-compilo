@@ -12,13 +12,16 @@
 #include <cstdio>
 #include <deque>
 #include <string>
+#include <iostring>
 
 #include "ast/AstNode.h"
 #include "ast/CmmProgram.h"
 #include "ast/block/block-class/FunctionDefinition.h"
 #include "ast/Return.h"
 
-void yyerror(CmmProgram&, char const*);
+void yyerror(CmmProgram& cmmp, char const* s) {
+    std::cout << "Error with " << s << std::endl;
+}
 int yylex(void);
 %}
 
@@ -235,7 +238,6 @@ expr      : l_val
           | l_val OP_ASSIGN_MOD expr
           | l_val OP_ASSIGN_XOR expr
           | l_val OP_ASSIGN_OR expr
-          | l_val OP_ASSIGN_AND expr
           | expr OP_OR expr
           | expr OP_AND expr 
           | expr OP_GREATER expr
