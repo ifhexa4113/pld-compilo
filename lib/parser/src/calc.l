@@ -52,9 +52,6 @@ id_name     [A-z_][A-z_0-9]*
 "'\\''"       { yylval.ival = '\''; return V_CHAR; }
 "'\\\\'"      { yylval.ival = '\\'; return V_CHAR; }
 
-{id_error}    { yylval.ival = ERROR_UNEXPECTED_NUMBER_SUFFIX; return ERROR; }
-{id_name}     { yylval.sval = strdup(yytext); return IDENTIFIER; }
-
 {type_char}   { return T_CHAR; }
 {type_int32}  { return T_INT32; }
 {type_int64}  { return T_INT64; }
@@ -67,6 +64,9 @@ id_name     [A-z_][A-z_0-9]*
 {key_else}    { return K_ELSE; }
 {key_while}   { return K_WHILE; }
 {key_for}     { return K_FOR; }
+
+{id_error}    { yylval.ival = ERROR_UNEXPECTED_NUMBER_SUFFIX; return ERROR; }
+{id_name}     { yylval.sval = strdup(yytext); return IDENTIFIER; }
 
 "+"           { return OP_PLUS; }
 "-"           { return OP_MINUS; }
