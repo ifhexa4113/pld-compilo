@@ -1,4 +1,4 @@
-#include "../../src/module1/module1.h"
+#include "module1/module1.h"
 #include "catch.h"
 
 TEST_CASE("Simple module1 test", "")
