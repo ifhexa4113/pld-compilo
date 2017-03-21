@@ -9,6 +9,7 @@ before_install:
 
 before_script:
   - make --version
+  - gcc --version
   - g++ --version
   - bison --version
   - flex --version
