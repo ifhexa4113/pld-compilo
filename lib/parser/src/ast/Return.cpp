@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Return.h"
 
 Return::Return(Expression* value_) :
@@ -15,5 +17,6 @@ Return::~Return()
 
 int Return::walkTree()
 {
-
+    std::cout << "Return node" << std::endl;
+    return 0;
 }

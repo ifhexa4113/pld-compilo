@@ -7,7 +7,7 @@
 #include "ast/CmmProgram.h"
 #include "ast/blockblock-class/FunctionDefinition.h"
 
-void yyerror(int *, const char *);
+void yyerror(CmmProgram&, const char *);
 int yylex(void);
 %}
 
