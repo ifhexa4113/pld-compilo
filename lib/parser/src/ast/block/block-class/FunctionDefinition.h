@@ -1,5 +1,5 @@
 #ifndef FUNCTION_DEFINITION_H
-#define FUCNTION_DEFINITION_H
+#define FUNCTION_DEFINITION_H
 
 #include <string>
 

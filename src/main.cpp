@@ -5,33 +5,18 @@
 #include "calc.tab.h"
 
 #include <cassert>
-#include "ast/symbol_table/SymbolTable.h"
-#include "ast/symbol_table/Symbol.h"
+
+#include "ast/Ast.h"
+#include "ast/CmmProgram.h"
 
 int main()
 {
-    SymbolTable* tab = new SymbolTable();
-    Symbol* symbol = new Symbol("test", 23);
-    tab->put("test", symbol);
+    Ast ast;
+    CmmProgram& program = ast.getProgram();
 
-    assert(tab->get("test") == symbol);
-    assert(tab->get("") == 0);
-    assert(symbol->getAddress() == 23);
-    assert(symbol->getName() == "test");
+    yyparse(program);
 
-    delete symbol;
-    delete tab;
-
-
-    std::cout << "Hello, World!" << std::endl;
-    std::cout << test() << std::endl;
-    std::cout << test2() << std::endl;
-
-    int res = 0;
-
-    yyparse(&res);
-
-    printf("Result : %d\n",res);
+    program.walkTree();
 
     return 0;
 }

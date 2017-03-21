@@ -5,7 +5,8 @@
 
 #include "ast/AstNode.h"
 #include "ast/CmmProgram.h"
-#include "ast/blockblock-class/FunctionDefinition.h"
+#include "ast/block/block-class/FunctionDefinition.h"
+#include "ast/Return.h"
 
 void yyerror(CmmProgram&, const char *);
 int yylex(void);
@@ -15,10 +16,8 @@ int yylex(void);
    int ival;
    char * sval;
 
-   std::string string;
-
    AstNode* statement_type;
-   std::deque<AstNode*> bloc_expr_type;
+   std::deque<AstNode*>* bloc_expr_type;
    Block* bloc_type;
    FunctionDefinition* def_func_type;
 }
@@ -87,7 +86,7 @@ int yylex(void);
 %token SYM_SEMICOLON
 %token SYM_COMMA
 
-%token <string> IDENTIFIER
+%token <sval> IDENTIFIER
 %token ERROR
 
 %left OP_PLUS OP_MINUS OP_TIMES OP_DIV OP_MOD
