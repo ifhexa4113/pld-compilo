@@ -7,10 +7,10 @@ class Ast
 {
 public:
 
-    CmmProgram& getProgram() const { return root; };
+    CmmProgram& getProgram() { return root; };
 
 protected:
-    CmmProgram* root;
+    CmmProgram root;
 };
 
 #endif
