@@ -1,0 +1,9 @@
+sudo: required
+language: C
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install bison flex
+
+script:
+  - make OS=unix tests
