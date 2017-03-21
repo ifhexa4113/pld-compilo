@@ -12,7 +12,7 @@
 #include <cstdio>
 #include <deque>
 #include <string>
-#include <iostring>
+#include <iostream>
 
 #include "ast/AstNode.h"
 #include "ast/CmmProgram.h"
@@ -135,7 +135,7 @@ bloc_expr : bloc_expr statement { $1->push_front($2); $$ = $1; }
           | statement { $$ = new std::deque<AstNode*>(1, $1); }
           ;
 
-statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
+statement : decl_def_stat SYM_SEMICOLON
           | if_bloc { /*$$ = $1;*/ }
           | for_stat { /*$$ = $1;*/ }
           | while_stat { /*$$ = $1;*/ }

@@ -11,7 +11,7 @@
 
 void yyerror(CmmProgram& program, const char * message)
 {
-    std::cout << message << std::endl;
+    std::cout << "yyerror: " << message << std::endl;
 }
 
 int main()
