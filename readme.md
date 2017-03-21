@@ -69,6 +69,7 @@ make OS=unix
 * **build**: build the project assuming the parser has already been built.
 * **run**: build and run the project.
 * **tests**: build and run the tests.
+* **test-tree**: copy the folders' tree in `src` under `test`. Same for libs.
 * **clean**: remove all .o files.
 * **mrproper**: remove whole build and bin folders.
 * **print-%**: show a makefile variable. Example: `make print-DEBUG` -> `yes`
