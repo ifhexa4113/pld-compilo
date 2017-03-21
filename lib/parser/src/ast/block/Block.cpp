@@ -19,7 +19,7 @@ Block::~Block()
 
 int Block::walkTree()
 {
-    std::cout << "Entering Block, exploring its childrens." << std::endl;
+    std::cout << "Entering Block, exploring its children." << std::endl;
     for(auto it = childrens->begin(); it != childrens->end(); ++it)
     {
         (*it)->walkTree();
