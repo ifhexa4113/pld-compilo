@@ -1,5 +1,7 @@
 sudo: required
 language: C
+notifications:
+  slack: thecursed:MCb6TtcwBk4XLoA1g31rmffY
 
 before_install:
   - sudo apt-get update -qq
