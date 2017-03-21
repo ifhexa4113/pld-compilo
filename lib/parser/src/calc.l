@@ -32,7 +32,7 @@ char_hexa   '(\\x([0-9a-fA-F][0-9a-fA-F])+)'
 ignored     [\n\r\t ]
 
 id_error    [0-9][A-Za-z_][A-Za-z_0-9]*
-id_name     [A-Za-z_][A-Za-z_0-9]A-Za-z_0-9*
+id_name     [A-Za-z_][A-Za-z_0-9]*
 
 
 %%
