@@ -8,7 +8,7 @@ class Else : public BlockClass {
 
 public:
     Else(Block* block_);
-    ~Else();
+    virtual ~Else();
     virtual int walkTree();
 
 };

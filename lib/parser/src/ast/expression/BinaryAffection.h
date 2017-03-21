@@ -20,9 +20,9 @@ class BinaryAffection : public Expression
 {
 public:
     BinaryAffection(AffectionOperator op_, Expression* lexpression_, Expression* rexpression_);
-    ~BinaryAffection();
+    virtual ~BinaryAffection();
 
-    int walkTree();
+    virtual int walkTree();
 
 protected:
     AffectionOperator op;

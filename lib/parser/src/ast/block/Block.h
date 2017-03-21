@@ -10,7 +10,7 @@ class Block: public AstNode{
 
 public:
     Block();
-    ~Block();
+    virtual ~Block();
     virtual int walkTree();
     void addChild(AstNode* child);
 

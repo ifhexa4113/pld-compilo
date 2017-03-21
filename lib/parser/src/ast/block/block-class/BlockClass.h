@@ -9,7 +9,7 @@ class BlockClass: public AstNode{
 
 public:
     BlockClass(Block* block_);
-    ~BlockClass();
+    virtual ~BlockClass();
 
     virtual int walkTree();
 

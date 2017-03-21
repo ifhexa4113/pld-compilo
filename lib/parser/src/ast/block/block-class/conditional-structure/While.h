@@ -9,7 +9,7 @@ class While: public ConditionalStructure{
 
 public:
     While(Block* block_, Expression* condition_);
-    ~While();
+    virtual ~While();
     virtual int walkTree();
 
 };
