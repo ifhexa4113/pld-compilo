@@ -9,6 +9,11 @@
 #include "ast/Ast.h"
 #include "ast/CmmProgram.h"
 
+void yyerror(CmmProgram& program, const char * message)
+{
+    std::cout << message << std::endl;
+}
+
 int main()
 {
     Ast ast;

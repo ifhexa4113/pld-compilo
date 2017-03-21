@@ -1,3 +1,13 @@
+%code requires {
+    #include <deque>
+    #include <string>
+
+    #include "ast/AstNode.h"
+    #include "ast/CmmProgram.h"
+    #include "ast/block/block-class/FunctionDefinition.h"
+    #include "ast/Return.h"
+}
+
 %{
 #include <cstdio>
 #include <deque>
