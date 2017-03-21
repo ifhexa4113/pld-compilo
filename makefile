@@ -183,7 +183,7 @@ clean:
 	$(DEL) $(DELOPT) *.$(EXEFILE)
 
 mrproper:
-	$(foreach lib,$(LIBS),cd $(lib) && (make OS=$(OS) mrproper $(SEVERAL_CMD) cd ../..) $(SEVERAL_CMD))
+	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) mrproper $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 	$(DELDIR) $(DELDIROPT) $(OUTDIR_ROOT)
 	$(DELDIR) $(DELDIROPT) $(EXEPATH)
 

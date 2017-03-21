@@ -109,7 +109,7 @@ else ifeq ($(OS),$(OSUNIX))
 	CP += cp
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find $(SRCPATH) -type d
-	ALLDIR=$(shell $(ALLDIRCMD))
+	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
     OUTDIR += $(subst $(SRCPATH)/,$(OUTDIR_ROOT)/,$(ALLDIR))
     OUTDIR += $(subst $(SRCPATH),$(HEADPATH),$(ALLDIR))
     MAKEDIR := mkdir -p $(OUTDIR)
