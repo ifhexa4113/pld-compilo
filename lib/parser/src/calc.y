@@ -6,6 +6,8 @@
     #include "ast/CmmProgram.h"
     #include "ast/block/block-class/FunctionDefinition.h"
     #include "ast/Return.h"
+
+    extern "C" int yyparse (CmmProgram&);
 }
 
 %{
