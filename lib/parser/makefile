@@ -79,6 +79,7 @@ WA = -Wall
 STDLIB = -std=gnu++11
 
 CFLAGS =
+CFLEXBISONFLAGS = $(CFLAGS) -I $(SRCPATH)
 CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
 #---------------------------------------------------------------
 
@@ -165,9 +166,9 @@ $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 $(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE) $(TEMPPATH)/%.$(HEADFILE)
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLEXBISONFLAGS)
 $(OBJPATH)/%.$(OFILE) : $(TEMPPATH)/%.$(SRCFILE)
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLEXBISONFLAGS)
 
 $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(SRCPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
