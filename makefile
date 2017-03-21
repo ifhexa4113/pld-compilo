@@ -55,7 +55,7 @@ SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
 SRCTEST = $(call rwildcard,$(SRCPATH)/,*.$(SRCTESTFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-LIBOBJ = $(call rwildcard,$(LIBPATH)/,*.$(OFILE))
+LIBOBJ = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
 TESTOBJ = $(SRCTEST:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
 ALLDIRCMD =
