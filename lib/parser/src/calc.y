@@ -52,7 +52,7 @@
 #include "ast/expression/FunctionExpression.h"
 
 void yyerror(CmmProgram& cmmp, char const* s) {
-    std::cout << "Error with " << s << std::endl;
+    std::cout << "Syntax error: " << s << std::endl;
 }
 int yylex(void);
 %}
@@ -311,8 +311,4 @@ expr_or_null  : expr
               |
               ;
 %%
-
-void yyerror(int * res, const char * msg) {
-   printf("Syntax error : %s\n",msg);
-}
 
