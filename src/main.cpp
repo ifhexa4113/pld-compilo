@@ -14,9 +14,9 @@ int main()
     Ast ast;
     CmmProgram& program = ast.getProgram();
 
-    yyparse(program);
+    int result = yyparse(program);
 
     program.walkTree();
 
-    return 0;
+    return result;
 }
