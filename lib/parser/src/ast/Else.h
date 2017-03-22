@@ -3,7 +3,7 @@
 
 #include "AstNode.h"
 
-class Else : public BlockClass {
+class Else : public AstNode {
 
 public:
     Else();
