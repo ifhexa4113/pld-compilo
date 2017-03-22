@@ -1,7 +1,7 @@
 #include "For.h"
 
 For::For(Expression* condition_, Expression* initialization_, Expression* increment_) :
-    ConditionalStructure(block_, condition_),
+    ConditionalStructure(condition_),
     initialization(initialization_),
     increment(increment_)
 {

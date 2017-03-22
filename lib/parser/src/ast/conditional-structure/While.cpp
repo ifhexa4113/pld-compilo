@@ -1,7 +1,7 @@
 #include "While.h"
 
-While::While(Block* block_, Expression* condition_) :
-    ConditionalStructure(block_, condition_)
+While::While(Expression* condition_) :
+    ConditionalStructure(condition_)
 {
     // Nothing else to do
 }
