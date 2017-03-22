@@ -11,4 +11,5 @@ BreakInstruction::BreakInstruction() :
 int BreakInstruction::walkTree()
 {
     std::cout << "Break instruction" << std::endl;
+    return 0;
 }
