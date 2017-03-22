@@ -21,6 +21,9 @@
 #include "ast/expression/BinaryLogic.h"
 #include "ast/expression/Parenthesis.h"
 #include "ast/expression/FunctionExpression.h"
+#include "ast/expression/VariableExpression.h"
+#include "ast/expression/ArrayExpression.h"
+#include "ast/expression/LValueExpression.h"
 
 // Includes for blocks
 #include "ast/block/block-class/FunctionDefinition.h"
