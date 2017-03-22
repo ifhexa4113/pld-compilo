@@ -9,14 +9,15 @@
 class Block: public AstNode {
 
 public:
-    Block(std::vector<AstNode*>* children_ = nullptr);
+    Block();
+    Block(std::vector<AstNode*> children_);
     virtual ~Block();
     
     virtual int walkTree();
 
 protected:
     SymbolTable symbolTable;
-    std::vector<AstNode*>* children;
+    std::vector<AstNode*> children;
 };
 
 #endif //BLOCK_H

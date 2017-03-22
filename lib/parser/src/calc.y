@@ -168,7 +168,7 @@ type_retour : type
             | T_VOID
             ;
 
-bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block($2); }
+bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block(*$2); delete $2; }
           | SYM_BLOCK_OPEN SYM_BLOCK_CLOSE { $$ = new Block(); }
           ;
           
