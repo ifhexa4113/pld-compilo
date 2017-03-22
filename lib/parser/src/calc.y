@@ -21,10 +21,10 @@
     #include "ast/expression/Parenthesis.h"
     #include "ast/expression/FunctionExpression.h"
 
-    // Includes for blocks
+    // Includes conditional structures
     #include "ast/block/block-class/FunctionDefinition.h"
-    #include "ast/block/block-class/conditional-structure/While.h"
-    #include "ast/block/block-class/conditional-structure/For.h"
+    #include "ast/conditional-structure/While.h"
+    #include "ast/conditional-structure/For.h"
 
     extern "C" int yyparse (CmmProgram&);
 }

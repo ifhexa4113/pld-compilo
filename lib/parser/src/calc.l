@@ -24,8 +24,8 @@
 
 // Includes for blocks
 #include "ast/block/block-class/FunctionDefinition.h"
-#include "ast/block/block-class/conditional-structure/While.h"
-#include "ast/block/block-class/conditional-structure/For.h"
+#include "ast/conditional-structure/While.h"
+#include "ast/conditional-structure/For.h"
 
 #include "calc.tab.h"
 #include "char_literal_parse.h"
