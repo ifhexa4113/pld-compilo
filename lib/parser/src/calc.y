@@ -4,13 +4,12 @@
 
     #include "ast/AstNode.h"
     #include "ast/CmmProgram.h"
-    #include "ast/block/block-class/FunctionDefinition.h"
 
     #include "ast/Return.h"
     #include "ast/BreakInstruction.h"
     #include "ast/ContinueInstruction.h"
 
-    // Include for expression
+    // Includes for expressions
     #include "ast/expression/Expression.h"
     #include "ast/expression/LiteralNumber.h"
     #include "ast/expression/UnaryBinaryOperationOnExpression.h"
@@ -21,6 +20,11 @@
     #include "ast/expression/BinaryLogic.h"
     #include "ast/expression/Parenthesis.h"
     #include "ast/expression/FunctionExpression.h"
+
+    // Includes for blocks
+    #include "ast/block/block-class/FunctionDefinition.h"
+    #include "ast/block/block-class/conditional-structure/While.h"
+    #include "ast/block/block-class/conditional-structure/For.h"
 
     extern "C" int yyparse (CmmProgram&);
 }
@@ -39,7 +43,7 @@
 #include "ast/BreakInstruction.h"
 #include "ast/ContinueInstruction.h"
 
-// Include for expression
+// Includes for expressions
 #include "ast/expression/Expression.h"
 #include "ast/expression/LiteralNumber.h"
 #include "ast/expression/UnaryBinaryOperationOnExpression.h"
@@ -50,6 +54,7 @@
 #include "ast/expression/BinaryLogic.h"
 #include "ast/expression/Parenthesis.h"
 #include "ast/expression/FunctionExpression.h"
+#include "ast/expression/FunctionExpression.h"
 
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Syntax error: " << s << std::endl;
@@ -58,28 +63,31 @@ int yylex(void);
 %}
 
 %union {
-   int ival;
-   char * sval;
+   int      ival;
+   char*    sval;
 
-   AstNode* statement_type;
-   std::vector<AstNode*>* bloc_expr_type;
-   Block* bloc_type;
-   FunctionDefinition* def_func_type;
-
-   FunctionExpression* function_expr_type;
-   std::vector<Expression*>* args_type;
-
-   Expression* expr_type;
+   AstNode*                     statement_type;
+   std::vector<AstNode*>*       bloc_expr_type;
+   Block*                       bloc_type;
+   FunctionDefinition*          def_func_type;
+   FunctionExpression*          function_expr_type;
+   std::vector<Expression*>*    args_type;
+   Expression*                  expr_type;
+   For*                         for_stat_type;
+   While*                       while_type;
 }
 
-%type <statement_type> statement
-%type <bloc_expr_type> bloc_expr
-%type <bloc_type> bloc
-%type <def_func_type> def_func
-%type <sval> decl_func
-%type <function_expr_type> function_expr
-%type <args_type> args
-%type <expr_type> expr
+%type <statement_type>      statement
+%type <bloc_expr_type>      bloc_expr
+%type <bloc_type>           bloc
+%type <def_func_type>       def_func
+%type <sval>                decl_func
+%type <function_expr_type>  function_expr
+%type <args_type>           args
+%type <expr_type>           expr for_init expr_or_null
+%type <for_stat_type>       for_stat
+%type <while_type>          while_stat
+
 
 %token OP_PLUS
 %token OP_MINUS
@@ -245,10 +253,10 @@ for_init  : decl_var
           |
           ;
           
-for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON expr_or_null SYM_CLOSE statement
+for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON expr_or_null SYM_CLOSE statement { $$ = new For($9, $5, $3, $7); }
           ;
 
-while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement
+while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement { $$ = new While($5, $3); }
             ;
 
 expr      : l_val // TODO

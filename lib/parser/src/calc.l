@@ -10,7 +10,7 @@
 #include "ast/BreakInstruction.h"
 #include "ast/ContinueInstruction.h"
 
-// Include for expression
+// Includes for expressions
 #include "ast/expression/Expression.h"
 #include "ast/expression/LiteralNumber.h"
 #include "ast/expression/UnaryBinaryOperationOnExpression.h"
@@ -22,9 +22,14 @@
 #include "ast/expression/Parenthesis.h"
 #include "ast/expression/FunctionExpression.h"
 
+// Includes for blocks
+#include "ast/block/block-class/FunctionDefinition.h"
+#include "ast/block/block-class/conditional-structure/While.h"
+#include "ast/block/block-class/conditional-structure/For.h"
+
 #include "calc.tab.h"
-#include "../src/char_literal_parse.h"
-#include "../src/errors.h"
+#include "char_literal_parse.h"
+#include "errors.h"
 %}
 %option noyywrap
 
