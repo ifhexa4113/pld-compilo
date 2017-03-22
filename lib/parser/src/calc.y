@@ -41,6 +41,7 @@ int yylex(void);
 %type <bloc_expr_type> bloc_expr
 %type <bloc_type> bloc
 %type <def_func_type> def_func
+%type <sval> decl_func
 
 %token OP_PLUS
 %token OP_MINUS
@@ -156,11 +157,10 @@ decl_arg  : decl_arg SYM_COMMA type decl_var_arg
           |
           ;
           
-decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE
+decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE { $$ = $2; } // TODO add entry to symbol table
           ;
-
-// TODO replace by def_func : decl_func bloc        
-def_func  : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE bloc  { $$ = new FunctionDefinition($6, $2); }
+       
+def_func  : decl_func bloc  { $$ = new FunctionDefinition($2, $1); }
           ;
 
 decl_var_arg  : decl_var
