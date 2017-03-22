@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "LiteralNumber.h"
 
 LiteralNumber::LiteralNumber(int64_t value_) :
@@ -9,6 +11,6 @@ LiteralNumber::LiteralNumber(int64_t value_) :
 
 int LiteralNumber::walkTree()
 {
-
+    std::cout << value;
 }
 

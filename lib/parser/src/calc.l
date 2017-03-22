@@ -10,6 +10,18 @@
 #include "ast/BreakInstruction.h"
 #include "ast/ContinueInstruction.h"
 
+// Include for expression
+#include "ast/expression/Expression.h"
+#include "ast/expression/LiteralNumber.h"
+#include "ast/expression/UnaryBinaryOperationOnExpression.h"
+#include "ast/expression/UnaryBinaryOperationOnVariable.h"
+#include "ast/expression/BinaryBinaryOperation.h"
+#include "ast/expression/BinaryArithmetic.h"
+#include "ast/expression/BinaryAffection.h"
+#include "ast/expression/BinaryLogic.h"
+#include "ast/expression/Parenthesis.h"
+#include "ast/expression/FunctionExpression.h"
+
 #include "calc.tab.h"
 #include "../src/char_literal_parse.h"
 #include "../src/errors.h"

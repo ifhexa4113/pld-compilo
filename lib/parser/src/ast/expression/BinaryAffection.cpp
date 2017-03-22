@@ -1,9 +1,9 @@
 #include "BinaryAffection.h"
 
-BinaryAffection::BinaryAffection(AffectionOperator op_, Expression* lexpression_, Expression* rexpression_) :
+BinaryAffection::BinaryAffection(AffectionOperator op_, LValueExpression* lvalue_, Expression* rexpression_) :
     Expression(),
     op(op_),
-    lexpression(lexpression_),
+    lvalue(lvalue_),
     rexpression(rexpression_)
 {
 
@@ -11,7 +11,7 @@ BinaryAffection::BinaryAffection(AffectionOperator op_, Expression* lexpression_
 
 BinaryAffection::~BinaryAffection()
 {
-    delete lexpression;
+    delete lvalue;
     delete rexpression;
 }
 

@@ -10,6 +10,18 @@
     #include "ast/BreakInstruction.h"
     #include "ast/ContinueInstruction.h"
 
+    // Include for expression
+    #include "ast/expression/Expression.h"
+    #include "ast/expression/LiteralNumber.h"
+    #include "ast/expression/UnaryBinaryOperationOnExpression.h"
+    #include "ast/expression/UnaryBinaryOperationOnVariable.h"
+    #include "ast/expression/BinaryBinaryOperation.h"
+    #include "ast/expression/BinaryArithmetic.h"
+    #include "ast/expression/BinaryAffection.h"
+    #include "ast/expression/BinaryLogic.h"
+    #include "ast/expression/Parenthesis.h"
+    #include "ast/expression/FunctionExpression.h"
+
     extern "C" int yyparse (CmmProgram&);
 }
 
@@ -27,6 +39,18 @@
 #include "ast/BreakInstruction.h"
 #include "ast/ContinueInstruction.h"
 
+// Include for expression
+#include "ast/expression/Expression.h"
+#include "ast/expression/LiteralNumber.h"
+#include "ast/expression/UnaryBinaryOperationOnExpression.h"
+#include "ast/expression/UnaryBinaryOperationOnVariable.h"
+#include "ast/expression/BinaryBinaryOperation.h"
+#include "ast/expression/BinaryArithmetic.h"
+#include "ast/expression/BinaryAffection.h"
+#include "ast/expression/BinaryLogic.h"
+#include "ast/expression/Parenthesis.h"
+#include "ast/expression/FunctionExpression.h"
+
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Error with " << s << std::endl;
 }
@@ -41,6 +65,11 @@ int yylex(void);
    std::vector<AstNode*>* bloc_expr_type;
    Block* bloc_type;
    FunctionDefinition* def_func_type;
+
+   FunctionExpression* function_expr_type;
+   std::vector<Expression*>* args_type;
+
+   Expression* expr_type;
 }
 
 %type <statement_type> statement
@@ -48,6 +77,9 @@ int yylex(void);
 %type <bloc_type> bloc
 %type <def_func_type> def_func
 %type <sval> decl_func
+%type <function_expr_type> function_expr
+%type <args_type> args
+%type <expr_type> expr
 
 %token OP_PLUS
 %token OP_MINUS
@@ -89,7 +121,7 @@ int yylex(void);
 %token T_VOID
 
 %token V_CHAR
-%token V_INT
+%token <ival> V_INT
 
 %token K_BREAK
 %token K_CONTINUE
@@ -148,7 +180,7 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
           | if_bloc { /*$$ = $1;*/ }
           | for_stat { /*$$ = $1;*/ }
           | while_stat { /*$$ = $1;*/ }
-          | expr SYM_SEMICOLON { /*$$ = $1;*/ }
+          | expr SYM_SEMICOLON { $$ = $1; }
           | bloc { $$ = $1; }
           | K_BREAK SYM_SEMICOLON { $$ = new BreakInstruction(); }
           | K_CONTINUE SYM_SEMICOLON { $$ = new ContinueInstruction(); }
@@ -219,53 +251,53 @@ for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON exp
 while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement
             ;
 
-expr      : l_val
-          | V_INT 
-          | OP_NOT expr
-          | l_val OP_UN_INC
-          | l_val OP_UN_DEC
-          | OP_UN_INC l_val
-          | OP_UN_DEC l_val
-          | OP_MINUS expr
-          | OP_BIN_NOT expr
-          | expr OP_BIN_XOR expr
-          | expr OP_BIN_OR expr
-          | expr OP_BIN_AND expr 
-          | expr OP_BIN_LSHIFT expr
-          | expr OP_BIN_RSHIFT expr
-          | expr OP_PLUS expr
-          | expr OP_MINUS expr
-          | expr OP_TIMES expr
-          | expr OP_DIV expr
-          | expr OP_MOD expr 
-          | l_val OP_ASSIGN expr
-          | l_val OP_ASSIGN_AND expr
-          | l_val OP_ASSIGN_MINUS expr
-          | l_val OP_ASSIGN_TIMES expr
-          | l_val OP_ASSIGN_DIV expr
-          | l_val OP_ASSIGN_MOD expr
-          | l_val OP_ASSIGN_XOR expr
-          | l_val OP_ASSIGN_OR expr
-          | expr OP_OR expr
-          | expr OP_AND expr 
-          | expr OP_GREATER expr
-          | expr OP_EQ_LESSER expr
-          | expr OP_EQ_GREATER expr
-          | expr OP_EQ_NOT expr
-          | expr OP_EQ expr
-          | expr OP_LESSER expr
-          | SYM_OPEN expr SYM_CLOSE
-          | const_char
-          | function_expr
+expr      : l_val // TODO
+          | V_INT { $$ = new LiteralNumber($1); }
+          | OP_NOT expr { $$ = new UnaryBinaryOperationOnExpression(UnaryBinaryOperator::NOT, $2); }
+          | l_val OP_UN_INC { /*$$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::INCREMENT_RIGHT, $1);*/ }
+          | l_val OP_UN_DEC { /*$$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::DECREMENT_RIGHT, $1);*/ }
+          | OP_UN_INC l_val { /*UnaryBinaryOperationOnVariable(UnaryBinaryOperator::INCREMENT_LEFT, $2);*/ }
+          | OP_UN_DEC l_val { /*UnaryBinaryOperationOnVariable(UnaryBinaryOperator::DECREMENT_LEFT, $2);*/ }
+          | OP_MINUS expr { $$ = new UnaryBinaryOperationOnExpression(UnaryBinaryOperator::MINUS, $2); }
+          | OP_BIN_NOT expr { $$ = new UnaryBinaryOperationOnExpression(UnaryBinaryOperator::BINARY_NOT, $2); }
+          | expr OP_BIN_XOR expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::XOR, $1, $3); }
+          | expr OP_BIN_OR expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::OR, $1, $3); }
+          | expr OP_BIN_AND expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::AND, $1, $3); }
+          | expr OP_BIN_LSHIFT expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::LEFT_SHIFT, $1, $3); }
+          | expr OP_BIN_RSHIFT expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::RIGHT_SHIFT, $1, $3); }
+          | expr OP_PLUS expr { $$ = new BinaryArithmetic(ArithmeticOperator::PLUS, $1, $3); }
+          | expr OP_MINUS expr { $$ = new BinaryArithmetic(ArithmeticOperator::MINUS, $1, $3); }
+          | expr OP_TIMES expr { $$ = new BinaryArithmetic(ArithmeticOperator::MUL, $1, $3); }
+          | expr OP_DIV expr { $$ = new BinaryArithmetic(ArithmeticOperator::DIV, $1, $3); }
+          | expr OP_MOD expr { $$ = new BinaryArithmetic(ArithmeticOperator::MOD, $1, $3); }
+          | l_val OP_ASSIGN expr { /*$$ = new BinaryAffection(AffectionOperator::EQUAL, $1, $3);*/ } // TODO missing +=
+          | l_val OP_ASSIGN_AND expr { /*$$ = new BinaryAffection(AffectionOperator::AND_EQUAL, $1, $3);*/ }
+          | l_val OP_ASSIGN_MINUS expr { /*$$ = new BinaryAffection(AffectionOperator::MINUS_EQUAL, $1, $3);*/ }
+          | l_val OP_ASSIGN_TIMES expr { /*$$ = new BinaryAffection(AffectionOperator::MUL_EQUAL, $1, $3);*/ }
+          | l_val OP_ASSIGN_DIV expr { /*$$ = new BinaryAffection(AffectionOperator::DIV_EQUAL, $1, $3);*/ }
+          | l_val OP_ASSIGN_MOD expr { /*$$ = new BinaryAffection(AffectionOperator::MOD_EQUAL, $1, $3);*/ }
+          | l_val OP_ASSIGN_XOR expr { /*$$ = new BinaryAffection(AffectionOperator::XOR_EQUAL, $1, $3);*/ }
+          | l_val OP_ASSIGN_OR expr { /*$$ = new BinaryAffection(AffectionOperator::OR_EQUAL, $1, $3);*/ }
+          | expr OP_OR expr { $$ = new BinaryLogic(LogicOperator::OR, $1, $3); }
+          | expr OP_AND expr { $$ = new BinaryLogic(LogicOperator::AND, $1, $3); }
+          | expr OP_GREATER expr { $$ = new BinaryLogic(LogicOperator::GREATER, $1, $3); }
+          | expr OP_EQ_LESSER expr { $$ = new BinaryLogic(LogicOperator::LESSER_EQUAL, $1, $3); }
+          | expr OP_EQ_GREATER expr { $$ = new BinaryLogic(LogicOperator::GREATER_EQUAL, $1, $3); }
+          | expr OP_EQ_NOT expr { $$ = new BinaryLogic(LogicOperator::NOT_EQUAL, $1, $3); }
+          | expr OP_EQ expr { $$ = new BinaryLogic(LogicOperator::EQUAL, $1, $3); }
+          | expr OP_LESSER expr { $$ = new BinaryLogic(LogicOperator::LESSER, $1, $3); }
+          | SYM_OPEN expr SYM_CLOSE { $$ = new Parenthesis($2); }
+          | const_char // TODO
+          | function_expr { $$ = $1; }
           ;
           
-function_expr : IDENTIFIER SYM_OPEN args SYM_CLOSE
-              | IDENTIFIER SYM_OPEN T_VOID SYM_CLOSE
-              | IDENTIFIER SYM_OPEN SYM_CLOSE
+function_expr : IDENTIFIER SYM_OPEN args SYM_CLOSE { $$ = new FunctionExpression(*$3, $1); delete $3; }
+              | IDENTIFIER SYM_OPEN T_VOID SYM_CLOSE { $$ = new FunctionExpression($1); }
+              | IDENTIFIER SYM_OPEN SYM_CLOSE { $$ = new FunctionExpression($1); }
               ;
               
-args      : args SYM_COMMA expr
-          | expr
+args      : args SYM_COMMA expr { $1->push_back($3); $$ = $1; }
+          | expr { $$ = new std::vector<Expression*>(1, $1);}
           ;
 
 const_char  : V_CHAR

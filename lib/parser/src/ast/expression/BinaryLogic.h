@@ -6,12 +6,12 @@
 enum class LogicOperator
 {
     EQUAL = 0,
-    INFERIOR,
-    SUPERIOR,
+    LESSER,
+    GREATER,
     OR,
     AND,
-    INFERIOR_EQUAL,
-    SUPERIOR_EQUAL,
+    LESSER_EQUAL,
+    GREATER_EQUAL,
     NOT_EQUAL
 };
 

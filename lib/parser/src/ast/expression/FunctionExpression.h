@@ -9,6 +9,7 @@
 class FunctionExpression : public Expression
 {
 public:
+    FunctionExpression(std::string name_);
     FunctionExpression(std::vector<Expression*> list_, std::string name_);
     virtual ~FunctionExpression();
 

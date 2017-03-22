@@ -2,6 +2,7 @@
 #define BINARY_AFFECTION_H
 
 #include "Expression.h"
+#include "LValueExpression.h"
 
 enum class AffectionOperator
 {
@@ -19,14 +20,14 @@ enum class AffectionOperator
 class BinaryAffection : public Expression
 {
 public:
-    BinaryAffection(AffectionOperator op_, Expression* lexpression_, Expression* rexpression_);
+    BinaryAffection(AffectionOperator op_, LValueExpression* lvalue_, Expression* rexpression_);
     virtual ~BinaryAffection();
 
     virtual int walkTree();
 
 protected:
     AffectionOperator op;
-    Expression* lexpression;
+    LValueExpression* lvalue;
     Expression* rexpression;
 
 };
