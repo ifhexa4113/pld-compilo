@@ -1,25 +1,31 @@
 %code requires {
-    #include <deque>
+    #include <vector>
     #include <string>
 
     #include "ast/AstNode.h"
     #include "ast/CmmProgram.h"
     #include "ast/block/block-class/FunctionDefinition.h"
+
     #include "ast/Return.h"
+    #include "ast/BreakInstruction.h"
+    #include "ast/ContinueInstruction.h"
 
     extern "C" int yyparse (CmmProgram&);
 }
 
 %{
 #include <cstdio>
-#include <deque>
+#include <vector>
 #include <string>
 #include <iostream>
 
 #include "ast/AstNode.h"
 #include "ast/CmmProgram.h"
 #include "ast/block/block-class/FunctionDefinition.h"
+
 #include "ast/Return.h"
+#include "ast/BreakInstruction.h"
+#include "ast/ContinueInstruction.h"
 
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Error with " << s << std::endl;
@@ -32,7 +38,7 @@ int yylex(void);
    char * sval;
 
    AstNode* statement_type;
-   std::deque<AstNode*>* bloc_expr_type;
+   std::vector<AstNode*>* bloc_expr_type;
    Block* bloc_type;
    FunctionDefinition* def_func_type;
 }
@@ -134,8 +140,8 @@ bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block($2); }
           | SYM_BLOCK_OPEN SYM_BLOCK_CLOSE { $$ = new Block(); }
           ;
           
-bloc_expr : bloc_expr statement { $1->push_front($2); $$ = $1; }
-          | statement { $$ = new std::deque<AstNode*>(1, $1); }
+bloc_expr : bloc_expr statement { $1->push_back($2); $$ = $1; }
+          | statement { $$ = new std::vector<AstNode*>(1, $1); }
           ;
 
 statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
@@ -144,8 +150,8 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
           | while_stat { /*$$ = $1;*/ }
           | expr SYM_SEMICOLON { /*$$ = $1;*/ }
           | bloc { $$ = $1; }
-          | K_BREAK SYM_SEMICOLON { /*$$ = new Break();*/ }
-          | K_CONTINUE SYM_SEMICOLON { /*$$ = new Continue();*/ }
+          | K_BREAK SYM_SEMICOLON { $$ = new BreakInstruction(); }
+          | K_CONTINUE SYM_SEMICOLON { $$ = new ContinueInstruction(); }
           | K_RETURN SYM_SEMICOLON { $$ = new Return(); }
           | K_RETURN expr SYM_SEMICOLON { /*$$ = new Return($2);*/ }
           | SYM_SEMICOLON { /* ?? */ }

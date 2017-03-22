@@ -2,25 +2,25 @@
 
 #include "Block.h"
 
-Block::Block(std::deque<AstNode*>* childrens_) :
+Block::Block(std::vector<AstNode*>* children_) :
     AstNode(),
-    childrens(childrens_)
+    children(children_)
 {
 
 }
 
 Block::~Block()
 {
-    for(auto it = childrens->begin(); it != childrens->end(); ++it)
+    for(auto it = children->begin(); it != children->end(); ++it)
         delete (*it);
-    if(childrens != nullptr)
-        delete childrens;
+    if(children != nullptr)
+        delete children;
 }
 
 int Block::walkTree()
 {
     std::cout << "Entering Block, exploring its children." << std::endl;
-    for(auto it = childrens->begin(); it != childrens->end(); ++it)
+    for(auto it = children->begin(); it != children->end(); ++it)
     {
         (*it)->walkTree();
     }
