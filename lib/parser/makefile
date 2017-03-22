@@ -98,8 +98,7 @@ ifeq ($(OS),$(OSWIN))
 	CPOPT +=
 	WORKINGDIR = $(shell echo %cd%)
 	ALLDIR=$(shell $(ALLDIRCMD))
-    OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(HEADPATH),$(ALLDIR))
+    OUTDIR += $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR)) $(subst $(WORKINGDIR)\$(SRCPATH),$(HEADPATH),$(ALLDIR))
     TESTDIR = $(TESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(TESTPATH),$(ALLDIR))
     ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
     SEVERAL_CMD = &
@@ -116,13 +115,12 @@ else ifeq ($(OS),$(OSUNIX))
 	DELDIROPT += -rf
 	CP += cp
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
-	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
-    OUTDIR += $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    OUTDIR += $(subst $(SRCPATH),$(HEADPATH),$(ALLDIR))
+	ALLDIRCMD = find $(SRCPATH) -type d
+	ALLDIR = $(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
+    OUTDIR += $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR)) $(subst $(SRCPATH),$(HEADPATH),$(ALLDIR))
     TESTDIR = $(TESTPATH) $(subst $(SRCPATH),$(TESTPATH),$(ALLDIR))
-    MAKEDIR := mkdir -p $(OUTDIR)
+    MAKEDIR := mkdir -p $(OUTDIR)$
     MAKETESTDIR = mkdir -p $(TESTDIR)
-    ALLDIRCMD = find $(SRCPATH) -type d
 	SEVERAL_CMD = ;
     SUBSEPARATOR = /
 else
