@@ -7,9 +7,9 @@
 class For: public ConditionalStructure
 {
 public:
-    For(Block* block_, Expression* condition_, Expression* initialization_, Expression* increment_);
-    virtual ~For();
-    virtual int walkTree();
+    For(Expression* condition_, Expression* initialization_, Expression* increment_);
+    ~For();
+    int walkTree();
 
 protected:
     Expression* initialization;

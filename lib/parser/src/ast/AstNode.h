@@ -15,7 +15,11 @@ public:
             printConstDebug();
         #endif
     };
-    virtual ~AstNode(){};
+
+    virtual ~AstNode()
+    {
+        // Nothing else to do
+    };
 
 #ifdef DEBUG
     static unsigned int IdMax = 0;
