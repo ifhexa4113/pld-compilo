@@ -21,6 +21,9 @@
 #include "ast/expression/BinaryLogic.h"
 #include "ast/expression/Parenthesis.h"
 #include "ast/expression/FunctionExpression.h"
+#include "ast/expression/VariableExpression.h"
+#include "ast/expression/ArrayExpression.h"
+#include "ast/expression/LValueExpression.h"
 
 #include "calc.tab.h"
 #include "../src/char_literal_parse.h"

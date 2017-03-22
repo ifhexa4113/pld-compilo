@@ -21,6 +21,9 @@
     #include "ast/expression/BinaryLogic.h"
     #include "ast/expression/Parenthesis.h"
     #include "ast/expression/FunctionExpression.h"
+    #include "ast/expression/VariableExpression.h"
+    #include "ast/expression/ArrayExpression.h"
+    #include "ast/expression/LValueExpression.h"
 
     extern "C" int yyparse (CmmProgram&);
 }
@@ -50,6 +53,9 @@
 #include "ast/expression/BinaryLogic.h"
 #include "ast/expression/Parenthesis.h"
 #include "ast/expression/FunctionExpression.h"
+#include "ast/expression/VariableExpression.h"
+#include "ast/expression/ArrayExpression.h"
+#include "ast/expression/LValueExpression.h"
 
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Error with " << s << std::endl;
@@ -70,6 +76,7 @@ int yylex(void);
    std::vector<Expression*>* args_type;
 
    Expression* expr_type;
+   LValueExpression* l_val_type;
 }
 
 %type <statement_type> statement
@@ -80,6 +87,7 @@ int yylex(void);
 %type <function_expr_type> function_expr
 %type <args_type> args
 %type <expr_type> expr
+%type <l_val_type> l_val
 
 %token OP_PLUS
 %token OP_MINUS
@@ -120,7 +128,7 @@ int yylex(void);
 %token <ival> T_INT64
 %token T_VOID
 
-%token V_CHAR
+%token <ival> V_CHAR
 %token <ival> V_INT
 
 %token K_BREAK
@@ -251,13 +259,13 @@ for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON exp
 while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement
             ;
 
-expr      : l_val // TODO
+expr      : l_val { $$ = $1; }
           | V_INT { $$ = new LiteralNumber($1); }
           | OP_NOT expr { $$ = new UnaryBinaryOperationOnExpression(UnaryBinaryOperator::NOT, $2); }
-          | l_val OP_UN_INC { /*$$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::INCREMENT_RIGHT, $1);*/ }
-          | l_val OP_UN_DEC { /*$$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::DECREMENT_RIGHT, $1);*/ }
-          | OP_UN_INC l_val { /*UnaryBinaryOperationOnVariable(UnaryBinaryOperator::INCREMENT_LEFT, $2);*/ }
-          | OP_UN_DEC l_val { /*UnaryBinaryOperationOnVariable(UnaryBinaryOperator::DECREMENT_LEFT, $2);*/ }
+          | l_val OP_UN_INC { $$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::INCREMENT_RIGHT, $1); }
+          | l_val OP_UN_DEC { $$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::DECREMENT_RIGHT, $1); }
+          | OP_UN_INC l_val { $$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::INCREMENT_LEFT, $2); }
+          | OP_UN_DEC l_val { $$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::DECREMENT_LEFT, $2); }
           | OP_MINUS expr { $$ = new UnaryBinaryOperationOnExpression(UnaryBinaryOperator::MINUS, $2); }
           | OP_BIN_NOT expr { $$ = new UnaryBinaryOperationOnExpression(UnaryBinaryOperator::BINARY_NOT, $2); }
           | expr OP_BIN_XOR expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::XOR, $1, $3); }
@@ -270,14 +278,14 @@ expr      : l_val // TODO
           | expr OP_TIMES expr { $$ = new BinaryArithmetic(ArithmeticOperator::MUL, $1, $3); }
           | expr OP_DIV expr { $$ = new BinaryArithmetic(ArithmeticOperator::DIV, $1, $3); }
           | expr OP_MOD expr { $$ = new BinaryArithmetic(ArithmeticOperator::MOD, $1, $3); }
-          | l_val OP_ASSIGN expr { /*$$ = new BinaryAffection(AffectionOperator::EQUAL, $1, $3);*/ } // TODO missing +=
-          | l_val OP_ASSIGN_AND expr { /*$$ = new BinaryAffection(AffectionOperator::AND_EQUAL, $1, $3);*/ }
-          | l_val OP_ASSIGN_MINUS expr { /*$$ = new BinaryAffection(AffectionOperator::MINUS_EQUAL, $1, $3);*/ }
-          | l_val OP_ASSIGN_TIMES expr { /*$$ = new BinaryAffection(AffectionOperator::MUL_EQUAL, $1, $3);*/ }
-          | l_val OP_ASSIGN_DIV expr { /*$$ = new BinaryAffection(AffectionOperator::DIV_EQUAL, $1, $3);*/ }
-          | l_val OP_ASSIGN_MOD expr { /*$$ = new BinaryAffection(AffectionOperator::MOD_EQUAL, $1, $3);*/ }
-          | l_val OP_ASSIGN_XOR expr { /*$$ = new BinaryAffection(AffectionOperator::XOR_EQUAL, $1, $3);*/ }
-          | l_val OP_ASSIGN_OR expr { /*$$ = new BinaryAffection(AffectionOperator::OR_EQUAL, $1, $3);*/ }
+          | l_val OP_ASSIGN expr { $$ = new BinaryAffection(AffectionOperator::EQUAL, $1, $3); } // TODO missing +=
+          | l_val OP_ASSIGN_AND expr { $$ = new BinaryAffection(AffectionOperator::AND_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_MINUS expr { $$ = new BinaryAffection(AffectionOperator::MINUS_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_TIMES expr { $$ = new BinaryAffection(AffectionOperator::MUL_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_DIV expr { $$ = new BinaryAffection(AffectionOperator::DIV_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_MOD expr { $$ = new BinaryAffection(AffectionOperator::MOD_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_XOR expr { $$ = new BinaryAffection(AffectionOperator::XOR_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_OR expr { $$ = new BinaryAffection(AffectionOperator::OR_EQUAL, $1, $3); }
           | expr OP_OR expr { $$ = new BinaryLogic(LogicOperator::OR, $1, $3); }
           | expr OP_AND expr { $$ = new BinaryLogic(LogicOperator::AND, $1, $3); }
           | expr OP_GREATER expr { $$ = new BinaryLogic(LogicOperator::GREATER, $1, $3); }
@@ -287,7 +295,7 @@ expr      : l_val // TODO
           | expr OP_EQ expr { $$ = new BinaryLogic(LogicOperator::EQUAL, $1, $3); }
           | expr OP_LESSER expr { $$ = new BinaryLogic(LogicOperator::LESSER, $1, $3); }
           | SYM_OPEN expr SYM_CLOSE { $$ = new Parenthesis($2); }
-          | const_char // TODO
+          | V_CHAR { $$ = new LiteralNumber($1); } // TODO lose character state information, refactor ?
           | function_expr { $$ = $1; }
           ;
           
@@ -300,11 +308,8 @@ args      : args SYM_COMMA expr { $1->push_back($3); $$ = $1; }
           | expr { $$ = new std::vector<Expression*>(1, $1);}
           ;
 
-const_char  : V_CHAR
-            ;
-
-l_val     : IDENTIFIER
-          | IDENTIFIER SYM_BLOCK_OPEN expr SYM_BLOCK_CLOSE
+l_val     : IDENTIFIER { $$ = new VariableExpression($1); }
+          | IDENTIFIER SYM_BLOCK_OPEN expr SYM_BLOCK_CLOSE { $$ = new ArrayExpression($1, $3); }
           ;
 
 expr_or_null  : expr

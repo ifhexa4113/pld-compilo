@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "ArrayExpression.h"
 
 ArrayExpression::ArrayExpression(std::string name_, Expression* index_) :
@@ -14,5 +16,6 @@ ArrayExpression::~ArrayExpression()
 
 int ArrayExpression::walkTree()
 {
-    
+    std::cout << name << "[" << index->walkTree() << "]";
+    return 0;
 }
