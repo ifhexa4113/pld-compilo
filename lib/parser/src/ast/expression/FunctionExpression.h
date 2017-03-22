@@ -1,17 +1,17 @@
-#ifndef FUNCTION_H
-#define FUNCTION_H
+#ifndef FUNCTION_EXPRESSION_H
+#define FUNCTION_EXPRESSION_H
 
 #include <string>
 #include <vector>
 
 #include "Expression.h"
 
-class Function : public Expression
+class FunctionExpression : public Expression
 {
 public:
-    Function(std::vector<Expression*> list_, string name_);
-    virtual ~Function();
-
+    FunctionExpression(std::string name_);
+    FunctionExpression(std::vector<Expression*> list_, std::string name_);
+    virtual ~FunctionExpression();
     virtual int walkTree();
     std::string getName() { return name; };
 

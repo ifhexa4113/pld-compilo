@@ -83,9 +83,9 @@ W = -W
 WA = -Wall
 STDLIB = -std=gnu++11
 
-CFLAGS =
-CFLEXBISONFLAGS = $(CFLAGS) -I $(SRCPATH)
-CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
+CFLAGS = -I $(SRCPATH)
+CFLEXBISONFLAGS = $(CFLAGS)
+CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------

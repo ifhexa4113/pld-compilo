@@ -6,17 +6,18 @@
 #include "../AstNode.h"
 #include "../symbol_table/SymbolTable.h"
 
-class Block: public AstNode{
+class Block: public AstNode {
 
 public:
     Block();
+    Block(std::vector<AstNode*> children_);
     virtual ~Block();
+    
     virtual int walkTree();
-    void addChild(AstNode* child);
 
 protected:
     SymbolTable symbolTable;
-    std::vector<AstNode*> childrens;
+    std::vector<AstNode*> children;
 };
 
 #endif //BLOCK_H

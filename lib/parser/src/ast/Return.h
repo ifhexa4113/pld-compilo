@@ -7,7 +7,7 @@
 class Return : public AstNode
 {
 public:
-    Return(Expression* value_);
+    Return(Expression* value_ = nullptr);
     virtual ~Return();
 
     virtual int walkTree();

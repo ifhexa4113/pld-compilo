@@ -5,13 +5,13 @@
 
 enum class UnaryBinaryOperator 
 {
-    EXCLAMATION_MARK = 0, // !Expr
+    NOT = 0, // !Expr
     INCREMENT_RIGHT, // L_value++
     DECREMENT_RIGHT, // L_value--
     INCREMENT_LEFT, // ++L_value
     DECREMENT_LEFT, // --L_value
     MINUS, // -Expr
-    TILDE // ~Expr
+    BINARY_NOT // ~Expr
 };
 
 class UnaryBinaryOperation : public Expression
