@@ -1,7 +1,7 @@
 #ifndef CONDITIONALSTRUCTURE_H
 #define CONDITIONALSTRUCTURE_H
 
-#include "AstNode.h"
+#include "ast/AstNode.h"
 #include "ast/expression/Expression.h"
 
 class ConditionalStructure: public AstNode

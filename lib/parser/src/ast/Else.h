@@ -1,7 +1,7 @@
 #ifndef ELSE_H
 #define ELSE_H
 
-#include "AstNode.h"
+#include "ast/AstNode.h"
 
 class Else : public AstNode {
 
