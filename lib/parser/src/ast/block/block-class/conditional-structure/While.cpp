@@ -8,6 +8,7 @@ While::While(Block* block_, Expression* condition_) :
 
 While::~While()
 {
+
 }
 
 int While::walkTree()

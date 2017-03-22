@@ -1,4 +1,3 @@
-
 #include "For.h"
 
 For::For(Block* block_, Expression* condition_, Expression* initialization_, Expression* increment_) :
@@ -11,8 +10,8 @@ For::For(Block* block_, Expression* condition_, Expression* initialization_, Exp
 
 For::~For()
 {
-        delete initialization;
-        delete increment;
+    delete initialization;
+    delete increment;
 }
 
 int For::walkTree()

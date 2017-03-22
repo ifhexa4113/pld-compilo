@@ -1,16 +1,14 @@
-
 #ifndef FOR_H
 #define FOR_H
 
 #include "ConditionalStructure.h"
-#include "../../../expression/Expression.h"
+#include "ast/expression/Expression.h"
 
-class For: public ConditionalStructure{
-
+class For: public ConditionalStructure
+{
 public:
     For(Block* block_, Expression* condition_, Expression* initialization_, Expression* increment_);
     virtual ~For();
-
     virtual int walkTree();
 
 protected:
