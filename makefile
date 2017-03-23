@@ -126,7 +126,7 @@ ifeq ($(OS),$(OSWIN))
 	NRPATH := $(subst /,$(SUBSEPARATOR),$(NRPATH))
     NRTESTS := $(shell dir /s /b /o:n /ad $(NRPATH))
     NRTESTS := $(addprefix $(NRTARGETPREFIX),$(subst $(WORKINGDIR)\$(NRPATH)\,,$(NRTESTS)))
-    NRPASSCMD = if errorlevel 0 (echo PASSED) else (echo FAILED) && exit 1
+    NRPASSCMD = if not errorlevel 1 (echo PASSED) else ((echo FAILED) && exit 1)
     NULLREDIRECT = nul
     EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
     EXE2 := $(subst /,$(SUBSEPARATOR),$(EXE2))
@@ -215,7 +215,7 @@ $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(TESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 #Tests
-tests: makedir libs libs-tests
+tests: all libs-tests
 	make OS=$(OS) DEBUG=$(DEBUG) build-test
 	@echo UNIT TESTS
 	$(EXE2)
@@ -228,7 +228,7 @@ $(NRTARGETPREFIX)%:
 	@$(ECHONEWLINE)
 	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT) $(SEVERAL_CMD) @$(NRPASSCMD)
 
-nr-tests: all $(NRTESTS)
+nr-tests: $(NRTESTS)
 	@echo $(PROMPTSEPARATOR)
 	@echo ALL TESTS PASSED
 
