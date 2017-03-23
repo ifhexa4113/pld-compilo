@@ -205,8 +205,8 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
           | SYM_SEMICOLON { /* ?? */ }
           ;
           
-decl_arg  : decl_arg SYM_COMMA type decl_var_arg
-          | type decl_var_arg
+decl_arg  : decl_arg SYM_COMMA decl_var
+          | decl_var
           | T_VOID
           |
           ;
@@ -217,13 +217,9 @@ decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE { $$ = $2; } // T
 def_func  : decl_func bloc  { $$ = new FunctionDefinition($2, $1); }
           ;
 
-decl_var_arg  : decl_var
-              |
-              ;
-
-decl_var  : IDENTIFIER
-          | IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE
-          | IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE
+decl_var  : type IDENTIFIER
+          | type IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE
+          | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE
           ;
 
 def_prim  : decl_var OP_ASSIGN expr
