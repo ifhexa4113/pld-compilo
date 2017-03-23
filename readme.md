@@ -62,6 +62,23 @@ make OS=unix
 make OS=unix run
 ```
 
+### Use an input file
+Just use flow redirection, like this:
+```shell
+make run < <path_to_your_file>
+```
+
+### Run all the tests
+To build and run the tests (unit and non-regression),
+you just have to run the following command:
+```shell
+make tests
+```
+
+Note that this will build the app **and** the unit-test app.
+The unit-test app will be run first, then each non-regression test
+will be run if the others succeeded.
+
 ### Make rules
 * **all** (default): build the whole project, but not the tests.
 * **makedir**: create build and bin folders and subfolders.
@@ -69,7 +86,7 @@ make OS=unix run
 * **build**: build the project assuming the parser has already been built.
 * **run**: build and run the project.
 * **tests**: build and run all the tests, unit and non-regression.
-* **nr-tests**: run all non-regression tests. Needs the app to be built.
+* **nr-tests**: run all non-regression tests.
 * **test-%**: run the given non-regression test. Needs the app to be built.
 * **test-tree**: copy the folders' tree in `src` under `test`. Same for libs.
 * **clean**: remove all .o files.
@@ -80,6 +97,50 @@ Notes:
 * Any rule on *nix: `make <rule> OS=unix`
 * Debug mode (default: yes): `make DEBUG=no`
 * Change compiler (default: g++): `make CC=<your compiler>`
+
+## HOW TO
+### How to write unit test
+All unit tests are located in a folder `test` next to `src`.
+This is true even for libs in `lib`.
+`src` and `test` **must** have the same folders' tree,
+but `test` can have more folders if needed.
+
+To avoid copying the folders' tree of `src` into `test` by hand,
+just run the following command:
+```shell
+make test-tree
+```
+
+Note that this will not erase any folders nor files, won't fail if
+the folders already exist, and works for libs under `lib` too.
+
+Then, just write a `.spec.cpp` file at the location of the class you want
+to test. For example, if you want to test `src/module1/module.cpp`,
+you need to create a file `test/module1/module.spec.cpp`.
+This file must have the following shape:
+```c++
+#include "module1/module.h"
+#include "catch.h"
+
+TEST_CASE("Simple module1 test", "")
+{
+    REQUIRE([...]);
+}
+```
+
+take a look at the [catch doc](https://github.com/philsquared/Catch)
+for more information about how to write unit tests with catch.
+
+### How to write non-regression tests
+Non-regression tests are here to test if the app works _globally_.
+To write one, you need to create a folder named after your test
+under `test/non-regression`.
+This folder **must** contain:
+* input.cmm: the file that the app will take as input.
+* desc: a bit a of text describing your test.
+
+At the moment, non-regression tests will only check if the app
+exits with the code `0`, but that's enough for now.
 
 ## About IDEs
 ### CLion
