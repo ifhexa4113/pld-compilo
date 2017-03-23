@@ -259,10 +259,10 @@ for_init  : decl_var
           |
           ;
           
-for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON expr_or_null SYM_CLOSE statement { $$ = new For($5, $3, $7); }
+for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON expr_or_null SYM_CLOSE statement { $$ = new For($9, $5, $3, $7); }
           ;
 
-while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement { $$ = new While($3); }
+while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement { $$ = new While($5, $3); }
             ;
 
 expr      : l_val { $$ = $1; }
