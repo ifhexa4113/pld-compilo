@@ -172,7 +172,7 @@ int yylex(void);
 
 prog_c--  : prog_c-- def_func  { program.addFunction($2); }
           | prog_c-- decl_func
-          |
+          | { $$ = new NullExpression(); }
           ;
           
 type      : T_CHAR
@@ -208,7 +208,7 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
 decl_arg  : decl_arg SYM_COMMA type decl_var_arg
           | type decl_var_arg
           | T_VOID
-          |
+          | { $$ = new NullExpression(); }
           ;
           
 decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE { $$ = $2; } // TODO add entry to symbol table
@@ -218,7 +218,7 @@ def_func  : decl_func bloc  { $$ = new FunctionDefinition($2, $1); }
           ;
 
 decl_var_arg  : decl_var
-              |
+              | { $$ = new NullExpression(); }
               ;
 
 decl_var  : IDENTIFIER
@@ -249,7 +249,7 @@ if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
           ;
           
 else_stat : K_ELSE statement
-          |
+          | { $$ = new NullExpression(); }
           ;
           
 if_bloc   : if_stat else_stat
