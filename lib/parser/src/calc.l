@@ -24,6 +24,7 @@
 #include "ast/expression/VariableExpression.h"
 #include "ast/expression/ArrayExpression.h"
 #include "ast/expression/LValueExpression.h"
+#include "ast/expression/NullExpression.h"
 
 // Includes for blocks
 #include "ast/block/block-class/FunctionDefinition.h"

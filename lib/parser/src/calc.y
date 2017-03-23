@@ -23,6 +23,7 @@
     #include "ast/expression/VariableExpression.h"
     #include "ast/expression/ArrayExpression.h"
     #include "ast/expression/LValueExpression.h"
+    #include "ast/expression/NullExpression.h"
 
     // Includes conditional structures
     #include "ast/block/block-class/FunctionDefinition.h"
@@ -60,6 +61,7 @@
 #include "ast/expression/VariableExpression.h"
 #include "ast/expression/ArrayExpression.h"
 #include "ast/expression/LValueExpression.h"
+#include "ast/expression/NullExpression.h"
 
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Syntax error: " << s << std::endl;
@@ -254,9 +256,9 @@ if_bloc   : if_stat else_stat
           ;
 
 for_init  : decl_var
-          | expr
+          | expr { $$ = $1; }
           | def_var
-          |
+          | { $$ = new NullExpression(); }
           ;
           
 for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON expr_or_null SYM_CLOSE statement {
@@ -324,8 +326,8 @@ l_val     : IDENTIFIER { $$ = new VariableExpression($1); }
           | IDENTIFIER SYM_BLOCK_OPEN expr SYM_BLOCK_CLOSE { $$ = new ArrayExpression($1, $3); }
           ;
 
-expr_or_null  : expr
-              |
+expr_or_null  : expr { $$ = $1; }
+              | { $$ = new NullExpression(); }
               ;
 %%
 
