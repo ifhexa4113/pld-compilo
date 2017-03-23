@@ -7,9 +7,9 @@
 class While: public ConditionalStructure
 {
 public:
-    While(Expression* condition_);
-    ~While();
-    int walkTree();
+    While(Block* block_, Expression* condition_);
+    virtual ~While();
+    virtual int walkTree();
 };
 
 #endif //WHILE_H

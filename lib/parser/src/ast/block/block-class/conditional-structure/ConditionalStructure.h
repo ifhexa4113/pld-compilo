@@ -1,14 +1,17 @@
+
 #ifndef CONDITIONALSTRUCTURE_H
 #define CONDITIONALSTRUCTURE_H
 
-#include "ast/AstNode.h"
+
+#include "ast/block/block-class/BlockClass.h"
 #include "ast/expression/Expression.h"
 
-class ConditionalStructure: public AstNode
+class ConditionalStructure: public BlockClass
 {
 public:
-    ConditionalStructure(Expression* condition_);
+    ConditionalStructure(Block* block_, Expression* condition_);
     virtual ~ConditionalStructure();
+
     virtual int walkTree();
 
 protected:
