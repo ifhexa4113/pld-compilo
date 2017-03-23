@@ -21,7 +21,7 @@
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
 #Variables generales--------------------------------------------
-#OS specific
+#OS specific commands
 OSUNIX = unix
 OSWIN = win
 OS = $(OSWIN)
@@ -147,6 +147,9 @@ else ifeq ($(OS),$(OSUNIX))
     MAKETESTDIR = mkdir -p $(TESTDIR)
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
+	NRTESTS := $(find $(NRPATH) -type d)
+	NRTESTS := $(addprefix $(NRTARGETPREFIX),$(subst $(WORKINGDIR)\$(NRPATH)\,,$(filter-out $(NRPATH),$(NRTESTS))))
+	NRPASSCMD = if [ $$? -eq 0 ]; then (echo PASSED) else (echo FAILED) && exit 1 fi
     NULLREDIRECT = /dev/nul
 else
 	echo Unknown OS
@@ -223,8 +226,7 @@ $(NRTARGETPREFIX)%:
 	@echo $(PROMPTSEPARATOR)
 	@$(CAT) $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
 	@$(ECHONEWLINE)
-	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT)
-	@$(NRPASSCMD)
+	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT) $(SEVERAL_CMD) @$(NRPASSCMD)
 
 nr-tests: $(NRTESTS)
 	@echo $(PROMPTSEPARATOR)
