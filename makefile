@@ -31,7 +31,10 @@ DELDIROPT =
 MKDIR =
 MAKEDIR =
 MAKETESTDIR =
+SUBSEPARATOR =
 SEVERAL_CMD =
+NULLREDIRECT =
+ECHONEWLINE =
 
 CC = g++
 MAINFILE = main
@@ -66,6 +69,15 @@ TESTDIR =
 ALLDIRCMD =
 LIBS = $(wildcard $(LIBPATH)/*)
 
+NRPATH = $(TESTPATH)/non-regression
+NRTESTS =
+NRDESC = desc
+NRINPUT = input.cmm
+NROUTPUT = output
+NRCMD =
+NRTARGETPREFIX = test-
+NRPASSCMD =
+
 EXE1 = $(EXEPATH)/pld-compilo.$(EXEFILE)
 EXE2 = $(EXEPATH)/tests.$(EXEFILE)
 EXECS = $(EXE1) $(EXE2)
@@ -91,6 +103,7 @@ ifeq ($(OS),$(OSWIN))
 	MKDIR = mkdir
 	DELOPT = /s
 	DELDIROPT = /s /q
+	ECHONEWLINE = echo.
 	WORKINGDIR = $(shell echo %cd%)
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
@@ -99,12 +112,22 @@ ifeq ($(OS),$(OSWIN))
     SEVERAL_CMD = &
     MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
     MAKETESTDIR := $(foreach dir,$(TESTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
+    SUBSEPARATOR = "\"
+	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
+	NRPATH := $(subst /,$(SUBSEPARATOR),$(NRPATH))
+    NRTESTS := $(shell dir /s /b /o:n /ad $(NRPATH))
+    NRTESTS := $(subst $(WORKINGDIR)\$(NRPATH)\,,$(NRTESTS))
+    NRPASSCMD = if errorlevel 0 (echo PASSED) else (echo FAILED) && exit 1
+    NULLREDIRECT = nul
+    EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
+    EXE2 := $(subst /,$(SUBSEPARATOR),$(EXE2))
 else ifeq ($(OS),$(OSUNIX))
 	DEL = rm
 	DELDIR = rm
 	MKDIR = mkdir
 	DELOPT = -rf
 	DELDIROPT = -rf
+	ECHONEWLINE =
 	WORKINGDIR = $(shell cd $(SRCPATH) && pwd)
 	ALLDIRCMD = find $(SRCPATH) -type d
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
@@ -113,6 +136,8 @@ else ifeq ($(OS),$(OSUNIX))
     MAKEDIR := mkdir -p $(OUTDIR)
     MAKETESTDIR = mkdir -p $(TESTDIR)
     SEVERAL_CMD = ;
+    SUBSEPARATOR = /
+    NULLREDIRECT = /dev/nul
 else
 	echo Unknown OS
 	exit 1
@@ -135,7 +160,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir test libs libs-tests test-tree libs-test-tree
+.PHONY: clean mrproper print-% makedir test libs libs-tests test-tree libs-test-tree $(NRTARGETPREFIX)% nr-test
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
@@ -156,7 +181,14 @@ build-test: $(EXE2)
 
 tests: makedir libs libs-tests
 	make OS=$(OS) DEBUG=$(DEBUG) build-test
+	@echo UNIT TESTS
 	$(EXE2)
+	@echo NON-REGRESSION TESTS
+	make OS=$(OS) DEBUG=$(DEBUG) nr-tests
+
+nr-tests: $(NRTESTS)
+	@echo ------------
+	@echo. ALL TESTS PASSED
 
 $(EXE1): $(OBJ) $(OBJLIB)
 	$(CC) -o $@ $^ $(LDFLAGS)
@@ -207,3 +239,17 @@ print-%:
 	@echo $* = $($*)
 
 test:
+	bin\pld-compilo.exe < test/non-regression/function/input.cmm > nul
+	@echo %errorlevel%
+	@echo $(HU)
+
+HU=$(shell type test\non-regression\function\desc)
+HUU=$(foreach test,$(NRTESTS),echo -------- && type $(NRPATH)\$(test)\$(NRDESC) &)
+HUUU = $(shell $(HUU))
+
+$(NRTARGETPREFIX)%:
+	@echo ------------
+	@type $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
+	@$(ECHONEWLINE)
+	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT)
+	@$(NRPASSCMD)
