@@ -7,7 +7,7 @@ class Variable : public LValue
 {
 public:
     Variable(Type type) : LValue(type){};
-    virtual ~Variable();
+    ~Variable() {};
 };
 
 #endif
