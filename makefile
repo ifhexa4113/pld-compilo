@@ -116,7 +116,7 @@ ifeq ($(OS),$(OSWIN))
 	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
 	NRPATH := $(subst /,$(SUBSEPARATOR),$(NRPATH))
     NRTESTS := $(shell dir /s /b /o:n /ad $(NRPATH))
-    NRTESTS := $(subst $(WORKINGDIR)\$(NRPATH)\,,$(NRTESTS))
+    NRTESTS := $(addprefix $(NRTARGETPREFIX),$(subst $(WORKINGDIR)\$(NRPATH)\,,$(NRTESTS)))
     NRPASSCMD = if errorlevel 0 (echo PASSED) else (echo FAILED) && exit 1
     NULLREDIRECT = nul
     EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
@@ -166,7 +166,8 @@ LDFLAGS =
 .SUFFIXES: #aucune
 #---------------------------------------------------------------
 
-#Regles de construction
+#Regles de construction-----------------------------------------
+#Builds
 all: makedir libs
 	make OS=$(OS) DEBUG=$(DEBUG) build
 ifeq ($(DEBUG),yes)
@@ -179,16 +180,11 @@ build: $(EXE1)
 
 build-test: $(EXE2)
 
-tests: makedir libs libs-tests
-	make OS=$(OS) DEBUG=$(DEBUG) build-test
-	@echo UNIT TESTS
-	$(EXE2)
-	@echo NON-REGRESSION TESTS
-	make OS=$(OS) DEBUG=$(DEBUG) nr-tests
+libs:
+	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 
-nr-tests: $(NRTESTS)
-	@echo ------------
-	@echo. ALL TESTS PASSED
+libs-tests:
+	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) tests $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 
 $(EXE1): $(OBJ) $(OBJLIB)
 	$(CC) -o $@ $^ $(LDFLAGS)
@@ -205,9 +201,30 @@ $(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(TESTPATH)/$(MAINSRCTESTFIL
 $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(TESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
+#Tests
+tests: makedir libs libs-tests
+	make OS=$(OS) DEBUG=$(DEBUG) build-test
+	@echo UNIT TESTS
+	$(EXE2)
+	@echo NON-REGRESSION TESTS
+	make OS=$(OS) DEBUG=$(DEBUG) nr-tests
+
+$(NRTARGETPREFIX)%:
+	@echo ------------
+	@type $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
+	@$(ECHONEWLINE)
+	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT)
+	@$(NRPASSCMD)
+
+nr-tests: $(NRTESTS)
+	@echo ------------
+	@echo. ALL TESTS PASSED
+
+#Runs
 run: $(EXE1)
 	$(EXE1)
-	
+
+#Construct folders tree
 makedir:
 	$(MAKEDIR)
 
@@ -217,13 +234,7 @@ test-tree: libs-test-tree
 libs-test-tree:
 	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) test-tree $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 
-libs:
-	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
-
-libs-tests:
-	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) tests $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
-
-#Regles de nettoyage
+#Clean
 clean:
 	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) clean $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 	$(DEL) $(DELOPT) *.$(OFILE)
@@ -234,22 +245,10 @@ mrproper:
 	$(DELDIR) $(DELDIROPT) $(OUTDIR_ROOT)
 	$(DELDIR) $(DELDIROPT) $(EXEPATH)
 
-#Regles de debuggage
+#Debug
 print-%:
 	@echo $* = $($*)
 
 test:
-	bin\pld-compilo.exe < test/non-regression/function/input.cmm > nul
-	@echo %errorlevel%
-	@echo $(HU)
 
-HU=$(shell type test\non-regression\function\desc)
-HUU=$(foreach test,$(NRTESTS),echo -------- && type $(NRPATH)\$(test)\$(NRDESC) &)
-HUUU = $(shell $(HUU))
-
-$(NRTARGETPREFIX)%:
-	@echo ------------
-	@type $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
-	@$(ECHONEWLINE)
-	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT)
-	@$(NRPASSCMD)
+#---------------------------------------------------------------
