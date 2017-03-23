@@ -1,0 +1,1 @@
+It should parse a simple void function definition without any code inside nor parameters.
