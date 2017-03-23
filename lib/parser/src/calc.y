@@ -27,6 +27,7 @@
 
     // Includes conditional structures
     #include "ast/block/block-class/FunctionDefinition.h"
+    #include "ast/block/block-class/Else.h"
     #include "ast/block/block-class/conditional-structure/While.h"
     #include "ast/block/block-class/conditional-structure/For.h"
 
@@ -77,12 +78,16 @@ int yylex(void);
    std::vector<AstNode*>*       bloc_expr_type;
    Block*                       bloc_type;
    FunctionDefinition*          def_func_type;
+   Expression*                  expr_type;
+   LValueExpression*            l_val_type;
    FunctionExpression*          function_expr_type;
    std::vector<Expression*>*    args_type;
-   Expression*                  expr_type;
    For*                         for_stat_type;
    While*                       while_type;
-   LValueExpression*            l_val_type;
+   Else*                        else_stat_type;
+   std::vector<char*>*          decl_var_arg_type;
+
+   CmmProgram*                  prog_cmm_type;
 }
 
 %type <statement_type>      statement
@@ -96,6 +101,10 @@ int yylex(void);
 %type <for_stat_type>       for_stat
 %type <while_type>          while_stat
 %type <l_val_type>          l_val
+%type <prog_cmm_type>       prog_c--
+%type <sval>                decl_arg
+%type <decl_var_arg_type>   decl_var_arg
+%type <else_stat_type>      else_stat
 
 %token OP_PLUS
 %token OP_MINUS
@@ -172,7 +181,7 @@ int yylex(void);
 
 prog_c--  : prog_c-- def_func  { program.addFunction($2); }
           | prog_c-- decl_func
-          | { $$ = new NullExpression(); }
+          | { $$ = nullptr; }
           ;
           
 type      : T_CHAR
@@ -208,7 +217,7 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
 decl_arg  : decl_arg SYM_COMMA type decl_var_arg
           | type decl_var_arg
           | T_VOID
-          | { $$ = new NullExpression(); }
+          | { $$ = nullptr; }
           ;
           
 decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE { $$ = $2; } // TODO add entry to symbol table
@@ -218,7 +227,7 @@ def_func  : decl_func bloc  { $$ = new FunctionDefinition($2, $1); }
           ;
 
 decl_var_arg  : decl_var
-              | { $$ = new NullExpression(); }
+              | { $$ = nullptr; }
               ;
 
 decl_var  : IDENTIFIER
@@ -249,7 +258,7 @@ if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
           ;
           
 else_stat : K_ELSE statement
-          | { $$ = new NullExpression(); }
+          | { $$ = nullptr; }
           ;
           
 if_bloc   : if_stat else_stat

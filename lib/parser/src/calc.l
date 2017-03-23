@@ -28,6 +28,7 @@
 
 // Includes for blocks
 #include "ast/block/block-class/FunctionDefinition.h"
+#include "ast/block/block-class/Else.h"
 #include "ast/block/block-class/conditional-structure/While.h"
 #include "ast/block/block-class/conditional-structure/For.h"
 
