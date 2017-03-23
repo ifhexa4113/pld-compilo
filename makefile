@@ -21,9 +21,11 @@
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
 #Variables generales--------------------------------------------
+#OS specific
 OSUNIX = unix
 OSWIN = win
 OS = $(OSWIN)
+CAT =
 DEL =
 DELDIR =
 DELOPT =
@@ -36,6 +38,7 @@ SEVERAL_CMD =
 NULLREDIRECT =
 ECHONEWLINE =
 
+#Files extentions
 CC = g++
 MAINFILE = main
 MAINSRCTESTFILE = main
@@ -46,8 +49,10 @@ EXEFILE = exe
 TESTFILE = spec
 SRCTESTFILE = $(TESTFILE).$(SRCFILE)
 
+#Debug mode
 DEBUG = yes
 
+#Folders & files
 SRCPATH = src
 OBJPATH = build
 LIBPATH = lib
@@ -68,22 +73,25 @@ ALLDIR =
 TESTDIR =
 ALLDIRCMD =
 LIBS = $(wildcard $(LIBPATH)/*)
+OUTDIR_ROOT = $(OBJPATH)
+OUTDIR = $(OUTDIR_ROOT) $(EXEPATH)
 
+#Convenient strings
+PROMPTSEPARATOR = ------------
+
+#Non-regression tests
 NRPATH = $(TESTPATH)/non-regression
 NRTESTS =
 NRDESC = desc
 NRINPUT = input.cmm
 NROUTPUT = output
-NRCMD =
 NRTARGETPREFIX = test-
 NRPASSCMD =
 
+#Executables
 EXE1 = $(EXEPATH)/pld-compilo.$(EXEFILE)
 EXE2 = $(EXEPATH)/tests.$(EXEFILE)
 EXECS = $(EXE1) $(EXE2)
-
-OUTDIR_ROOT = $(OBJPATH)
-OUTDIR = $(OUTDIR_ROOT) $(EXEPATH)
 #---------------------------------------------------------------
 
 #Variables pour les options de compilation----------------------
@@ -98,6 +106,7 @@ CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
 
 #Compilation conditionnelle-------------------------------------
 ifeq ($(OS),$(OSWIN))
+	CAT = type
 	DEL = del
 	DELDIR = rd
 	MKDIR = mkdir
@@ -122,6 +131,7 @@ ifeq ($(OS),$(OSWIN))
     EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
     EXE2 := $(subst /,$(SUBSEPARATOR),$(EXE2))
 else ifeq ($(OS),$(OSUNIX))
+	CAT = cat
 	DEL = rm
 	DELDIR = rm
 	MKDIR = mkdir
@@ -210,15 +220,15 @@ tests: makedir libs libs-tests
 	make OS=$(OS) DEBUG=$(DEBUG) nr-tests
 
 $(NRTARGETPREFIX)%:
-	@echo ------------
-	@type $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
+	@echo $(PROMPTSEPARATOR)
+	@$(CAT) $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
 	@$(ECHONEWLINE)
 	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT)
 	@$(NRPASSCMD)
 
 nr-tests: $(NRTESTS)
-	@echo ------------
-	@echo. ALL TESTS PASSED
+	@echo $(PROMPTSEPARATOR)
+	@echo ALL TESTS PASSED
 
 #Runs
 run: $(EXE1)
