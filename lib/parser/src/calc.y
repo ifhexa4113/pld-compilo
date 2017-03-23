@@ -226,7 +226,6 @@ def_prim  : decl_var OP_ASSIGN expr
           ;
 
 def_tab   : decl_var OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
-          | decl_var OP_ASSIGN expr
           ;
           
 def_var   : def_prim
