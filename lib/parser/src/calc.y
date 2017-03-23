@@ -4,7 +4,7 @@
 
     #include "ast/AstNode.h"
     #include "ast/CmmProgram.h"
-
+    #include "ast/NullNode.h"
     #include "ast/Return.h"
     #include "ast/BreakInstruction.h"
     #include "ast/ContinueInstruction.h"
@@ -42,7 +42,7 @@
 
 #include "ast/AstNode.h"
 #include "ast/CmmProgram.h"
-#include "ast/block/block-class/FunctionDefinition.h"
+#include "ast/NullNode.h"
 
 #include "ast/Return.h"
 #include "ast/BreakInstruction.h"
@@ -63,6 +63,8 @@
 #include "ast/expression/ArrayExpression.h"
 #include "ast/expression/LValueExpression.h"
 #include "ast/expression/NullExpression.h"
+
+#include "ast/block/block-class/FunctionDefinition.h"
 
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Syntax error: " << s << std::endl;
@@ -211,12 +213,12 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
           | K_CONTINUE SYM_SEMICOLON { $$ = new ContinueInstruction(); }
           | K_RETURN SYM_SEMICOLON { $$ = new Return(); }
           | K_RETURN expr SYM_SEMICOLON { /*$$ = new Return($2);*/ }
-          | SYM_SEMICOLON { /* ?? */ }
+          | SYM_SEMICOLON { $$ = new NullNode(); }
           ;
           
 decl_arg  : decl_arg SYM_COMMA type decl_var_arg
           | type decl_var_arg
-          | T_VOID
+          | T_VOID { $$ = nullptr; }
           | { $$ = nullptr; }
           ;
           

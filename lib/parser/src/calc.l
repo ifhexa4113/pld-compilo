@@ -4,8 +4,7 @@
 
 #include "ast/AstNode.h"
 #include "ast/CmmProgram.h"
-#include "ast/block/block-class/FunctionDefinition.h"
-
+#include "ast/NullNode.h"
 #include "ast/Return.h"
 #include "ast/BreakInstruction.h"
 #include "ast/ContinueInstruction.h"
