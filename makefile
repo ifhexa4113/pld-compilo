@@ -148,7 +148,7 @@ else ifeq ($(OS),$(OSUNIX))
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
 	NRTESTS := $(find $(NRPATH) -type d)
-	NRTESTS := $(addprefix $(NRTARGETPREFIX),$(subst $(WORKINGDIR)\$(NRPATH)\,,$(filter-out $(NRPATH),$(NRTESTS))))
+	NRTESTS := $(subst $(NRPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRPATH),$(NRTESTS)))
 	NRPASSCMD = if [ $$? -eq 0 ]; then (echo \e[92mPASSED\e[0m) else (echo \e[91mFAILED\e[0m) && exit 1 fi
     NULLREDIRECT = /dev/nul
 else
