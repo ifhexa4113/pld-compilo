@@ -126,7 +126,7 @@ ifeq ($(OS),$(OSWIN))
 	NRPATH := $(subst /,$(SUBSEPARATOR),$(NRPATH))
     NRTESTS := $(shell dir /s /b /o:n /ad $(NRPATH))
     NRTESTS := $(addprefix $(NRTARGETPREFIX),$(subst $(WORKINGDIR)\$(NRPATH)\,,$(NRTESTS)))
-    NRPASSCMD = if not errorlevel 1 (echo PASSED) else ((echo FAILED) && exit 1)
+    NRPASSCMD = if not errorlevel 1 (echo [92mPASSED[0m) else ((echo [91mFAILED[0m) && exit 1)
     NULLREDIRECT = nul
     EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
     EXE2 := $(subst /,$(SUBSEPARATOR),$(EXE2))
