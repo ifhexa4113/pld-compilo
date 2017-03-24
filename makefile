@@ -149,7 +149,7 @@ else ifeq ($(OS),$(OSUNIX))
     SUBSEPARATOR = /
 	NRTESTS := $(subst $(NRPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRPATH),$(shell find $(NRPATH) -type d)))
 	NRPASSCMD = if [ $$? -eq 0 ]; then (echo \e[92mPASSED\e[0m) else (echo \e[91mFAILED\e[0m) && exit 1 fi
-    NULLREDIRECT = /dev/nul
+    NULLREDIRECT = /dev/null
 else
 	echo Unknown OS
 	exit 1
@@ -228,7 +228,7 @@ $(NRTARGETPREFIX)%:
 	@$(ECHONEWLINE)
 	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT) $(SEVERAL_CMD) @$(NRPASSCMD)
 
-nr-tests: print-NRTESTS $(NRTESTS)
+nr-tests: $(NRTESTS)
 	@echo $(PROMPTSEPARATOR)
 	@echo ALL TESTS PASSED
 
