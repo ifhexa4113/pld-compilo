@@ -1,18 +1,15 @@
 #include "Function.h"
 
-Function::Function(Type type) : returnType(type)
+Function::Function(std::string name_, Type type_, int nbArgs_) :
+    Symbol(name_, type_),
+    nbArgs(nbArgs_)
 {
-
+    // Nothing else to do
 }
 
 Function::~Function()
 {
-
-}
-
-Type Function::getType()
-{
-    return returnType;
+    // Nothing else to do
 }
 
 int Function::getNbArgs()

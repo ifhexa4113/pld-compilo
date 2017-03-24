@@ -1,16 +1,12 @@
 #include "LValue.h"
 
-LValue::LValue(Type type) : type(type)
+LValue::LValue(std::string name_, Type type_) :
+    Symbol(name_, type_)
 {
-
+    // Nothing else to do
 }
 
 LValue::~LValue()
 {
-
-}
-
-Type LValue::getType()
-{
-    return type;
+    // Nothing else to do
 }

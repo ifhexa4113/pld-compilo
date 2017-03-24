@@ -1,19 +1,18 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
+#include <string>
 #include "Type.h"
+#include "Symbol.h"
 
-class Function
+class Function : public Symbol
 {
 public:
-    Function(Type type);
+    Function(std::string name, Type type, int nbArgs);
     virtual ~Function();
-
-    Type getType();
     int getNbArgs();
 
 protected:
-    Type returnType;
     int nbArgs;
 };
 

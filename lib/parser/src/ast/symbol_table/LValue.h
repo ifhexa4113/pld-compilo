@@ -1,19 +1,15 @@
 #ifndef LVALUE_H
 #define LVALUE_H
 
+#include <string>
 #include "Type.h"
+#include "Symbol.h"
 
-class LValue
+class LValue : public Symbol
 {
 public:
-    LValue(Type type);
+    LValue(std::string name, Type type);
     virtual ~LValue();
-
-    Type getType();
-
-protected:
-    Type type;
 };
-
 
 #endif
