@@ -1,5 +1,5 @@
 #include "SymbolTable.h"
-#include <exception>
+#include <iostream>
 
 SymbolTable::SymbolTable()
 {
