@@ -31,6 +31,12 @@
 #include "ast/block/block-class/conditional-structure/While.h"
 #include "ast/block/block-class/conditional-structure/For.h"
 
+// Includes for symbols table
+#include "ast/symbol_table/Symbol.h"
+#include "ast/symbol_table/Variable.h"
+#include "ast/symbol_table/Array.h"
+#include "ast/symbol_table/Type.h""
+
 #include "calc.tab.h"
 #include "char_literal_parse.h"
 #include "errors.h"

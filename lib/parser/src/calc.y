@@ -31,6 +31,12 @@
     #include "ast/block/block-class/conditional-structure/While.h"
     #include "ast/block/block-class/conditional-structure/For.h"
 
+    // Includes for symbols table
+    #include "ast/symbol_table/Symbol.h"
+    #include "ast/symbol_table/Variable.h"
+    #include "ast/symbol_table/Array.h"
+    #include "ast/symbol_table/Type.h"
+
     extern "C" int yyparse (CmmProgram&);
 }
 
@@ -66,6 +72,10 @@
 
 #include "ast/block/block-class/FunctionDefinition.h"
 
+// Includes for symbols table
+#include "ast/symbol_table/Variable.h"
+#include "ast/symbol_table/Type.h"
+
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Syntax error: " << s << std::endl;
 }
@@ -73,30 +83,30 @@ int yylex(void);
 %}
 
 %union {
-   int      ival;
-   char*    sval;
+    int             ival;
+    char*           sval;
 
-   AstNode*                     statement_type;
-   std::vector<AstNode*>*       bloc_expr_type;
-   Block*                       bloc_type;
-   FunctionDefinition*          def_func_type;
-   Expression*                  expr_type;
-   LValueExpression*            l_val_type;
-   FunctionExpression*          function_expr_type;
-   std::vector<Expression*>*    args_type;
-   For*                         for_stat_type;
-   While*                       while_type;
-   Else*                        else_stat_type;
-   std::vector<char*>*          decl_var_arg_type;
+    AstNode*                        statement_type;
+    std::vector<AstNode*>*          bloc_expr_type;
+    Block*                          bloc_type;
+    FunctionDefinition*             def_func_type;
+    Expression*                     expr_type;
+    LValueExpression*               l_val_type;
+    FunctionExpression*             function_expr_type;
+    std::vector<Expression*>*       args_type;
+    For*                            for_stat_type;
+    While*                          while_type;
+    Else*                           else_stat_type;
+    Symbol*                         decl_var_type;
+    Type                            type_type;
 
-   CmmProgram*                  prog_cmm_type;
+    CmmProgram*                     prog_cmm_type;
 }
 
 %type <statement_type>      statement
 %type <bloc_expr_type>      bloc_expr
 %type <bloc_type>           bloc
 %type <def_func_type>       def_func
-%type <sval>                decl_func
 %type <function_expr_type>  function_expr
 %type <args_type>           args
 %type <expr_type>           expr for_init expr_or_null
@@ -104,8 +114,11 @@ int yylex(void);
 %type <while_type>          while_stat
 %type <l_val_type>          l_val
 %type <prog_cmm_type>       prog_c--
-%type <sval>                decl_arg
-%type <decl_var_arg_type>   decl_var_arg
+%type <sval>                decl_func
+%type <decl_var_type>       decl_arg
+%type <decl_var_type>       decl_var
+%type <type_type>           type
+%type <type_type>           type_retour
 %type <else_stat_type>      else_stat
 
 %token OP_PLUS
@@ -186,13 +199,13 @@ prog_c--  : prog_c-- def_func  { program.addFunction($2); }
           | { $$ = nullptr; }
           ;
           
-type      : T_CHAR
-          | T_INT32
-          | T_INT64
+type      : T_CHAR { $$ = Type::CHAR_T; }
+          | T_INT32 { $$ = Type::INT32_T; }
+          | T_INT64 { $$ = Type::INT64_T; }
           ;
           
-type_retour : type
-            | T_VOID
+type_retour : type { $$ = $1; }
+            | T_VOID { $$ = Type::VOID_T; }
             ;
 
 bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block(*$2); delete $2; }
@@ -217,7 +230,7 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
           ;
 
 decl_arg  : decl_arg SYM_COMMA decl_var
-          | decl_var
+          | decl_var { /* TODO: decl_arg is not a decl_var, it's a list ? */ }
           | T_VOID { $$ = nullptr; }
           | { $$ = nullptr; }
           ;
@@ -228,9 +241,9 @@ decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE { $$ = $2; } // T
 def_func  : decl_func bloc  { $$ = new FunctionDefinition($2, $1); }
           ;
 
-decl_var  : type IDENTIFIER
-          | type IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE
-          | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE
+decl_var  : type IDENTIFIER { $$ = new Variable($2, $1); }
+          | type IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = new Array($2, $1, 0); }
+          | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = new Array($2, $1, $4); }
           ;
 
 def_prim  : decl_var OP_ASSIGN expr
