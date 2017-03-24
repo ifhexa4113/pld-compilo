@@ -261,7 +261,7 @@ decl_def_var  : decl_var
               ;
               
 decl_def_stat : decl_def_stat SYM_COMMA decl_def_var
-              | type decl_def_var
+              | decl_def_var
               ;
               
 if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
