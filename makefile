@@ -147,7 +147,7 @@ else ifeq ($(OS),$(OSUNIX))
     MAKETESTDIR = mkdir -p $(TESTDIR)
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
-	NRTESTS := $(subst $(NRPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRPATH),$(find $(NRPATH) -type d)))
+	NRTESTS := $(subst $(NRPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRPATH),$(shell find $(NRPATH) -type d)))
 	NRPASSCMD = if [ $$? -eq 0 ]; then (echo \e[92mPASSED\e[0m) else (echo \e[91mFAILED\e[0m) && exit 1 fi
     NULLREDIRECT = /dev/nul
 else
