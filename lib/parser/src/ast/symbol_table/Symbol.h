@@ -8,7 +8,7 @@ class Symbol
 {
 public:
     Symbol(std::string name, Type type, int address = 0);
-    virtual ~Symbol() = 0;
+    virtual ~Symbol();
 
     std::string getName();
     Type getType();
