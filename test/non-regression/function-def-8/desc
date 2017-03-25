@@ -1,0 +1,1 @@
+It should parse a simple void function definition with one array parameter and a void return statement.

@@ -115,7 +115,7 @@ int yylex(void);
     Definition*                         def_type;
     Expression*                         expr_type;
 
-    std::vector<VariableDeclaration*>*  decl_arg_type;
+    std::vector<LValueDeclaration*>*    decl_arg_type;
     FunctionDefinition*                 def_func_type;
     LValueExpression*                   l_val_type;
 
@@ -245,8 +245,8 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
           | SYM_SEMICOLON { $$ = new NullNode(); }
           ;
 
-decl_arg  : decl_arg SYM_COMMA decl_var
-          | decl_var { /* TODO: decl_arg is not a decl_var, it's a list ? */ }
+decl_arg  : decl_arg SYM_COMMA decl_var { $1->push_back($3); $$ = $1; }
+          | decl_var { $$ = new std::vector<LValueDeclaration*>(); $$->push_back($1); }
           | T_VOID { $$ = nullptr; }
           | { $$ = nullptr; }
           ;
