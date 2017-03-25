@@ -10,7 +10,10 @@ SymbolTable::~SymbolTable()
 {
     for(auto& pair : table)
     {
-        delete pair.second;
+        if(pair.second != nullptr)
+        {
+            delete pair.second;
+        }
     }
 }
 

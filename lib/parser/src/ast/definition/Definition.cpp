@@ -1,6 +1,6 @@
 #include "Definition.h"
 
-Definition::Definition(std::string name_, Declaration* declaration_) :
+Definition::Definition(Declaration* declaration_) :
     AstNode(),
     declaration(declaration_)
 {
