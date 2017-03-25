@@ -1,7 +1,7 @@
 #include <string>
 #include "catch.h"
 #include "ast/SymbolTable.h"
-#include "ast/Definition/VariableDefinition.h"
+#include "ast/definition/VariableDefinition.h"
 #include "ast/declaration/VariableDeclaration.h"
 #include "ast/declaration/Type.h"
 
@@ -20,7 +20,7 @@ TEST_CASE("It should state that the table contains an element", "SymbolTable")
         }
     }
 
-    SECTION("It should no fail when trying to delete a declaration already deleted somewhere else")
+    SECTION("It should not fail when trying to delete a declaration already deleted somewhere else")
     {
         SymbolTable* st2 = new SymbolTable();
         VariableDefinition* def = new VariableDefinition(a, nullptr);
