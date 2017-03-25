@@ -1,6 +1,7 @@
 #include <string>
 #include "catch.h"
 #include "ast/SymbolTable.h"
+#include "ast/Definition/VariableDefinition.h"
 #include "ast/declaration/VariableDeclaration.h"
 #include "ast/declaration/Type.h"
 
@@ -17,6 +18,16 @@ TEST_CASE("It should state that the table contains an element", "SymbolTable")
         SECTION("It should gather the Symbol") {
             REQUIRE(st.get(id) == a);
         }
+    }
+
+    SECTION("It should no fail when trying to delete a declaration already deleted somewhere else")
+    {
+        SymbolTable* st2 = new SymbolTable();
+        VariableDefinition* def = new VariableDefinition(a, nullptr);
+        st2.put(id, def->getDeclaration());
+        REQUIRE(st.contains(id));
+        delete def;
+        delete st2;
     }
 
     // NOTE: no need to delete a since the SymbolTable will do it for us
