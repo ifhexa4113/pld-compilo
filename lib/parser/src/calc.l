@@ -3,22 +3,22 @@
 #include <string>
 
 #include "ast/AstNode.h"
-#include "ast/CmmProgram.h"
+#include "ast/block/CmmProgram.h"
 #include "ast/NullNode.h"
-#include "ast/Return.h"
-#include "ast/BreakInstruction.h"
-#include "ast/ContinueInstruction.h"
+#include "ast/keyword-instruction/ReturnInstruction.h"
+#include "ast/keyword-instruction/BreakInstruction.h"
+#include "ast/keyword-instruction/ContinueInstruction.h"
 
 // Includes for expressions
 #include "ast/expression/Expression.h"
-#include "ast/expression/LiteralNumber.h"
+#include "ast/expression/LiteralNumberExpression.h"
 #include "ast/expression/UnaryBinaryOperationOnExpression.h"
 #include "ast/expression/UnaryBinaryOperationOnVariable.h"
 #include "ast/expression/BinaryBinaryOperation.h"
-#include "ast/expression/BinaryArithmetic.h"
-#include "ast/expression/BinaryAffection.h"
-#include "ast/expression/BinaryLogic.h"
-#include "ast/expression/Parenthesis.h"
+#include "ast/expression/BinaryArithmeticOperation.h"
+#include "ast/expression/BinaryAffectionOperation.h"
+#include "ast/expression/BinaryLogicOperation.h"
+#include "ast/expression/ParenthesisExpression.h"
 #include "ast/expression/FunctionExpression.h"
 #include "ast/expression/VariableExpression.h"
 #include "ast/expression/ArrayExpression.h"
@@ -26,16 +26,15 @@
 #include "ast/expression/NullExpression.h"
 
 // Includes for blocks
-#include "ast/block/block-class/FunctionDefinition.h"
-#include "ast/block/block-class/Else.h"
-#include "ast/block/block-class/conditional-structure/While.h"
-#include "ast/block/block-class/conditional-structure/For.h"
+#include "ast/definition/FunctionDefinition.h"
+#include "ast/block/conditional-structure/While.h"
+#include "ast/block/conditional-structure/For.h"
 
-// Includes for symbols table
-#include "ast/symbol_table/Symbol.h"
-#include "ast/symbol_table/Variable.h"
-#include "ast/symbol_table/Array.h"
-#include "ast/symbol_table/Type.h""
+// Includes for declarations
+#include "ast/declaration/Declaration.h"
+#include "ast/declaration/VariableDeclaration.h"
+#include "ast/declaration/ArrayDeclaration.h"
+#include "ast/declaration/Type.h"
 
 #include "calc.tab.h"
 #include "char_literal_parse.h"
