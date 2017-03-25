@@ -122,7 +122,7 @@ int yylex(void);
 
 %type <statement_type>      statement
 %type <bloc_expr_type>      bloc_expr
-%type <bloc_type>           bloc for_stat while_stat
+%type <bloc_type>           bloc for_stat while_stat if_bloc
 %type <def_type>            def_var def_prim def_tab
 %type <def_func_type>       def_func
 %type <decl_type>           decl_func decl_var
@@ -229,9 +229,9 @@ bloc_expr : bloc_expr statement { $1->push_back($2); $$ = $1; }
           ;
 
 statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
-          | if_bloc { /*$$ = $1;*/ }
-          | for_stat { /*$$ = $1;*/ }
-          | while_stat { /*$$ = $1;*/ }
+          | if_bloc { $$ = $1; }
+          | for_stat { $$ = $1; }
+          | while_stat { $$ = $1; }
           | expr SYM_SEMICOLON { $$ = $1; }
           | bloc { $$ = $1; }
           | K_BREAK SYM_SEMICOLON { $$ = new BreakInstruction(); }
