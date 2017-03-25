@@ -318,8 +318,9 @@ expr      : l_val { $$ = $1; }
           | expr OP_TIMES expr { $$ = new BinaryArithmeticOperation(ArithmeticOperator::MUL, $1, $3); }
           | expr OP_DIV expr { $$ = new BinaryArithmeticOperation(ArithmeticOperator::DIV, $1, $3); }
           | expr OP_MOD expr { $$ = new BinaryArithmeticOperation(ArithmeticOperator::MOD, $1, $3); }
-          | l_val OP_ASSIGN expr { $$ = new BinaryAffectionOperation(AffectionOperator::EQUAL, $1, $3); } // TODO missing +=
+          | l_val OP_ASSIGN expr { $$ = new BinaryAffectionOperation(AffectionOperator::EQUAL, $1, $3); }
           | l_val OP_ASSIGN_AND expr { $$ = new BinaryAffectionOperation(AffectionOperator::AND_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_ADD expr { $$ = new BinaryAffectionOperation(AffectionOperator::PLUS_EQUAL, $1, $3); }
           | l_val OP_ASSIGN_MINUS expr { $$ = new BinaryAffectionOperation(AffectionOperator::MINUS_EQUAL, $1, $3); }
           | l_val OP_ASSIGN_TIMES expr { $$ = new BinaryAffectionOperation(AffectionOperator::MUL_EQUAL, $1, $3); }
           | l_val OP_ASSIGN_DIV expr { $$ = new BinaryAffectionOperation(AffectionOperator::DIV_EQUAL, $1, $3); }
