@@ -26,7 +26,6 @@
 #include "ast/expression/NullExpression.h"
 
 // Includes for blocks
-#include "ast/definition/FunctionDefinition.h"
 #include "ast/block/conditional-structure/While.h"
 #include "ast/block/conditional-structure/For.h"
 
@@ -36,6 +35,13 @@
 #include "ast/declaration/ArrayDeclaration.h"
 #include "ast/declaration/FunctionDeclaration.h"
 #include "ast/declaration/Type.h"
+
+// Includes for definitions
+#include "ast/definition/Definition.h"
+#include "ast/definition/FunctionDefinition.h"
+#include "ast/definition/VariableDefinition.h"
+#include "ast/definition/ArrayDefinition.h"
+#include "ast/definition/ArrayListDefinition.h"
 
 #include "calc.tab.h"
 #include "char_literal_parse.h"

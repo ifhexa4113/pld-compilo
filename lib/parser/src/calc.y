@@ -26,7 +26,6 @@
     #include "ast/expression/NullExpression.h"
 
     // Includes for blocks
-    #include "ast/definition/FunctionDefinition.h"
     #include "ast/block/conditional-structure/While.h"
     #include "ast/block/conditional-structure/For.h"
 
@@ -36,6 +35,13 @@
     #include "ast/declaration/ArrayDeclaration.h"
     #include "ast/declaration/FunctionDeclaration.h"
     #include "ast/declaration/Type.h"
+
+    // Includes for definitions
+    #include "ast/definition/Definition.h"
+    #include "ast/definition/FunctionDefinition.h"
+    #include "ast/definition/VariableDefinition.h"
+    #include "ast/definition/ArrayDefinition.h"
+    #include "ast/definition/ArrayListDefinition.h"
 
     extern "C" int yyparse (CmmProgram&);
 }
@@ -70,7 +76,6 @@
 #include "ast/expression/NullExpression.h"
 
 // Includes for blocks
-#include "ast/definition/FunctionDefinition.h"
 #include "ast/block/conditional-structure/While.h"
 #include "ast/block/conditional-structure/For.h"
 
@@ -80,6 +85,13 @@
 #include "ast/declaration/ArrayDeclaration.h"
 #include "ast/declaration/FunctionDeclaration.h"
 #include "ast/declaration/Type.h"
+
+// Includes for definitions
+#include "ast/definition/Definition.h"
+#include "ast/definition/FunctionDefinition.h"
+#include "ast/definition/VariableDefinition.h"
+#include "ast/definition/ArrayDefinition.h"
+#include "ast/definition/ArrayListDefinition.h"
 
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Syntax error: " << s << std::endl;
@@ -111,7 +123,7 @@ int yylex(void);
 %type <statement_type>      statement
 %type <bloc_expr_type>      bloc_expr
 %type <bloc_type>           bloc for_stat while_stat
-//%type <def_type>
+%type <def_type>            def_var def_prim def_tab
 %type <def_func_type>       def_func
 %type <decl_type>           decl_func decl_var
 %type <expr_type>           expr for_init expr_or_null function_expr
@@ -253,14 +265,16 @@ decl_var  : type IDENTIFIER { $$ = new VariableDeclaration($2, $1); }
           | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = new ArrayDeclaration($2, $1, $4); }
           ;
 
-def_prim  : decl_var OP_ASSIGN expr
+def_prim  : decl_var OP_ASSIGN expr { $$ = new VariableDefinition($1->getName(), $3); }
           ;
 
-def_tab   : decl_var OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
+def_tab   : decl_var OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE {
+            $$ = new ArrayListDefinition($1->getName(), *$4);
+            delete $4; }
           ;
           
-def_var   : def_prim
-          | def_tab
+def_var   : def_prim { $$ = $1; }
+          | def_tab { $$ = $1; }
           ;
           
 decl_def_var  : decl_var
