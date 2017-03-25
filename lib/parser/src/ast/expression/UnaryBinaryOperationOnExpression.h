@@ -8,9 +8,9 @@ class UnaryBinaryOperationOnExpression : public UnaryBinaryOperation
 {
 public:
     UnaryBinaryOperationOnExpression(UnaryBinaryOperator op_, Expression* expression_);
-    virtual ~UnaryBinaryOperationOnExpression();
-
-    virtual int walkTree();
+    ~UnaryBinaryOperationOnExpression();
+    int walkTree();
+    Expression* getExpression();
 
 protected:
     Expression* expression;

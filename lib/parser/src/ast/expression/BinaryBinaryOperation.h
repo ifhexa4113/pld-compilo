@@ -15,15 +15,17 @@ enum class BinaryBinaryOperator
 class BinaryBinaryOperation : public Expression
 {
 public:
-    BinaryBinaryOperation(BinaryBinaryOperator op_, Expression* lexpression_, Expression* rexpression_);
-    virtual ~BinaryBinaryOperation();
-
-    virtual int walkTree();
+    BinaryBinaryOperation(BinaryBinaryOperator op_, Expression* lExpression_, Expression* rExpression_);
+    ~BinaryBinaryOperation();
+    int walkTree();
+    Expression* getRExpression();
+    Expression* getLExpression();
+    BinaryBinaryOperator getOperator();
 
 protected:
     BinaryBinaryOperator op;
-    Expression* lexpression;
-    Expression* rexpression;
+    Expression* lExpression;
+    Expression* rExpression;
 };
 
 #endif

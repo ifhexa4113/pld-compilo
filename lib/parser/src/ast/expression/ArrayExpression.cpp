@@ -1,12 +1,15 @@
 #include <iostream>
-
 #include "ArrayExpression.h"
+#include "NullExpression.h"
 
 ArrayExpression::ArrayExpression(std::string name_, Expression* index_) :
     LValueExpression(name_),
     index(index_)
 {
-
+    if(index == nullptr)
+    {
+        index = new NullExpression();
+    }
 }
 
 ArrayExpression::~ArrayExpression()

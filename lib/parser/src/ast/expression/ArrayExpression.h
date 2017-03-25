@@ -7,9 +7,8 @@ class ArrayExpression : public LValueExpression
 {
 public:
     ArrayExpression(std::string name_, Expression* index_);
-    virtual ~ArrayExpression();
-
-    virtual int walkTree();
+    ~ArrayExpression();
+    int walkTree();
 
 protected:
     Expression* index;

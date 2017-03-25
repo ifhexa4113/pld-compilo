@@ -8,9 +8,9 @@ class UnaryBinaryOperationOnVariable : public UnaryBinaryOperation
 {
 public:
     UnaryBinaryOperationOnVariable(UnaryBinaryOperator op_, LValueExpression* variable_);
-    virtual ~UnaryBinaryOperationOnVariable();
-
-    virtual int walkTree();
+    ~UnaryBinaryOperationOnVariable();
+    int walkTree();
+    LValueExpression* getVariable();
 
 protected:
     LValueExpression* variable;

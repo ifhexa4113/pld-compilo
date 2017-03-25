@@ -1,7 +1,7 @@
 #ifndef AST_H
 #define AST_H
 
-#include "CmmProgram.h"
+#include "block/CmmProgram.h"
 
 class Ast
 {

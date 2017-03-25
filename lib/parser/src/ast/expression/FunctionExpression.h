@@ -3,21 +3,21 @@
 
 #include <string>
 #include <vector>
-
 #include "Expression.h"
 
 class FunctionExpression : public Expression
 {
 public:
     FunctionExpression(std::string name_);
-    FunctionExpression(std::vector<Expression*> list_, std::string name_);
-    virtual ~FunctionExpression();
-    virtual int walkTree();
-    std::string getName() { return name; };
+    FunctionExpression(std::string name_, std::vector<Expression*> parameters_);
+    ~FunctionExpression();
+    int walkTree();
+    std::string getName();
+    std::vector<Expression*> getParameters();
 
 protected:
-    std::vector<Expression*> parameters;
     std::string name;
+    std::vector<Expression*> parameters;
 };
 
 #endif

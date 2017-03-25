@@ -1,0 +1,31 @@
+#ifndef BINARY_ARITHMETIC_H
+#define BINARY_ARITHMETIC_H
+
+#include "Expression.h"
+
+enum class ArithmeticOperator
+{
+    PLUS = 0,
+    MINUS,
+    MUL,
+    DIV,
+    MOD
+};
+
+class BinaryArithmeticOperation : public Expression
+{
+public:
+    BinaryArithmeticOperation(ArithmeticOperator op_, Expression* lExpression_, Expression* rExpression_);
+    ~BinaryArithmeticOperation();
+    int walkTree();
+    Expression* getRExpression();
+    Expression* getLExpression();
+    ArithmeticOperator getOperator();
+
+protected:
+    ArithmeticOperator op;
+    Expression* lExpression;
+    Expression* rExpression;
+};
+
+#endif

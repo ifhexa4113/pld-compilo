@@ -7,8 +7,8 @@ class NullExpression : public Expression
 {
 public:
     NullExpression();
-    virtual ~NullExpression(){};
-    virtual int walkTree();
+    ~NullExpression();
+    int walkTree();
 };
 
 #endif //NULL_EXPRESSION_H

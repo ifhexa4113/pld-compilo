@@ -2,15 +2,15 @@
 #include "FunctionExpression.h"
 
 FunctionExpression::FunctionExpression(std::string name_) :
-    FunctionExpression(std::vector<Expression*>(), name_)
+    FunctionExpression(name_, std::vector<Expression*>())
 {
     // Nothing else to do
 }
 
-FunctionExpression::FunctionExpression(std::vector<Expression*> list_, std::string name_) :
+FunctionExpression::FunctionExpression(std::string name_, std::vector<Expression*> parameters_) :
     Expression(),
     name(name_),
-    parameters(list_)
+    parameters(parameters_)
 {
     // Nothing else to do
 }
@@ -32,4 +32,15 @@ int FunctionExpression::walkTree()
         std::cout << ", ";
     }
     std::cout << std::endl;
+    return 0;
+}
+
+std::string FunctionExpression::getName()
+{
+    return name;
+}
+
+std::vector<Expression *> FunctionExpression::getParameters()
+{
+    return parameters;
 }
