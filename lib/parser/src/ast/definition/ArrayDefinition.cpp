@@ -1,6 +1,6 @@
 #include "ArrayDefinition.h"
 
-ArrayDefinition::ArrayDefinition(ArrayDeclaration* declaration_) :
+ArrayDefinition::ArrayDefinition(LValueDeclaration* declaration_) :
     Definition(declaration_)
 {
     // Nothing else to do

@@ -31,6 +31,7 @@
 
 // Includes for declarations
 #include "ast/declaration/Declaration.h"
+#include "ast/declaration/LValueDeclaration.h"
 #include "ast/declaration/VariableDeclaration.h"
 #include "ast/declaration/ArrayDeclaration.h"
 #include "ast/declaration/FunctionDeclaration.h"

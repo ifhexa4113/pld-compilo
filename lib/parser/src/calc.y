@@ -31,6 +31,7 @@
 
     // Includes for declarations
     #include "ast/declaration/Declaration.h"
+    #include "ast/declaration/LValueDeclaration.h"
     #include "ast/declaration/VariableDeclaration.h"
     #include "ast/declaration/ArrayDeclaration.h"
     #include "ast/declaration/FunctionDeclaration.h"
@@ -81,6 +82,7 @@
 
 // Includes for declarations
 #include "ast/declaration/Declaration.h"
+#include "ast/declaration/LValueDeclaration.h"
 #include "ast/declaration/VariableDeclaration.h"
 #include "ast/declaration/ArrayDeclaration.h"
 #include "ast/declaration/FunctionDeclaration.h"
@@ -108,7 +110,8 @@ int yylex(void);
     Block*                              bloc_type;
     CmmProgram*                         prog_cmm_type;
 
-    Declaration*                        decl_type;
+    LValueDeclaration*                  decl_var_type;
+    FunctionDeclaration*                decl_func_type;
     Definition*                         def_type;
     Expression*                         expr_type;
 
@@ -125,7 +128,8 @@ int yylex(void);
 %type <bloc_type>           bloc for_stat while_stat if_bloc
 %type <def_type>            def_var def_prim def_tab
 %type <def_func_type>       def_func
-%type <decl_type>           decl_func decl_var
+%type <decl_var_type>       decl_var
+%type <decl_func_type>      decl_func
 %type <expr_type>           expr for_init expr_or_null function_expr
 %type <l_val_type>          l_val
 %type <decl_arg_type>       decl_arg
@@ -257,7 +261,7 @@ decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE {
             }
           ;
        
-def_func  : decl_func bloc  { $$ = new FunctionDefinition($1->getName(), $2->getChildren()); }
+def_func  : decl_func bloc  { $$ = new FunctionDefinition($1, $2->getChildren()); }
           ;
 
 decl_var  : type IDENTIFIER { $$ = new VariableDeclaration($2, $1); }
@@ -265,11 +269,11 @@ decl_var  : type IDENTIFIER { $$ = new VariableDeclaration($2, $1); }
           | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = new ArrayDeclaration($2, $1, $4); }
           ;
 
-def_prim  : decl_var OP_ASSIGN expr { $$ = new VariableDefinition($1->getName(), $3); }
+def_prim  : decl_var OP_ASSIGN expr { $$ = new VariableDefinition($1, $3); }
           ;
 
 def_tab   : decl_var OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE {
-            $$ = new ArrayListDefinition($1->getName(), *$4);
+            $$ = new ArrayListDefinition($1, *$4);
             delete $4; }
           ;
           

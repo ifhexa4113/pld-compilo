@@ -1,7 +1,7 @@
 #include "VariableDefinition.h"
 #include "ast/expression/NullExpression.h"
 
-VariableDefinition::VariableDefinition(VariableDeclaration* declaration_, Expression* rExpression_) :
+VariableDefinition::VariableDefinition(LValueDeclaration* declaration_, Expression* rExpression_) :
     Definition(declaration_),
     rExpression(rExpression_)
 {

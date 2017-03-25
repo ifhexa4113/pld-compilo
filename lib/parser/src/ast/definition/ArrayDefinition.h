@@ -2,11 +2,11 @@
 #define ARRAY_DEFINITION_H
 
 #include "Definition.h"
-#include "ast/declaration/ArrayDeclaration.h"
+#include "ast/declaration/LValueDeclaration.h"
 
 class ArrayDefinition : public Definition {
 public:
-    ArrayDefinition(ArrayDeclaration* declaration_);
+    ArrayDefinition(LValueDeclaration* declaration_);
     ~ArrayDefinition();
     int walkTree();
 };
