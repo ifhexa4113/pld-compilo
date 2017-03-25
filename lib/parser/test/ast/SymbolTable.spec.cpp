@@ -24,8 +24,8 @@ TEST_CASE("It should state that the table contains an element", "SymbolTable")
     {
         SymbolTable* st2 = new SymbolTable();
         VariableDefinition* def = new VariableDefinition(a, nullptr);
-        st2.put(id, def->getDeclaration());
-        REQUIRE(st.contains(id));
+        st2->put(id, def->getDeclaration());
+        REQUIRE(st2->contains(id));
         delete def;
         delete st2;
     }
