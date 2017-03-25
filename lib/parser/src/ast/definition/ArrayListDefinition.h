@@ -5,11 +5,12 @@
 #include <vector>
 #include "Definition.h"
 #include "ast/expression/Expression.h"
+#include "ast/declaration/ArrayDeclaration.h"
 
 class ArrayListDefinition : public Definition
 {
 public:
-    ArrayListDefinition(std::string name_, std::vector<Expression*> listExpression_);
+    ArrayListDefinition(ArrayDeclaration* declaration_, std::vector<Expression*> listExpression_);
     ~ArrayListDefinition();
     int walkTree();
     std::vector<Expression*> getListExpression();

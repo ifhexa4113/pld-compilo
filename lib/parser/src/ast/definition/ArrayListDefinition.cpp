@@ -1,7 +1,7 @@
 #include "ArrayListDefinition.h"
 
-ArrayListDefinition::ArrayListDefinition(std::string name_, std::vector<Expression*> listExpression_) :
-    Definition(name_),
+ArrayListDefinition::ArrayListDefinition(ArrayDeclaration* declaration_, std::vector<Expression*> listExpression_) :
+    Definition(declaration_),
     listExpression(listExpression_)
 {
     // Nothing else to do

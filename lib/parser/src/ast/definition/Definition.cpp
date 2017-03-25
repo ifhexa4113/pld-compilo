@@ -1,18 +1,26 @@
 #include "Definition.h"
 
-Definition::Definition(std::string name_) :
-        AstNode(),
-        name(name_)
+Definition::Definition(std::string name_, Declaration* declaration_) :
+    AstNode(),
+    declaration(declaration_)
 {
     // Nothing else to do
 }
 
 Definition::~Definition()
 {
-    // Nothing else to do
+    if(declaration != nullptr)
+    {
+        delete declaration;
+    }
 }
 
 std::string Definition::getName() const
 {
-    return name;
+    return declaration->getName();
+}
+
+Declaration * Definition::getDeclaration()
+{
+    return declaration;
 }

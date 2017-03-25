@@ -1,12 +1,12 @@
 #ifndef ARRAY_DEFINITION_H
 #define ARRAY_DEFINITION_H
 
-#include <string>
 #include "Definition.h"
+#include "ast/declaration/ArrayDeclaration.h"
 
 class ArrayDefinition : public Definition {
 public:
-    ArrayDefinition(std::string name_);
+    ArrayDefinition(ArrayDeclaration* declaration_);
     ~ArrayDefinition();
     int walkTree();
 };

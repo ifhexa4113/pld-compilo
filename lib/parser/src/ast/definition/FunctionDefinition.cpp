@@ -1,15 +1,15 @@
 #include <iostream>
 #include "FunctionDefinition.h"
 
-FunctionDefinition::FunctionDefinition(std::string name_) :
-    Definition(name_),
+FunctionDefinition::FunctionDefinition(FunctionDeclaration* declaration_) :
+    Definition(declaration_),
     Block()
 {
     // Nothing else to do
 }
 
-FunctionDefinition::FunctionDefinition(std::string name_, std::vector<AstNode *> children_) :
-    Definition(name_),
+FunctionDefinition::FunctionDefinition(FunctionDeclaration* declaration_, std::vector<AstNode *> children_) :
+    Definition(declaration_),
     Block(children_)
 {
     // Nothing else to do

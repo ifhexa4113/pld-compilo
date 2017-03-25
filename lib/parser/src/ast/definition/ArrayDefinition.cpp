@@ -1,7 +1,7 @@
 #include "ArrayDefinition.h"
 
-ArrayDefinition::ArrayDefinition(std::string name_) :
-    Definition(name_)
+ArrayDefinition::ArrayDefinition(ArrayDeclaration* declaration_) :
+    Definition(declaration_)
 {
     // Nothing else to do
 }

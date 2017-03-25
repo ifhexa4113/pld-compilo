@@ -1,14 +1,14 @@
 #ifndef VARIABLE_DEFINITION_H
 #define VARIABLE_DEFINITION_H
 
-#include <string>
 #include "Definition.h"
 #include "ast/expression/Expression.h"
+#include "ast/declaration/VariableDeclaration.h"
 
 class VariableDefinition : public Definition
 {
 public:
-    VariableDefinition(std::string name_, Expression* rExpression_);
+    VariableDefinition(VariableDeclaration* declaration_, Expression* rExpression_);
     ~VariableDefinition();
     int walkTree();
     Expression* getRExpression();
