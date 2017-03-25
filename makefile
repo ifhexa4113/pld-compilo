@@ -120,7 +120,7 @@ ifeq ($(OS),$(OSWIN))
     TESTDIR = $(TESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(TESTPATH),$(ALLDIR))
     SEVERAL_CMD = &
     MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
-    MAKETESTDIR := $(foreach dir,$(TESTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
+    MAKETESTDIR := $(foreach dir,$(TESTDIR),(if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD)))
     SUBSEPARATOR = "\"
 	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
 	NRPATH := $(subst /,$(SUBSEPARATOR),$(NRPATH))

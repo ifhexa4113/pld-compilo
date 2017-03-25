@@ -103,7 +103,7 @@ ifeq ($(OS),$(OSWIN))
     ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
     SEVERAL_CMD = &
     MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
-    MAKETESTDIR := $(foreach dir,$(TESTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
+    MAKETESTDIR := $(foreach dir,$(TESTDIR),(if not exist $(dir) mkdir $(dir)) $(SEVERAL_CMD))
     HEAD := $(subst /,\, $(HEAD))
     HEADTEMP := $(subst /,\, $(HEADTEMP))
     SUBSEPARATOR = "\"
