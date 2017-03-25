@@ -225,7 +225,7 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
           | K_BREAK SYM_SEMICOLON { $$ = new BreakInstruction(); }
           | K_CONTINUE SYM_SEMICOLON { $$ = new ContinueInstruction(); }
           | K_RETURN SYM_SEMICOLON { $$ = new ReturnInstruction(nullptr); }
-          | K_RETURN expr SYM_SEMICOLON { /*$$ = new ReturnInstruction($2);*/ }
+          | K_RETURN expr SYM_SEMICOLON { $$ = new ReturnInstruction($2); }
           | SYM_SEMICOLON { $$ = new NullNode(); }
           ;
 
