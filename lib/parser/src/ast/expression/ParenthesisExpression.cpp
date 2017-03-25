@@ -1,7 +1,7 @@
 #include "ParenthesisExpression.h"
 #include "NullExpression.h"
 
-Parenthesis::Parenthesis(Expression* expression_) :
+ParenthesisExpression::ParenthesisExpression(Expression* expression_) :
     Expression(),
     expression(expression_)
 {
@@ -11,12 +11,12 @@ Parenthesis::Parenthesis(Expression* expression_) :
     }
 }
 
-Parenthesis::~Parenthesis()
+ParenthesisExpression::~ParenthesisExpression()
 {
     delete expression;
 }
 
-int Parenthesis::walkTree()
+int ParenthesisExpression::walkTree()
 {
     return 0;
 }

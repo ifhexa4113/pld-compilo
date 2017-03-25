@@ -4,11 +4,11 @@
 #include <cstdint>
 #include "Expression.h"
 
-class LiteralNumber : public Expression
+class LiteralNumberExpression : public Expression
 {
 public:
-    LiteralNumber(int64_t value_);
-    ~LiteralNumber(){};
+    LiteralNumberExpression(int64_t value_);
+    ~LiteralNumberExpression(){};
     int walkTree();
     int64_t getValue();
 

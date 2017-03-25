@@ -7,6 +7,11 @@ LValueExpression::LValueExpression(std::string name_) :
     // Nothing else to do
 }
 
+LValueExpression::~LValueExpression()
+{
+    // Nothing else to do
+}
+
 int LValueExpression::walkTree()
 {
     return 0;

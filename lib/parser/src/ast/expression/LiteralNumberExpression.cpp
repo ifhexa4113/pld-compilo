@@ -1,20 +1,20 @@
 #include <iostream>
 #include "LiteralNumberExpression.h"
 
-LiteralNumber::LiteralNumber(int64_t value_) :
+LiteralNumberExpression::LiteralNumberExpression(int64_t value_) :
     Expression(),
     value(value_)
 {
     // Nothing else to do
 }
 
-int LiteralNumber::walkTree()
+int LiteralNumberExpression::walkTree()
 {
     std::cout << value;
     return 0;
 }
 
-int64_t LiteralNumber::getValue()
+int64_t LiteralNumberExpression::getValue()
 {
     return value;
 }

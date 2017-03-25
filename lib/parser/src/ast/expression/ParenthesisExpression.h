@@ -3,11 +3,11 @@
 
 #include "Expression.h"
 
-class Parenthesis : public Expression
+class ParenthesisExpression : public Expression
 {
 public:
-    Parenthesis(Expression* expression_);
-    ~Parenthesis();
+    ParenthesisExpression(Expression* expression_);
+    ~ParenthesisExpression();
     int walkTree();
 
 protected:
