@@ -6,6 +6,12 @@ If::If(Expression* condition_) :
     // Nothing else to do
 }
 
+If::If(Expression* condition_, std::vector<AstNode*> children_) :
+    ConditionalStructure(condition_, children_)
+{
+    // Nothing else to do
+}
+
 If::~If()
 {
     // Nothing else to do
