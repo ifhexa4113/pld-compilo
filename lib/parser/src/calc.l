@@ -34,6 +34,7 @@
 #include "ast/declaration/Declaration.h"
 #include "ast/declaration/VariableDeclaration.h"
 #include "ast/declaration/ArrayDeclaration.h"
+#include "ast/declaration/FunctionDeclaration.h"
 #include "ast/declaration/Type.h"
 
 #include "calc.tab.h"

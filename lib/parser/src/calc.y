@@ -3,39 +3,39 @@
     #include <string>
 
     #include "ast/AstNode.h"
-    #include "ast/CmmProgram.h"
+    #include "ast/block/CmmProgram.h"
     #include "ast/NullNode.h"
-    #include "ast/Return.h"
-    #include "ast/BreakInstruction.h"
-    #include "ast/ContinueInstruction.h"
+    #include "ast/keyword-instruction/ReturnInstruction.h"
+    #include "ast/keyword-instruction/BreakInstruction.h"
+    #include "ast/keyword-instruction/ContinueInstruction.h"
 
     // Includes for expressions
     #include "ast/expression/Expression.h"
-    #include "ast/expression/LiteralNumber.h"
+    #include "ast/expression/LiteralNumberExpression.h"
     #include "ast/expression/UnaryBinaryOperationOnExpression.h"
     #include "ast/expression/UnaryBinaryOperationOnVariable.h"
     #include "ast/expression/BinaryBinaryOperation.h"
-    #include "ast/expression/BinaryArithmetic.h"
-    #include "ast/expression/BinaryAffection.h"
-    #include "ast/expression/BinaryLogic.h"
-    #include "ast/expression/Parenthesis.h"
+    #include "ast/expression/BinaryArithmeticOperation.h"
+    #include "ast/expression/BinaryAffectionOperation.h"
+    #include "ast/expression/BinaryLogicOperation.h"
+    #include "ast/expression/ParenthesisExpression.h"
     #include "ast/expression/FunctionExpression.h"
     #include "ast/expression/VariableExpression.h"
     #include "ast/expression/ArrayExpression.h"
     #include "ast/expression/LValueExpression.h"
     #include "ast/expression/NullExpression.h"
 
-    // Includes conditional structures
-    #include "ast/block/block-class/FunctionDefinition.h"
-    #include "ast/block/block-class/Else.h"
-    #include "ast/block/block-class/conditional-structure/While.h"
-    #include "ast/block/block-class/conditional-structure/For.h"
+    // Includes for blocks
+    #include "ast/definition/FunctionDefinition.h"
+    #include "ast/block/conditional-structure/While.h"
+    #include "ast/block/conditional-structure/For.h"
 
-    // Includes for symbols table
-    #include "ast/symbol_table/Symbol.h"
-    #include "ast/symbol_table/Variable.h"
-    #include "ast/symbol_table/Array.h"
-    #include "ast/symbol_table/Type.h"
+    // Includes for declarations
+    #include "ast/declaration/Declaration.h"
+    #include "ast/declaration/VariableDeclaration.h"
+    #include "ast/declaration/ArrayDeclaration.h"
+    #include "ast/declaration/FunctionDeclaration.h"
+    #include "ast/declaration/Type.h"
 
     extern "C" int yyparse (CmmProgram&);
 }
@@ -47,34 +47,39 @@
 #include <iostream>
 
 #include "ast/AstNode.h"
-#include "ast/CmmProgram.h"
+#include "ast/block/CmmProgram.h"
 #include "ast/NullNode.h"
-
-#include "ast/Return.h"
-#include "ast/BreakInstruction.h"
-#include "ast/ContinueInstruction.h"
+#include "ast/keyword-instruction/ReturnInstruction.h"
+#include "ast/keyword-instruction/BreakInstruction.h"
+#include "ast/keyword-instruction/ContinueInstruction.h"
 
 // Includes for expressions
 #include "ast/expression/Expression.h"
-#include "ast/expression/LiteralNumber.h"
+#include "ast/expression/LiteralNumberExpression.h"
 #include "ast/expression/UnaryBinaryOperationOnExpression.h"
 #include "ast/expression/UnaryBinaryOperationOnVariable.h"
 #include "ast/expression/BinaryBinaryOperation.h"
-#include "ast/expression/BinaryArithmetic.h"
-#include "ast/expression/BinaryAffection.h"
-#include "ast/expression/BinaryLogic.h"
-#include "ast/expression/Parenthesis.h"
+#include "ast/expression/BinaryArithmeticOperation.h"
+#include "ast/expression/BinaryAffectionOperation.h"
+#include "ast/expression/BinaryLogicOperation.h"
+#include "ast/expression/ParenthesisExpression.h"
 #include "ast/expression/FunctionExpression.h"
 #include "ast/expression/VariableExpression.h"
 #include "ast/expression/ArrayExpression.h"
 #include "ast/expression/LValueExpression.h"
 #include "ast/expression/NullExpression.h"
 
-#include "ast/block/block-class/FunctionDefinition.h"
+// Includes for blocks
+#include "ast/definition/FunctionDefinition.h"
+#include "ast/block/conditional-structure/While.h"
+#include "ast/block/conditional-structure/For.h"
 
-// Includes for symbols table
-#include "ast/symbol_table/Variable.h"
-#include "ast/symbol_table/Type.h"
+// Includes for declarations
+#include "ast/declaration/Declaration.h"
+#include "ast/declaration/VariableDeclaration.h"
+#include "ast/declaration/ArrayDeclaration.h"
+#include "ast/declaration/FunctionDeclaration.h"
+#include "ast/declaration/Type.h"
 
 void yyerror(CmmProgram& cmmp, char const* s) {
     std::cout << "Syntax error: " << s << std::endl;
@@ -86,40 +91,35 @@ int yylex(void);
     int             ival;
     char*           sval;
 
-    AstNode*                        statement_type;
-    std::vector<AstNode*>*          bloc_expr_type;
-    Block*                          bloc_type;
-    FunctionDefinition*             def_func_type;
-    Expression*                     expr_type;
-    LValueExpression*               l_val_type;
-    FunctionExpression*             function_expr_type;
-    std::vector<Expression*>*       args_type;
-    For*                            for_stat_type;
-    While*                          while_type;
-    Else*                           else_stat_type;
-    Symbol*                         decl_var_type;
-    Type                            type_type;
+    AstNode*                            statement_type;
+    std::vector<AstNode*>*              bloc_expr_type;
+    Block*                              bloc_type;
+    CmmProgram*                         prog_cmm_type;
 
-    CmmProgram*                     prog_cmm_type;
+    Declaration*                        decl_type;
+    Definition*                         def_type;
+    Expression*                         expr_type;
+
+    std::vector<VariableDeclaration*>*  decl_arg_type;
+    FunctionDefinition*                 def_func_type;
+    LValueExpression*                   l_val_type;
+
+    std::vector<Expression*>*           args_type;
+    Type                                type_type;
 }
 
 %type <statement_type>      statement
 %type <bloc_expr_type>      bloc_expr
-%type <bloc_type>           bloc
+%type <bloc_type>           bloc for_stat while_stat
+//%type <def_type>
 %type <def_func_type>       def_func
-%type <function_expr_type>  function_expr
-%type <args_type>           args
-%type <expr_type>           expr for_init expr_or_null
-%type <for_stat_type>       for_stat
-%type <while_type>          while_stat
+%type <decl_type>           decl_func decl_var
+%type <expr_type>           expr for_init expr_or_null function_expr
 %type <l_val_type>          l_val
+%type <decl_arg_type>       decl_arg
+%type <args_type>           args
 %type <prog_cmm_type>       prog_c--
-%type <sval>                decl_func
-%type <decl_var_type>       decl_arg
-%type <decl_var_type>       decl_var
-%type <type_type>           type
-%type <type_type>           type_retour
-%type <else_stat_type>      else_stat
+%type <type_type>           type type_retour
 
 %token OP_PLUS
 %token OP_MINUS
@@ -224,8 +224,8 @@ statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
           | bloc { $$ = $1; }
           | K_BREAK SYM_SEMICOLON { $$ = new BreakInstruction(); }
           | K_CONTINUE SYM_SEMICOLON { $$ = new ContinueInstruction(); }
-          | K_RETURN SYM_SEMICOLON { $$ = new Return(); }
-          | K_RETURN expr SYM_SEMICOLON { /*$$ = new Return($2);*/ }
+          | K_RETURN SYM_SEMICOLON { $$ = new ReturnInstruction(nullptr); }
+          | K_RETURN expr SYM_SEMICOLON { /*$$ = new ReturnInstruction($2);*/ }
           | SYM_SEMICOLON { $$ = new NullNode(); }
           ;
 
@@ -235,15 +235,16 @@ decl_arg  : decl_arg SYM_COMMA decl_var
           | { $$ = nullptr; }
           ;
           
-decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE { $$ = $2; } // TODO add entry to symbol table
+decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE {
+                $$ = new FunctionDeclaration(std::string($2), $1, static_cast<int>($4->size())); }
           ;
        
-def_func  : decl_func bloc  { $$ = new FunctionDefinition($2, $1); }
+def_func  : decl_func bloc  { $$ = new FunctionDefinition($1->getName(), $2->getChildren()); }
           ;
 
-decl_var  : type IDENTIFIER { $$ = new Variable($2, $1); }
-          | type IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = new Array($2, $1, 0); }
-          | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = new Array($2, $1, $4); }
+decl_var  : type IDENTIFIER { $$ = new VariableDeclaration($2, $1); }
+          | type IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = new ArrayDeclaration($2, $1, 0); }
+          | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = new ArrayDeclaration($2, $1, $4); }
           ;
 
 def_prim  : decl_var OP_ASSIGN expr
@@ -268,7 +269,7 @@ if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
           ;
           
 else_stat : K_ELSE statement
-          | { $$ = nullptr; }
+          | { /* $$ = nullptr; */ }
           ;
           
 if_bloc   : if_stat else_stat
@@ -283,17 +284,17 @@ for_init  : decl_var
 for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON expr_or_null SYM_CLOSE statement {
                 std::vector<AstNode*> v;
                 v.push_back($9);
-                $$ = new For(new Block(v), $5, $3, $7); }
+                $$ = new For($5, $3, $7, v); }
           ;
 
 while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement {
                 std::vector<AstNode*> v;
                 v.push_back($5);
-                $$ = new While(new Block(v), $3); }
+                $$ = new While($3, v); }
             ;
 
 expr      : l_val { $$ = $1; }
-          | V_INT { $$ = new LiteralNumber($1); }
+          | V_INT { $$ = new LiteralNumberExpression($1); }
           | OP_NOT expr { $$ = new UnaryBinaryOperationOnExpression(UnaryBinaryOperator::NOT, $2); }
           | l_val OP_UN_INC { $$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::INCREMENT_RIGHT, $1); }
           | l_val OP_UN_DEC { $$ = new UnaryBinaryOperationOnVariable(UnaryBinaryOperator::DECREMENT_RIGHT, $1); }
@@ -306,33 +307,33 @@ expr      : l_val { $$ = $1; }
           | expr OP_BIN_AND expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::AND, $1, $3); }
           | expr OP_BIN_LSHIFT expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::LEFT_SHIFT, $1, $3); }
           | expr OP_BIN_RSHIFT expr { $$ = new BinaryBinaryOperation(BinaryBinaryOperator::RIGHT_SHIFT, $1, $3); }
-          | expr OP_PLUS expr { $$ = new BinaryArithmetic(ArithmeticOperator::PLUS, $1, $3); }
-          | expr OP_MINUS expr { $$ = new BinaryArithmetic(ArithmeticOperator::MINUS, $1, $3); }
-          | expr OP_TIMES expr { $$ = new BinaryArithmetic(ArithmeticOperator::MUL, $1, $3); }
-          | expr OP_DIV expr { $$ = new BinaryArithmetic(ArithmeticOperator::DIV, $1, $3); }
-          | expr OP_MOD expr { $$ = new BinaryArithmetic(ArithmeticOperator::MOD, $1, $3); }
-          | l_val OP_ASSIGN expr { $$ = new BinaryAffection(AffectionOperator::EQUAL, $1, $3); } // TODO missing +=
-          | l_val OP_ASSIGN_AND expr { $$ = new BinaryAffection(AffectionOperator::AND_EQUAL, $1, $3); }
-          | l_val OP_ASSIGN_MINUS expr { $$ = new BinaryAffection(AffectionOperator::MINUS_EQUAL, $1, $3); }
-          | l_val OP_ASSIGN_TIMES expr { $$ = new BinaryAffection(AffectionOperator::MUL_EQUAL, $1, $3); }
-          | l_val OP_ASSIGN_DIV expr { $$ = new BinaryAffection(AffectionOperator::DIV_EQUAL, $1, $3); }
-          | l_val OP_ASSIGN_MOD expr { $$ = new BinaryAffection(AffectionOperator::MOD_EQUAL, $1, $3); }
-          | l_val OP_ASSIGN_XOR expr { $$ = new BinaryAffection(AffectionOperator::XOR_EQUAL, $1, $3); }
-          | l_val OP_ASSIGN_OR expr { $$ = new BinaryAffection(AffectionOperator::OR_EQUAL, $1, $3); }
-          | expr OP_OR expr { $$ = new BinaryLogic(LogicOperator::OR, $1, $3); }
-          | expr OP_AND expr { $$ = new BinaryLogic(LogicOperator::AND, $1, $3); }
-          | expr OP_GREATER expr { $$ = new BinaryLogic(LogicOperator::GREATER, $1, $3); }
-          | expr OP_EQ_LESSER expr { $$ = new BinaryLogic(LogicOperator::LESSER_EQUAL, $1, $3); }
-          | expr OP_EQ_GREATER expr { $$ = new BinaryLogic(LogicOperator::GREATER_EQUAL, $1, $3); }
-          | expr OP_EQ_NOT expr { $$ = new BinaryLogic(LogicOperator::NOT_EQUAL, $1, $3); }
-          | expr OP_EQ expr { $$ = new BinaryLogic(LogicOperator::EQUAL, $1, $3); }
-          | expr OP_LESSER expr { $$ = new BinaryLogic(LogicOperator::LESSER, $1, $3); }
-          | SYM_OPEN expr SYM_CLOSE { $$ = new Parenthesis($2); }
-          | V_CHAR { $$ = new LiteralNumber($1); } // TODO lose character state information, refactor ?
+          | expr OP_PLUS expr { $$ = new BinaryArithmeticOperation(ArithmeticOperator::PLUS, $1, $3); }
+          | expr OP_MINUS expr { $$ = new BinaryArithmeticOperation(ArithmeticOperator::MINUS, $1, $3); }
+          | expr OP_TIMES expr { $$ = new BinaryArithmeticOperation(ArithmeticOperator::MUL, $1, $3); }
+          | expr OP_DIV expr { $$ = new BinaryArithmeticOperation(ArithmeticOperator::DIV, $1, $3); }
+          | expr OP_MOD expr { $$ = new BinaryArithmeticOperation(ArithmeticOperator::MOD, $1, $3); }
+          | l_val OP_ASSIGN expr { $$ = new BinaryAffectionOperation(AffectionOperator::EQUAL, $1, $3); } // TODO missing +=
+          | l_val OP_ASSIGN_AND expr { $$ = new BinaryAffectionOperation(AffectionOperator::AND_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_MINUS expr { $$ = new BinaryAffectionOperation(AffectionOperator::MINUS_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_TIMES expr { $$ = new BinaryAffectionOperation(AffectionOperator::MUL_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_DIV expr { $$ = new BinaryAffectionOperation(AffectionOperator::DIV_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_MOD expr { $$ = new BinaryAffectionOperation(AffectionOperator::MOD_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_XOR expr { $$ = new BinaryAffectionOperation(AffectionOperator::XOR_EQUAL, $1, $3); }
+          | l_val OP_ASSIGN_OR expr { $$ = new BinaryAffectionOperation(AffectionOperator::OR_EQUAL, $1, $3); }
+          | expr OP_OR expr { $$ = new BinaryLogicOperation(LogicOperator::OR, $1, $3); }
+          | expr OP_AND expr { $$ = new BinaryLogicOperation(LogicOperator::AND, $1, $3); }
+          | expr OP_GREATER expr { $$ = new BinaryLogicOperation(LogicOperator::GREATER, $1, $3); }
+          | expr OP_EQ_LESSER expr { $$ = new BinaryLogicOperation(LogicOperator::LESSER_EQUAL, $1, $3); }
+          | expr OP_EQ_GREATER expr { $$ = new BinaryLogicOperation(LogicOperator::GREATER_EQUAL, $1, $3); }
+          | expr OP_EQ_NOT expr { $$ = new BinaryLogicOperation(LogicOperator::NOT_EQUAL, $1, $3); }
+          | expr OP_EQ expr { $$ = new BinaryLogicOperation(LogicOperator::EQUAL, $1, $3); }
+          | expr OP_LESSER expr { $$ = new BinaryLogicOperation(LogicOperator::LESSER, $1, $3); }
+          | SYM_OPEN expr SYM_CLOSE { $$ = new ParenthesisExpression($2); }
+          | V_CHAR { $$ = new LiteralNumberExpression($1); } // TODO lose character state information, refactor ?
           | function_expr { $$ = $1; }
           ;
           
-function_expr : IDENTIFIER SYM_OPEN args SYM_CLOSE { $$ = new FunctionExpression(*$3, $1); delete $3; }
+function_expr : IDENTIFIER SYM_OPEN args SYM_CLOSE { $$ = new FunctionExpression($1, *$3); delete $3; }
               | IDENTIFIER SYM_OPEN T_VOID SYM_CLOSE { $$ = new FunctionExpression($1); }
               | IDENTIFIER SYM_OPEN SYM_CLOSE { $$ = new FunctionExpression($1); }
               ;
