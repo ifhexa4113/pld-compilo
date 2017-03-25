@@ -2,7 +2,8 @@
 #include "Block.h"
 
 Block::Block() :
-    AstNode()
+    AstNode(),
+    children()
 {
     // Nothing else to do
 }
