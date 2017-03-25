@@ -1,3 +1,3 @@
-char someFunction(char a, uint32_t b) {
+char someFunction(char a, uint32_t b, char c, uint64_t d) {
     return a;
 }

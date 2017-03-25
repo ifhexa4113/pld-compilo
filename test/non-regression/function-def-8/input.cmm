@@ -1,3 +1,3 @@
-void someFunction(char a[]) {
-    return;
+char someFunction(char a[], uint32_t b[], uint64_t c[], char d) {
+    return d;
 }

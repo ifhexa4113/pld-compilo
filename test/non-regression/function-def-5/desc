@@ -1,1 +1,1 @@
-It should parse a simple char function definition with one parameter and a non-void return statement.
+It should parse a simple char function definition with two parameters and a non-void return statement.
