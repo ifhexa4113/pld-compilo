@@ -1,0 +1,1 @@
+It should parse a simple uint32_t variable definition (init to 7) inside a function.

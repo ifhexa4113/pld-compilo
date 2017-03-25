@@ -1,0 +1,1 @@
+It should parse a simple uint64_t variable definition (init to 42) inside a function.
