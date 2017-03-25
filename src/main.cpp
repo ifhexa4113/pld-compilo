@@ -7,7 +7,7 @@
 #include <cassert>
 
 #include "ast/Ast.h"
-#include "ast/CmmProgram.h"
+#include "ast/block/CmmProgram.h"
 
 int main()
 {
