@@ -1,13 +1,13 @@
 #include <string>
 #include "catch.h"
-#include "ast/symbol_table/SymbolTable.h"
-#include "ast/symbol_table/Variable.h"
-#include "ast/symbol_table/Type.h"
+#include "ast/SymbolTable.h"
+#include "ast/declaration/VariableDeclaration.h"
+#include "ast/declaration/Type.h"
 
 TEST_CASE("It should state that the table contains an element", "SymbolTable")
 {
     std::string id = "a";
-    Variable* a = new Variable(id, Type::CHAR_T);
+    VariableDeclaration* a = new VariableDeclaration(id, Type::CHAR_T);
     SymbolTable st;
 
     SECTION("It should insert a Symbol") {
