@@ -31,3 +31,8 @@ int Block::walkTree()
     }
     return 0;
 }
+
+std::vector<AstNode *> Block::getChildren()
+{
+    return children;
+}

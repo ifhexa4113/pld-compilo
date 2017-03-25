@@ -12,6 +12,7 @@ public:
     Block(std::vector<AstNode*> children_);
     virtual ~Block();
     virtual int walkTree();
+    std::vector<AstNode*> getChildren();
 
 protected:
     SymbolTable symbolTable;
