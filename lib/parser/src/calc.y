@@ -236,7 +236,13 @@ decl_arg  : decl_arg SYM_COMMA decl_var
           ;
           
 decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE {
-                $$ = new FunctionDeclaration(std::string($2), $1, static_cast<int>($4->size())); }
+                int size = 0;
+                if($4 != nullptr)
+                {
+                    size = static_cast<int>($4->size());
+                }
+                $$ = new FunctionDeclaration(std::string($2), $1, size);
+            }
           ;
        
 def_func  : decl_func bloc  { $$ = new FunctionDefinition($1->getName(), $2->getChildren()); }
