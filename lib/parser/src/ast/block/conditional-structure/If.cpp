@@ -12,11 +12,12 @@ If::If(Expression* condition_, std::vector<AstNode*> children_) :
     // Nothing else to do
 }
 
-If::If(AstNode*& condition, std::vector<AstNode*>*& ifStat, std::vector<AstNode*>*& elseStat) :
-	ConditionalStructure(dynamic_cast<Expression*>(condition))
+If::If(AstNode* condition_, std::vector<AstNode*> ifStat_, std::vector<AstNode*> elseStat_) :
+	ConditionalStructure(dynamic_cast<Expression*>(condition_)),
+    ifStat(ifStat_),
+    elseStat(elseStat_)
 {
-	this->ifStat = ifStat;
-	this->elseStat = elseStat;
+
 }
 
 If::~If()
