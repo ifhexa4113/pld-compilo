@@ -1,0 +1,1 @@
+It should parse a one-lined uint64_t variable definition of three variables including an array without size (init to 42, {43, 44} and 7) inside a function.

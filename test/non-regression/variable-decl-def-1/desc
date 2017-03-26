@@ -1,0 +1,1 @@
+It should parse a one-lined char variable declaration of fours variables inside a function, include one array def and one array decl.
