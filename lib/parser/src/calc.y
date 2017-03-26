@@ -45,6 +45,12 @@
     #include "ast/definition/ArrayListDefinition.h"
 
     extern "C" int yyparse (CmmProgram&);
+
+    struct TV3 {
+    public:
+        char* name;
+        int size;
+    };
 }
 
 %{
@@ -121,6 +127,9 @@ int yylex(void);
 
     std::vector<Expression*>*           args_type;
     Type                                type_type;
+
+
+    TV3                                 test_var_3_type;
 }
 
 %type <statement_type>      statement for_init
@@ -136,6 +145,10 @@ int yylex(void);
 %type <args_type>           args
 %type <prog_cmm_type>       prog_c--
 %type <type_type>           type type_retour
+
+%type <sval>                test_var_1
+%type <sval>                test_var_2
+%type <test_var_3_type>     test_var_3
 
 %token OP_PLUS
 %token OP_MINUS
@@ -264,9 +277,18 @@ decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE {
 def_func  : decl_func bloc  { $$ = new FunctionDefinition($1, $2->getChildren()); }
           ;
 
-decl_var  : type IDENTIFIER { $$ = new VariableDeclaration($2, $1); }
-          | type IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = new ArrayDeclaration($2, $1, 0); }
-          | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = new ArrayDeclaration($2, $1, $4); }
+test_var_1  : IDENTIFIER { $$ = $1; }
+            ;
+
+test_var_2  : IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = $1; }
+            ;
+
+test_var_3  : IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = {$1, $3}; }
+            ;
+
+decl_var  : type test_var_1 { $$ = new VariableDeclaration($2, $1); }
+          | type test_var_2 { $$ = new ArrayDeclaration($2, $1, 0); }
+          | type test_var_3 { $$ = new ArrayDeclaration($2.name, $1, $2.size); }
           ;
 
 def_prim  : decl_var OP_ASSIGN expr { $$ = new VariableDefinition($1, $3); }
@@ -285,7 +307,9 @@ decl_def_var  : decl_var
               | def_var
               ;
               
-decl_def_stat : decl_def_stat SYM_COMMA decl_def_var
+decl_def_stat : decl_def_stat SYM_COMMA test_var_1
+              | decl_def_stat SYM_COMMA test_var_2
+              | decl_def_stat SYM_COMMA test_var_3
               | decl_def_var
               ;
               
