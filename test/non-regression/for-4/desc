@@ -1,0 +1,1 @@
+It should parse a simple for inside a function with a block with several statements and an init, but without condition nor increment.

@@ -1,0 +1,6 @@
+void foo() {
+    for(char i = 0 ; i < 10 ; i++) {
+        doSomething();
+        uint32_t a = 3;
+    }
+}
