@@ -123,14 +123,14 @@ int yylex(void);
     Type                                type_type;
 }
 
-%type <statement_type>      statement
+%type <statement_type>      statement for_init
 %type <bloc_expr_type>      bloc_expr
 %type <bloc_type>           bloc for_stat while_stat if_bloc
 %type <def_type>            def_var def_prim def_tab
 %type <def_func_type>       def_func
 %type <decl_var_type>       decl_var
 %type <decl_func_type>      decl_func
-%type <expr_type>           expr for_init expr_or_null function_expr
+%type <expr_type>           expr expr_or_null function_expr
 %type <l_val_type>          l_val
 %type <decl_arg_type>       decl_arg
 %type <args_type>           args
@@ -299,9 +299,9 @@ else_stat : K_ELSE statement
 if_bloc   : if_stat else_stat
           ;
 
-for_init  : decl_var
+for_init  : decl_var { $$ = $1; }
           | expr { $$ = $1; }
-          | def_var
+          | def_var { $$ = $1; }
           | { $$ = new NullExpression(); }
           ;
           

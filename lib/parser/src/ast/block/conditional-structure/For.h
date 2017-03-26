@@ -9,15 +9,15 @@
 class For: public ConditionalStructure
 {
 public:
-    For(Expression* condition_, Expression* initialization_, Expression* increment_);
-    For(Expression* condition_, Expression* initialization_, Expression* increment_, std::vector<AstNode*> children_);
+    For(Expression* condition_, AstNode* initialization_, Expression* increment_);
+    For(Expression* condition_, AstNode* initialization_, Expression* increment_, std::vector<AstNode*> children_);
     ~For();
     int walkTree();
-    Expression* getInitialization();
+	AstNode* getInitialization();
     Expression* getIncrement();
 
 protected:
-    Expression* initialization;
+    AstNode* initialization;
     Expression* increment;
 };
 

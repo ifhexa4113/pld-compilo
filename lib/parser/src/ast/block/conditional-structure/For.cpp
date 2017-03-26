@@ -1,7 +1,7 @@
 #include "For.h"
 #include "ast/expression/NullExpression.h"
 
-For::For(Expression* condition_, Expression* initialization_, Expression* increment_) :
+For::For(Expression* condition_, AstNode* initialization_, Expression* increment_) :
     ConditionalStructure(condition_),
     initialization(initialization_),
     increment(increment_)
@@ -16,7 +16,7 @@ For::For(Expression* condition_, Expression* initialization_, Expression* increm
     }
 }
 
-For::For(Expression *condition_, Expression *initialization_, Expression *increment_, std::vector<AstNode *> children_) :
+For::For(Expression *condition_, AstNode *initialization_, Expression *increment_, std::vector<AstNode *> children_) :
     ConditionalStructure(condition_, children_),
     initialization(initialization_),
     increment(increment_)
@@ -42,7 +42,7 @@ int For::walkTree()
     return 0;
 }
 
-Expression * For::getInitialization()
+AstNode * For::getInitialization()
 {
     return initialization;
 }
