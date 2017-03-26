@@ -1,1 +1,1 @@
-It should parse a simple char variable declaration inside a function.
+It should parse a simple void function declaration, without any parameters.

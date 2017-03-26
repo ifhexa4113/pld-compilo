@@ -1,1 +1,1 @@
-char someFunction(char a, uint32_t b, uint64_t c);
+char someFunction(char a[], uint32_t b, uint64_t c);

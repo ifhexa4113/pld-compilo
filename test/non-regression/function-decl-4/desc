@@ -1,1 +1,1 @@
-It should parse a char function declaration, with two parameters but no array.
+It should parse a char function declaration, with three parameters including one array array.

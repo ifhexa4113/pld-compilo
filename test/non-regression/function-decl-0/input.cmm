@@ -1,3 +1,1 @@
-char someFunction() {
-    char b;
-}
+void someFunction();

@@ -1,1 +1,1 @@
-void someFunction();
+void someFunction(void);
