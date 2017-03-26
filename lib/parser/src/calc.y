@@ -313,7 +313,6 @@ decl_def_var  : decl_var { $$ = $1->toEmptyDefinition(); }
               
 decl_def_stat : decl_def_stat SYM_COMMA var_id { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), nullptr)); $$ = $1; }
               | decl_def_stat SYM_COMMA var_id OP_ASSIGN expr { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), $5)); $$ = $1; }
-              | decl_def_stat SYM_COMMA array_id { $1->push_back(new ArrayDefinition(new ArrayDeclaration($3, ((*$1)[0])->getType(), 0))); $$ = $1; }
               | decl_def_stat SYM_COMMA array_id OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE { $1->push_back(new ArrayListDefinition(new ArrayDeclaration($3, ((*$1)[0])->getType(), $6->size()), *$6)); $$ = $1; }
               | decl_def_stat SYM_COMMA array_id_size { $1->push_back(new ArrayDefinition(new ArrayDeclaration($3.name, ((*$1)[0])->getType(), $3.size))); $$ = $1; }
               | decl_def_stat SYM_COMMA array_id_size OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE { $1->push_back(new ArrayListDefinition(new ArrayDeclaration($3.name, ((*$1)[0])->getType(), $3.size), *$6)); $$ = $1; }
