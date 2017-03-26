@@ -28,6 +28,7 @@
     // Includes for blocks
     #include "ast/block/conditional-structure/While.h"
     #include "ast/block/conditional-structure/For.h"
+	#include "ast/block/conditional-structure/If.h"
 
     // Includes for declarations
     #include "ast/declaration/Declaration.h"
@@ -79,6 +80,7 @@
 // Includes for blocks
 #include "ast/block/conditional-structure/While.h"
 #include "ast/block/conditional-structure/For.h"
+#include "ast/block/conditional-structure/If.h"
 
 // Includes for declarations
 #include "ast/declaration/Declaration.h"
@@ -124,7 +126,7 @@ int yylex(void);
 }
 
 %type <statement_type>      statement for_init
-%type <bloc_expr_type>      bloc_expr
+%type <bloc_expr_type>      bloc_expr if_stat else_stat
 %type <bloc_type>           bloc for_stat while_stat if_bloc
 %type <def_type>            def_var def_prim def_tab
 %type <def_func_type>       def_func
@@ -295,9 +297,8 @@ if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement { $$ = new std::vector<AstNod
 else_stat : K_ELSE statement { $$ = new std::vector<AstNode*>(); $$->push_back($2); }
           | { $$ = nullptr; }
           ;
-
           
-if_bloc   : if_stat else_stat { AstNode* condition = $1->front(); $1->erase(0); $$ = new If(condition,$1,$2); }
+if_bloc   : if_stat else_stat { AstNode* condition = $1->front(); $1->erase($1->begin()); $$ = new If(condition,$1,$2); }
           ;
 
 for_init  : decl_var { $$ = $1; }
