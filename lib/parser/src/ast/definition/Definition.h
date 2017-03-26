@@ -3,7 +3,8 @@
 
 #include <string>
 #include "ast/AstNode.h"
-#include "ast/declaration/Declaration.h"
+#include "ast/declaration/Type.h"
+class Declaration;
 
 class Definition : public virtual AstNode
 {
@@ -12,6 +13,7 @@ public:
     virtual ~Definition();
     virtual int walkTree() = 0;
     Declaration* getDeclaration();
+    Type getType();
 
 protected:
     Declaration* declaration;

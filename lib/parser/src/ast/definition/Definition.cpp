@@ -1,4 +1,5 @@
 #include "Definition.h"
+#include "ast/declaration/Declaration.h"
 
 Definition::Definition(Declaration* declaration_) :
     AstNode(),
@@ -23,4 +24,9 @@ std::string Definition::getName() const
 Declaration * Definition::getDeclaration()
 {
     return declaration;
+}
+
+Type Definition::getType()
+{
+    return declaration->getType();
 }

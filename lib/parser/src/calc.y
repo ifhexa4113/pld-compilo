@@ -28,6 +28,7 @@
     // Includes for blocks
     #include "ast/block/conditional-structure/While.h"
     #include "ast/block/conditional-structure/For.h"
+	#include "ast/block/conditional-structure/If.h"
 
     // Includes for declarations
     #include "ast/declaration/Declaration.h"
@@ -45,6 +46,12 @@
     #include "ast/definition/ArrayListDefinition.h"
 
     extern "C" int yyparse (CmmProgram&);
+
+    struct TV3 {
+    public:
+        char* name;
+        int size;
+    };
 }
 
 %{
@@ -79,6 +86,7 @@
 // Includes for blocks
 #include "ast/block/conditional-structure/While.h"
 #include "ast/block/conditional-structure/For.h"
+#include "ast/block/conditional-structure/If.h"
 
 // Includes for declarations
 #include "ast/declaration/Declaration.h"
@@ -120,13 +128,16 @@ int yylex(void);
     LValueExpression*                   l_val_type;
 
     std::vector<Expression*>*           args_type;
+    std::vector<Definition*>*           decl_def_stat_type;
     Type                                type_type;
+
+    TV3                                 test_var_3_type;
 }
 
 %type <statement_type>      statement for_init
-%type <bloc_expr_type>      bloc_expr
+%type <bloc_expr_type>      bloc_expr if_stat else_stat
 %type <bloc_type>           bloc for_stat while_stat if_bloc
-%type <def_type>            def_var def_prim def_tab
+%type <def_type>            def_var def_prim def_tab decl_def_var
 %type <def_func_type>       def_func
 %type <decl_var_type>       decl_var
 %type <decl_func_type>      decl_func
@@ -134,8 +145,13 @@ int yylex(void);
 %type <l_val_type>          l_val
 %type <decl_arg_type>       decl_arg
 %type <args_type>           args
+%type <decl_def_stat_type>  decl_def_stat
 %type <prog_cmm_type>       prog_c--
 %type <type_type>           type type_retour
+
+%type <sval>                test_var_1
+%type <sval>                test_var_2
+%type <test_var_3_type>     test_var_3
 
 %token OP_PLUS
 %token OP_MINUS
@@ -229,11 +245,12 @@ bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block(*$2); del
           ;
           
 bloc_expr : bloc_expr statement { $1->push_back($2); $$ = $1; }
+          | bloc_expr decl_def_stat SYM_SEMICOLON { for(int i = 0; i< $2->size(); i++) $1->push_back((*$2)[i]); $$ = $1; }
           | statement { $$ = new std::vector<AstNode*>(1, $1); }
+          | decl_def_stat SYM_SEMICOLON { $$ = new std::vector<AstNode*>(); for(int i = 0; i< $1->size(); i++) $$->push_back((*$1)[i]); }
           ;
 
-statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
-          | if_bloc { $$ = $1; }
+statement : if_bloc { $$ = $1; }
           | for_stat { $$ = $1; }
           | while_stat { $$ = $1; }
           | expr SYM_SEMICOLON { $$ = $1; }
@@ -264,9 +281,18 @@ decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE {
 def_func  : decl_func bloc  { $$ = new FunctionDefinition($1, $2->getChildren()); }
           ;
 
-decl_var  : type IDENTIFIER { $$ = new VariableDeclaration($2, $1); }
-          | type IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = new ArrayDeclaration($2, $1, 0); }
-          | type IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = new ArrayDeclaration($2, $1, $4); }
+test_var_1  : IDENTIFIER { $$ = $1; }
+            ;
+
+test_var_2  : IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = $1; }
+            ;
+
+test_var_3  : IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = {$1, $3}; }
+            ;
+
+decl_var  : type test_var_1 { $$ = new VariableDeclaration($2, $1); }
+          | type test_var_2 { $$ = new ArrayDeclaration($2, $1, 0); }
+          | type test_var_3 { $$ = new ArrayDeclaration($2.name, $1, $2.size); }
           ;
 
 def_prim  : decl_var OP_ASSIGN expr { $$ = new VariableDefinition($1, $3); }
@@ -281,22 +307,27 @@ def_var   : def_prim { $$ = $1; }
           | def_tab { $$ = $1; }
           ;
           
-decl_def_var  : decl_var
-              | def_var
+decl_def_var  : decl_var { $$ = $1->toEmptyDefinition(); }
+              | def_var { $$ = $1; }
               ;
               
-decl_def_stat : decl_def_stat SYM_COMMA decl_def_var
-              | decl_def_var
+decl_def_stat : decl_def_stat SYM_COMMA test_var_1 { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), nullptr)); $$ = $1; }
+              | decl_def_stat SYM_COMMA test_var_1 OP_ASSIGN expr { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), $5)); $$ = $1; }
+              | decl_def_stat SYM_COMMA test_var_2
+              | decl_def_stat SYM_COMMA test_var_2 OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
+              | decl_def_stat SYM_COMMA test_var_3
+              | decl_def_stat SYM_COMMA test_var_3 OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
+              | decl_def_var { $$ = new std::vector<Definition*>(); $$->push_back($1); }
               ;
               
-if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
+if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement { $$ = new std::vector<AstNode*>(); $$->push_back($3); $$->push_back($5);}
           ;
           
-else_stat : K_ELSE statement
-          | { /* $$ = nullptr; */ }
+else_stat : K_ELSE statement { $$ = new std::vector<AstNode*>(); $$->push_back($2); }
+          | { $$ = nullptr; }
           ;
           
-if_bloc   : if_stat else_stat
+if_bloc   : if_stat else_stat { AstNode* condition = $1->front(); $1->erase($1->begin()); $$ = new If(condition,$1,$2); }
           ;
 
 for_init  : decl_var { $$ = $1; }

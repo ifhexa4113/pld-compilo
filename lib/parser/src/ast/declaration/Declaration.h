@@ -4,6 +4,7 @@
 #include <string>
 #include "Type.h"
 #include "ast/AstNode.h"
+#include "ast/definition/Definition.h"
 
 class Declaration: public AstNode
 {
@@ -12,6 +13,7 @@ public:
     virtual ~Declaration();
 
     virtual int walkTree() = 0;
+    virtual Definition* toEmptyDefinition() = 0;
     std::string getName() const;
     Type getType() const;
     int getAddress() const;

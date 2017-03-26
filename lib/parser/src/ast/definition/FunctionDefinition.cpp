@@ -1,5 +1,6 @@
 #include <iostream>
 #include "FunctionDefinition.h"
+#include "ast/declaration/FunctionDeclaration.h"
 
 FunctionDefinition::FunctionDefinition(FunctionDeclaration* declaration_) :
     Definition(declaration_),
