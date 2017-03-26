@@ -289,14 +289,15 @@ decl_def_stat : decl_def_stat SYM_COMMA decl_def_var
               | decl_def_var
               ;
               
-if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
+if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement { $$ = new std::vector<AstNode*>(); $$->push_back($3); $$->push_back($5);}
           ;
           
-else_stat : K_ELSE statement
-          | { /* $$ = nullptr; */ }
+else_stat : K_ELSE statement { $$ = new std::vector<AstNode*>(); $$->push_back($2); }
+          | { $$ = nullptr; }
           ;
+
           
-if_bloc   : if_stat else_stat
+if_bloc   : if_stat else_stat { AstNode* condition = $1->front(); $1->erase(0); $$ = new If(condition,$1,$2); }
           ;
 
 for_init  : decl_var { $$ = $1; }

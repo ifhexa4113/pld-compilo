@@ -17,7 +17,7 @@ public:
     Expression* getIncrement();
 
 protected:
-    AstNode* initialization;
+    AstNode* initialization; // TODO : can be a declaration
     Expression* increment;
 };
 
