@@ -4,6 +4,7 @@
 #include <string>
 #include "Type.h"
 #include "Declaration.h"
+#include "ast/definition/FunctionDefinition.h"
 
 class FunctionDeclaration : public Declaration
 {
@@ -12,6 +13,7 @@ public:
     ~FunctionDeclaration();
     int walkTree();
     int getNbArgs();
+    FunctionDefinition* toEmptyDefinition();
 
 protected:
     int nbArgs;

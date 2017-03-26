@@ -1,0 +1,3 @@
+char someFunction() {
+    char b, c;
+}

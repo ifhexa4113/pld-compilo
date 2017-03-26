@@ -1,5 +1,6 @@
 #include <iostream>
 #include "FunctionDefinition.h"
+#include "ast/declaration/FunctionDeclaration.h"
 
 FunctionDefinition::FunctionDefinition(FunctionDeclaration* declaration_) :
     Definition(declaration_),
@@ -22,7 +23,7 @@ FunctionDefinition::~FunctionDefinition()
 
 int FunctionDefinition::walkTree()
 {
-    std::cout << "Entering function definition \"" << name << "\", exploring block." << std::endl;
+    std::cout << "Entering function definition \"" << declaration->getName() << "\", exploring block." << std::endl;
     Block::walkTree();
     return 0;
 }
