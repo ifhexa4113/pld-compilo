@@ -1,0 +1,1 @@
+It should parse a one-lined char variable declaration of six variables inside a function, including one array definition of size 2, one array declaration of size 4, one array definition and one array declaration (both without size).
