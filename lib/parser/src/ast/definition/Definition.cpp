@@ -16,11 +16,6 @@ Definition::~Definition()
     }
 }
 
-std::string Definition::getName() const
-{
-    return declaration->getName();
-}
-
 Declaration * Definition::getDeclaration()
 {
     return declaration;
