@@ -1,0 +1,6 @@
+void foo() {
+    while(1){
+        doSomething();
+        char i =0;
+    }
+}
