@@ -243,11 +243,12 @@ bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block(*$2); del
           ;
           
 bloc_expr : bloc_expr statement { $1->push_back($2); $$ = $1; }
+          | bloc_expr decl_def_stat SYM_SEMICOLON { for(int i = 0; i< $2->size(); i++) $1->push_back((*$2)[i]); $$ = $1; }
           | statement { $$ = new std::vector<AstNode*>(1, $1); }
+          | decl_def_stat SYM_SEMICOLON { $$ = new std::vector<AstNode*>(); for(int i = 0; i< $1->size(); i++) $$->push_back((*$1)[i]); }
           ;
 
-statement : decl_def_stat SYM_SEMICOLON { std::cout << "AM HERE" << std::endl; }
-          | if_bloc { $$ = $1; }
+statement : if_bloc { $$ = $1; }
           | for_stat { $$ = $1; }
           | while_stat { $$ = $1; }
           | expr SYM_SEMICOLON { $$ = $1; }
