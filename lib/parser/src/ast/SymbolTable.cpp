@@ -14,7 +14,6 @@ SymbolTable::~SymbolTable()
         {
             delete pair.second;
         }
-        pair.second = nullptr;
     }
 }
 

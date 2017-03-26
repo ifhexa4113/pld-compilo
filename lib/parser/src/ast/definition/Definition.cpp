@@ -13,7 +13,6 @@ Definition::~Definition()
     {
         delete declaration;
     }
-    declaration = nullptr;
 }
 
 std::string Definition::getName() const
