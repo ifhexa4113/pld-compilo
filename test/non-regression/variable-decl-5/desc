@@ -1,0 +1,1 @@
+It should parse a one-lined char variable declaration of three variables, including one array with 4 as size, inside a function.

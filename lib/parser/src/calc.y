@@ -47,7 +47,7 @@
 
     extern "C" int yyparse (CmmProgram&);
 
-    struct TV3 {
+    struct ArrayID {
     public:
         char* name;
         int size;
@@ -131,7 +131,7 @@ int yylex(void);
     std::vector<Definition*>*           decl_def_stat_type;
     Type                                type_type;
 
-    TV3                                 test_var_3_type;
+    ArrayID                                 array_id_size_type;
 }
 
 %type <statement_type>      statement for_init
@@ -149,9 +149,9 @@ int yylex(void);
 %type <prog_cmm_type>       prog_c--
 %type <type_type>           type type_retour
 
-%type <sval>                test_var_1
-%type <sval>                test_var_2
-%type <test_var_3_type>     test_var_3
+%type <sval>                var_id
+%type <sval>                array_id
+%type <array_id_size_type>     array_id_size
 
 %token OP_PLUS
 %token OP_MINUS
@@ -282,18 +282,18 @@ decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE {
 def_func  : decl_func bloc  { $$ = new FunctionDefinition($1, $2->getChildren()); }
           ;
 
-test_var_1  : IDENTIFIER { $$ = $1; }
+var_id  : IDENTIFIER { $$ = $1; }
             ;
 
-test_var_2  : IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = $1; }
+array_id  : IDENTIFIER SYM_TAB_OPEN SYM_TAB_CLOSE { $$ = $1; }
             ;
 
-test_var_3  : IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = {$1, $3}; }
+array_id_size  : IDENTIFIER SYM_TAB_OPEN V_INT SYM_TAB_CLOSE { $$ = {$1, $3}; }
             ;
 
-decl_var  : type test_var_1 { $$ = new VariableDeclaration($2, $1); }
-          | type test_var_2 { $$ = new ArrayDeclaration($2, $1, 0); }
-          | type test_var_3 { $$ = new ArrayDeclaration($2.name, $1, $2.size); }
+decl_var  : type var_id { $$ = new VariableDeclaration($2, $1); }
+          | type array_id { $$ = new ArrayDeclaration($2, $1, 0); }
+          | type array_id_size { $$ = new ArrayDeclaration($2.name, $1, $2.size); }
           ;
 
 def_prim  : decl_var OP_ASSIGN expr { $$ = new VariableDefinition($1, $3); }
@@ -312,12 +312,12 @@ decl_def_var  : decl_var { $$ = $1->toEmptyDefinition(); }
               | def_var { $$ = $1; }
               ;
               
-decl_def_stat : decl_def_stat SYM_COMMA test_var_1 { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), nullptr)); $$ = $1; }
-              | decl_def_stat SYM_COMMA test_var_1 OP_ASSIGN expr { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), $5)); $$ = $1; }
-              | decl_def_stat SYM_COMMA test_var_2
-              | decl_def_stat SYM_COMMA test_var_2 OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
-              | decl_def_stat SYM_COMMA test_var_3
-              | decl_def_stat SYM_COMMA test_var_3 OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
+decl_def_stat : decl_def_stat SYM_COMMA var_id { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), nullptr)); $$ = $1; }
+              | decl_def_stat SYM_COMMA var_id OP_ASSIGN expr { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), $5)); $$ = $1; }
+              | decl_def_stat SYM_COMMA array_id { $1->push_back(new ArrayDefinition(new ArrayDeclaration($3, ((*$1)[0])->getType(), 0))); $$ = $1; }
+              | decl_def_stat SYM_COMMA array_id OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE { $1->push_back(new ArrayListDefinition(new ArrayDeclaration($3, ((*$1)[0])->getType(), $6->size()), *$6)); $$ = $1; }
+              | decl_def_stat SYM_COMMA array_id_size { $1->push_back(new ArrayDefinition(new ArrayDeclaration($3.name, ((*$1)[0])->getType(), $3.size))); $$ = $1; }
+              | decl_def_stat SYM_COMMA array_id_size OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE { $1->push_back(new ArrayListDefinition(new ArrayDeclaration($3.name, ((*$1)[0])->getType(), $3.size), *$6)); $$ = $1; }
               | decl_def_var { $$ = new std::vector<Definition*>(); $$->push_back($1); }
               ;
               

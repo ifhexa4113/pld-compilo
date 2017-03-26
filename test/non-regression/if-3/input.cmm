@@ -1,0 +1,5 @@
+void foo() {
+	uint32_t a;
+    if(1<2)
+		a = 1 + 2;
+}
