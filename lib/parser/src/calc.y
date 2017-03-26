@@ -305,8 +305,8 @@ def_var   : def_prim { $$ = $1; }
           | def_tab { $$ = $1; }
           ;
           
-decl_def_var  : decl_var
-              | def_var
+decl_def_var  : decl_var { $$ = $1->toEmptyDefinition(); }
+              | def_var { $$ = $1; }
               ;
               
 decl_def_stat : decl_def_stat SYM_COMMA test_var_1 { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), nullptr)); $$ = $1; }
@@ -315,13 +315,7 @@ decl_def_stat : decl_def_stat SYM_COMMA test_var_1 { $1->push_back(new VariableD
               | decl_def_stat SYM_COMMA test_var_2 OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
               | decl_def_stat SYM_COMMA test_var_3
               | decl_def_stat SYM_COMMA test_var_3 OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
-              | decl_def_var {
-                std::cout << $$ << std::endl;
-                $$ = new std::vector<Definition*>();
-                std::cout << $$ << std::endl;
-                std::cout << $1->getName() << std::endl;
-                $$->push_back($1);
-                std::cout << $$->size() << std::endl; }
+              | decl_def_var { $$ = new std::vector<Definition*>(); $$->push_back($1); }
               ;
               
 if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
