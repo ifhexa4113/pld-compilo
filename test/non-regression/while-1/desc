@@ -1,0 +1,1 @@
+It should parse a simple while inside a function with an empty block and 1 as condition.
