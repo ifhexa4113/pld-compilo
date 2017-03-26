@@ -211,7 +211,7 @@ int yylex(void);
 %%
 
 prog_c--  : prog_c-- def_func  { program.addFunction($2); }
-          | prog_c-- decl_func
+          | prog_c-- decl_func SYM_SEMICOLON { program.addChildren($2); }
           | { $$ = nullptr; }
           ;
           
