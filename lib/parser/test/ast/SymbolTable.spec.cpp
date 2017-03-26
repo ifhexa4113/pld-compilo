@@ -20,15 +20,15 @@ TEST_CASE("It should state that the table contains an element", "SymbolTable")
         }
     }
 
-    SECTION("It should not fail when trying to delete a declaration already deleted somewhere else")
+    SECTION("It should not fail when trying to delete a declaration - exemple of use")
     {
         SymbolTable* st2 = new SymbolTable();
         VariableDefinition* def = new VariableDefinition(a, nullptr);
-        st2->put(id, def->getDeclaration());
+        st2->put(id, new VariableDeclaration(def->getDeclaration()->getName(), def->getDeclaration()->getType()));
         REQUIRE(st2->contains(id));
         delete def;
         delete st2;
     }
 
-    // NOTE: no need to delete a since the SymbolTable will do it for us
+    // NOTE: no need to delete a since the SymbolTable and the Definition will do it for us
 }
