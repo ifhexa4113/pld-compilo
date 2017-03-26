@@ -5,7 +5,7 @@
 #include "Definition.h"
 #include "ast/AstNode.h"
 #include "ast/block/Block.h"
-#include "ast/declaration/FunctionDeclaration.h"
+class FunctionDeclaration;
 
 class FunctionDefinition : public Definition, public Block
 {

@@ -1,4 +1,5 @@
 #include "Definition.h"
+#include "ast/declaration/Declaration.h"
 
 Definition::Definition(Declaration* declaration_) :
     AstNode(),

@@ -21,3 +21,8 @@ int FunctionDeclaration::walkTree()
 {
     return 0;
 }
+
+FunctionDefinition * FunctionDeclaration::toEmptyDefinition()
+{
+    return new FunctionDefinition(this);
+}

@@ -21,3 +21,8 @@ int ArrayDeclaration::walkTree()
 {
     return 0;
 }
+
+ArrayDefinition * ArrayDeclaration::toEmptyDefinition()
+{
+    return new ArrayDefinition(this);
+}
