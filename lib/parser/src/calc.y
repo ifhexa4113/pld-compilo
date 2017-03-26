@@ -126,8 +126,8 @@ int yylex(void);
     LValueExpression*                   l_val_type;
 
     std::vector<Expression*>*           args_type;
+    std::vector<Definition*>*           decl_def_stat_type;
     Type                                type_type;
-
 
     TV3                                 test_var_3_type;
 }
@@ -135,7 +135,7 @@ int yylex(void);
 %type <statement_type>      statement for_init
 %type <bloc_expr_type>      bloc_expr
 %type <bloc_type>           bloc for_stat while_stat if_bloc
-%type <def_type>            def_var def_prim def_tab
+%type <def_type>            def_var def_prim def_tab decl_def_var
 %type <def_func_type>       def_func
 %type <decl_var_type>       decl_var
 %type <decl_func_type>      decl_func
@@ -143,6 +143,7 @@ int yylex(void);
 %type <l_val_type>          l_val
 %type <decl_arg_type>       decl_arg
 %type <args_type>           args
+%type <decl_def_stat_type>  decl_def_stat
 %type <prog_cmm_type>       prog_c--
 %type <type_type>           type type_retour
 
@@ -245,7 +246,7 @@ bloc_expr : bloc_expr statement { $1->push_back($2); $$ = $1; }
           | statement { $$ = new std::vector<AstNode*>(1, $1); }
           ;
 
-statement : decl_def_stat SYM_SEMICOLON { /* ?? */ }
+statement : decl_def_stat SYM_SEMICOLON { std::cout << "AM HERE" << std::endl; }
           | if_bloc { $$ = $1; }
           | for_stat { $$ = $1; }
           | while_stat { $$ = $1; }
@@ -307,10 +308,19 @@ decl_def_var  : decl_var
               | def_var
               ;
               
-decl_def_stat : decl_def_stat SYM_COMMA test_var_1
+decl_def_stat : decl_def_stat SYM_COMMA test_var_1 { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), nullptr)); $$ = $1; }
+              | decl_def_stat SYM_COMMA test_var_1 OP_ASSIGN expr { $1->push_back(new VariableDefinition(new VariableDeclaration($3, ((*$1)[0])->getType()), $5)); $$ = $1; }
               | decl_def_stat SYM_COMMA test_var_2
+              | decl_def_stat SYM_COMMA test_var_2 OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
               | decl_def_stat SYM_COMMA test_var_3
-              | decl_def_var
+              | decl_def_stat SYM_COMMA test_var_3 OP_ASSIGN SYM_BLOCK_OPEN args SYM_BLOCK_CLOSE
+              | decl_def_var {
+                std::cout << $$ << std::endl;
+                $$ = new std::vector<Definition*>();
+                std::cout << $$ << std::endl;
+                std::cout << $1->getName() << std::endl;
+                $$->push_back($1);
+                std::cout << $$->size() << std::endl; }
               ;
               
 if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement
