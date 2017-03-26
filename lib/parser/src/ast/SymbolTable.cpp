@@ -13,6 +13,7 @@ SymbolTable::~SymbolTable()
         if(pair.second != nullptr)
         {
             delete pair.second;
+            pair.second = nullptr;
         }
     }
 }
