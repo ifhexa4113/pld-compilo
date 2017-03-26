@@ -37,3 +37,8 @@ std::vector<AstNode *> Block::getChildren()
 {
     return children;
 }
+
+void Block::addChildren(AstNode *child)
+{
+    children.push_back(child);
+}
