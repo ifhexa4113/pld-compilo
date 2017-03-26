@@ -3,6 +3,7 @@
 
 #include <string>
 #include "ast/AstNode.h"
+#include "ast/declaration/Type.h"
 #include "ast/declaration/Declaration.h"
 
 class Definition : public virtual AstNode
@@ -13,6 +14,7 @@ public:
     virtual int walkTree() = 0;
     std::string getName() const;
     Declaration* getDeclaration();
+    Type getType();
 
 protected:
     std::string name;

@@ -24,3 +24,8 @@ Declaration * Definition::getDeclaration()
 {
     return declaration;
 }
+
+Type Definition::getType()
+{
+    return declaration->getType();
+}
