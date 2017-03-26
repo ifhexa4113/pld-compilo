@@ -16,8 +16,8 @@ public:
     int walkTree();
 
 protected:
-	std::vector<AstNode*> ifStat;
-	std::vector<AstNode*> elseStat;
+	std::vector<AstNode*>* ifStat;
+	std::vector<AstNode*>* elseStat;
 };
 
 #endif //IF_H
