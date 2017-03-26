@@ -28,6 +28,7 @@
 // Includes for blocks
 #include "ast/block/conditional-structure/While.h"
 #include "ast/block/conditional-structure/For.h"
+#include "ast/block/conditional-structure/If.h"
 
 // Includes for declarations
 #include "ast/declaration/Declaration.h"

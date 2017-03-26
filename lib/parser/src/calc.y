@@ -221,6 +221,7 @@ int yylex(void);
 %left OP_BIN_OR OP_BIN_AND OP_BIN_XOR OP_BIN_NOT OP_BIN_RSHIFT OP_BIN_LSHIFT
 %left OP_ASSIGN OP_ASSIGN_ADD OP_ASSIGN_MINUS OP_ASSIGN_DIV OP_ASSIGN_TIMES OP_ASSIGN_MOD OP_ASSIGN_OR OP_ASSIGN_AND OP_ASSIGN_XOR OP_ASSIGN_RSHIFT OP_ASSIGN_LSHIFT
 %left OP_UN_INC OP_UN_DEC
+%right K_ELSE // preserve shift, but don't really know where is the ambiguity...
 
 %parse-param { CmmProgram& program }
 
@@ -323,10 +324,10 @@ if_stat   : K_IF SYM_OPEN expr SYM_CLOSE statement { $$ = new std::vector<AstNod
           ;
           
 else_stat : K_ELSE statement { $$ = new std::vector<AstNode*>(); $$->push_back($2); }
-          | { $$ = nullptr; }
+          | { $$ = new std::vector<AstNode*>(); }
           ;
           
-if_bloc   : if_stat else_stat { AstNode* condition = $1->front(); $1->erase($1->begin()); $$ = new If(condition,$1,$2); }
+if_bloc   : if_stat else_stat { AstNode* condition = $1->front(); $1->erase($1->begin()); $$ = new If(condition,*$1,*$2); delete $1; delete $2; }
           ;
 
 for_init  : decl_var { $$ = $1; }
