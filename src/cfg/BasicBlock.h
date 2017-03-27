@@ -9,9 +9,20 @@ class BasicBlock {
 public:
     BasicBlock(std::string label_, BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr);
     ~BasicBlock();
-    std::vector<IRInstruction*> getInstructions() const;
+
+    // Getters
     std::string getLabel() const;
+    std::vector<IRInstruction*> getInstructions() const;
+    BasicBlock* getExitTrue();
+    BasicBlock* getExitFalse();
+
+    // Setters
+    void setExitTrue(BasicBlock* exitTrue_);
+    void setExitFalse(BasicBlock* exitFalse_);
+
+    // Others
     void addInstruction(IRInstruction* instruction);
+
 protected:
     std::string label;
     std::vector<IRInstruction*> instructions;

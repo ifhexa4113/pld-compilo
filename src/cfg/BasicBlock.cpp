@@ -39,3 +39,31 @@ void BasicBlock::addInstruction(IRInstruction * instruction)
 {
     instructions.push_back(instruction);
 }
+
+BasicBlock* BasicBlock::getExitTrue()
+{
+    return exitTrue;
+}
+
+BasicBlock* BasicBlock::getExitFalse()
+{
+    return exitFalse;
+}
+
+void BasicBlock::setExitTrue(BasicBlock *exitTrue_)
+{
+    if(exitTrue != nullptr)
+    {
+        delete exitTrue;
+    }
+    exitTrue = exitTrue_;
+}
+
+void BasicBlock::setExitFalse(BasicBlock *exitFalse_)
+{
+    if(exitFalse != nullptr)
+    {
+        delete exitFalse;
+    }
+    exitFalse = exitFalse_;
+}
