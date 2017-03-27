@@ -14,6 +14,7 @@ public:
     virtual int walkTree() = 0;
     Declaration* getDeclaration();
     Type getType();
+    std::string getName() const;
 
 protected:
     Declaration* declaration;

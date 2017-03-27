@@ -25,3 +25,8 @@ Type Definition::getType()
 {
     return declaration->getType();
 }
+
+std::string Definition::getName() const
+{
+    return declaration->getName();
+}
