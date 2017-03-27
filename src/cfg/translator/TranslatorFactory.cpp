@@ -1,5 +1,6 @@
 #include "TranslatorFactory.h"
 #include "Translator.h"
+#include "CmmProgramTranslator.h"
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
@@ -20,15 +21,15 @@ TranslatorFactory::TranslatorFactory()
     // Nothing else to do
 }
 
-Translator* TranslatorFactory::getTranslator(AstNode* node)
+Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
 {
     // TODO: not fully implemented yet !
     // TODO: put each big part in a small method ?
     if(dynamic_cast<Block*>(node))
     {
-        if(dynamic_cast<CmmProgram*>(node))
+        if(CmmProgram* p = dynamic_cast<CmmProgram*>(node))
         {
-            // return new CmmProgramTranslator();
+            return new CmmProgramTranslator(p, cfg);
         } else if(dynamic_cast<FunctionDefinition*>(node))
         {
             // return new FunctionDefinitionTranslator();
