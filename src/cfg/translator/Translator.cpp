@@ -1,14 +1,13 @@
 #include "Translator.h"
 
-Translator::Translator(AstNode* node_): node(node_)
+Translator::Translator(AstNode* node_, CFG* cfg_): node(node_), cfg(cfg_)
 {
     // Nothing else to do
 }
 
 Translator::~Translator()
 {
-    // TODO: should the translator really delete the node ?
-    delete node;
+    // Nothing else to do
 }
 
 TranslatorFactory& Translator::getFactory()
