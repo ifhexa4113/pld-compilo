@@ -34,6 +34,6 @@ BasicBlock * CmmProgramTranslator::translate()
         delete t;
     }
 
-    // With our grammar, it's impossible to have something that can be merged here
+    // No need to return anything here, we're at the top
     return nullptr;
 }

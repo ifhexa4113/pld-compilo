@@ -13,10 +13,10 @@ public:
     virtual ~Translator();
 
     /*
-     * If the pointer returned by translate is nullptr,
+     * If the pointer returned by translate is a block with a non-empty,
      * then it means that the first BasicBlock can't be merged
      * with the last one.
-     * Otherwise it can, and therefore it was not added
+     * Otherwise it can, and therefore it was not previously added
      * to the cfg.
      */
     virtual BasicBlock* translate() = 0;
