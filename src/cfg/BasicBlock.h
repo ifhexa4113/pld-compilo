@@ -22,6 +22,7 @@ public:
 
     // Others
     void addInstruction(IRInstruction* instruction);
+    void merge(BasicBlock* otherBlock);
 
 protected:
     std::string label;

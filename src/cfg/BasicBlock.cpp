@@ -35,11 +35,6 @@ std::vector<IRInstruction *> BasicBlock::getInstructions() const
     return instructions;
 }
 
-void BasicBlock::addInstruction(IRInstruction * instruction)
-{
-    instructions.push_back(instruction);
-}
-
 BasicBlock* BasicBlock::getExitTrue()
 {
     return exitTrue;
@@ -66,4 +61,17 @@ void BasicBlock::setExitFalse(BasicBlock *exitFalse_)
         delete exitFalse;
     }
     exitFalse = exitFalse_;
+}
+
+void BasicBlock::addInstruction(IRInstruction * instruction)
+{
+    instructions.push_back(instruction);
+}
+
+void BasicBlock::merge(BasicBlock * otherBlock)
+{
+    for(IRInstruction* instruction: otherBlock->getInstructions())
+    {
+        instructions.push_back(instruction);
+    }
 }
