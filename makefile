@@ -98,7 +98,7 @@ EXECS = $(EXE1) $(EXE2)
 W = -W
 WA = -Wall
 STDLIB = -std=gnu++11
-INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib))
+INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib)) -I $(SRCPATH)
 
 CFLAGS = $(INCLUDES)
 CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
