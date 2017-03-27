@@ -9,6 +9,7 @@ public:
     Expression() {};
     virtual ~Expression() {};
     virtual int walkTree() = 0;
+    virtual void fillSymbolTable(SymbolTableStack& stack){};
 };
 
 #endif

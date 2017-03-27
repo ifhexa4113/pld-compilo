@@ -20,3 +20,8 @@ int ParenthesisExpression::walkTree()
 {
     return 0;
 }
+
+void ParenthesisExpression::fillSymbolTable(SymbolTableStack& stack)
+{
+    expression->fillSymbolTable(stack);
+}

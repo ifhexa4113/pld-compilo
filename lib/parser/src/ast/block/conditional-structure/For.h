@@ -16,6 +16,8 @@ public:
 	AstNode* getInitialization();
     Expression* getIncrement();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     AstNode* initialization; // TODO : can be a declaration
     Expression* increment;

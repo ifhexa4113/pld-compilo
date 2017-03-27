@@ -35,3 +35,8 @@ Expression * ConditionalStructure::getCondition()
 {
     return condition;
 }
+
+void ConditionalStructure::fillSymbolTable(SymbolTableStack& stack)
+{
+    Block::fillSymbolTable(stack);
+}

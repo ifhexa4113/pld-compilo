@@ -15,6 +15,8 @@ public:
     int walkTree();
     std::vector<Expression*> getListExpression();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     std::vector<Expression*> listExpression;
 };

@@ -25,3 +25,8 @@ Expression* UnaryBinaryOperationOnExpression::getExpression()
 {
     return expression;
 }
+
+void UnaryBinaryOperationOnExpression::fillSymbolTable(SymbolTableStack& stack)
+{
+    expression->fillSymbolTable(stack);
+}

@@ -15,6 +15,8 @@ public:
     Declaration* getDeclaration();
     Type getType();
 
+    virtual void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     Declaration* declaration;
 };

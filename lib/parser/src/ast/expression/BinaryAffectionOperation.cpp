@@ -73,3 +73,9 @@ Expression* BinaryAffectionOperation::getRExpression()
 {
     return rExpression;
 }
+
+void BinaryAffectionOperation::fillSymbolTable(SymbolTableStack& stack)
+{
+    lvalue->fillSymbolTable(stack);
+    rExpression->fillSymbolTable(stack);
+}

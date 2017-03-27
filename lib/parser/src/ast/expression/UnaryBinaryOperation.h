@@ -19,6 +19,7 @@ class UnaryBinaryOperation : public Expression
 public:
     UnaryBinaryOperation(UnaryBinaryOperator op_) : Expression(), op(op_) {};
     virtual int walkTree() = 0;
+    virtual void fillSymbolTable(SymbolTableStack& stack){};
 
 protected:
     UnaryBinaryOperator op;

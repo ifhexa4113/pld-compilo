@@ -27,3 +27,18 @@ int FunctionDefinition::walkTree()
     Block::walkTree();
     return 0;
 }
+
+void FunctionDefinition::fillSymbolTable(SymbolTableStack& stack)
+{
+    Definition::fillSymbolTable(stack);
+    stack.push(symbolTable);
+    if(FunctionDeclaration* functionDeclaration = dynamic_cast<FunctionDeclaration*>(declaration))
+    {
+        std::vector<Declaration*>& arguments = functionDeclaration->getArguments();
+        for(auto argument : arguments)
+        {
+            argument->fillSymbolTable(stack);
+        }
+    }
+
+}

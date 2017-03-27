@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Declaration.h"
 
 Declaration::Declaration(std::string name_, Type type_, int address_) :
@@ -27,4 +29,14 @@ Type Declaration::getType() const
 int Declaration::getAddress() const
 {
     return address;
+}
+
+void Declaration::fillSymbolTable(SymbolTableStack& stack)
+{
+    if(stack.checkSymbolImmediate(name))
+    {
+        std::cerr << "Error: redeclaration of symbol " << name << "." << std::endl;
+        // TODO error flag
+    }
+    stack.addEntry(name, this);
 }

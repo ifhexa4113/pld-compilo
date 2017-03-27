@@ -22,6 +22,8 @@ public:
     Expression* getLExpression();
     BinaryBinaryOperator getOperator();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     BinaryBinaryOperator op;
     Expression* lExpression;

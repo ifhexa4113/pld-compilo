@@ -15,6 +15,8 @@ public:
     std::vector<AstNode*> getChildren();
     void addChildren(AstNode* child);
 
+    virtual void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     SymbolTable symbolTable;
     std::vector<AstNode*> children;

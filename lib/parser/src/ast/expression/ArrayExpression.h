@@ -10,6 +10,8 @@ public:
     ~ArrayExpression();
     int walkTree();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     Expression* index;
 };

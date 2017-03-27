@@ -12,6 +12,8 @@ public:
     int walkTree();
     Expression* getValue() const;
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     Expression* value;
 };

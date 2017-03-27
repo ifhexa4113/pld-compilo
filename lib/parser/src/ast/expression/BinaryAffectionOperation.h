@@ -27,6 +27,8 @@ public:
     LValueExpression* getLValue();
     Expression* getRExpression();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     AffectionOperator op;
     LValueExpression* lvalue;

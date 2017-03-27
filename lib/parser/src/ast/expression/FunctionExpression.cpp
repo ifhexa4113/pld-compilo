@@ -44,3 +44,25 @@ std::vector<Expression *> FunctionExpression::getParameters()
 {
     return parameters;
 }
+
+void FunctionExpression::fillSymbolTable(SymbolTableStack& stack)
+{
+    if(!stack.checkSymbol(name))
+    {
+        std::cerr << "Error: use of unknown symbol " << name << "." << std::endl;
+        // TODO global flag error
+    }
+
+    // TODO stack.getSymbol can be null ?
+    if(FunctionDeclaration* functionDeclaration = dynamic_cast<FunctionDeclaration*>(stack.getSymbol(name)))
+    {
+        if(parameters.size() != functionDeclaration->getNbArgs())
+        {
+            std::cerr << "Error: inappropriate number of arguments for symbol " << name << std::endl;
+            // TODO global flag error
+        }
+    }
+
+    for(auto parameter : parameters)
+        parameter->fillSymbolTable(stack);
+}

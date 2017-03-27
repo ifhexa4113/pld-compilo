@@ -25,3 +25,9 @@ Expression * VariableDefinition::getRExpression()
 {
     return rExpression;
 }
+
+void VariableDefinition::fillSymbolTable(SymbolTableStack& stack)
+{
+    Definition::fillSymbolTable(stack);
+    rExpression->fillSymbolTable(stack);
+}

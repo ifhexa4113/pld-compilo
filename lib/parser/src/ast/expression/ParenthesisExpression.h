@@ -10,6 +10,8 @@ public:
     ~ParenthesisExpression();
     int walkTree();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     Expression* expression;
 };

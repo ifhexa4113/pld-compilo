@@ -13,6 +13,8 @@ public:
     virtual int walkTree() = 0;
     std::string getName();
 
+    virtual void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     std::string name;
 };

@@ -15,6 +15,8 @@ public:
     virtual int walkTree();
     Expression* getCondition();
 
+    virtual void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     Expression* condition;
 };

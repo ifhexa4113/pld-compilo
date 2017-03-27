@@ -75,3 +75,9 @@ Expression* BinaryLogicOperation::getLExpression()
 {
     return lExpression;
 }
+
+void BinaryLogicOperation::fillSymbolTable(SymbolTableStack& stack)
+{
+    lExpression->fillSymbolTable(stack);
+    rExpression->fillSymbolTable(stack);
+}

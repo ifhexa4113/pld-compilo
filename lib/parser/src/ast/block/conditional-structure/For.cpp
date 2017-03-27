@@ -51,3 +51,12 @@ Expression * For::getIncrement()
 {
     return increment;
 }
+
+void For::fillSymbolTable(SymbolTableStack& stack)
+{
+    stack.push(symbolTable);
+    initialization->fillTableSymbol(stack);
+    for(auto child : children)
+        child->fillTableSymbol(stack);
+
+}

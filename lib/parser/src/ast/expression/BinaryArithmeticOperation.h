@@ -22,6 +22,8 @@ public:
     Expression* getLExpression();
     ArithmeticOperator getOperator();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     ArithmeticOperator op;
     Expression* lExpression;

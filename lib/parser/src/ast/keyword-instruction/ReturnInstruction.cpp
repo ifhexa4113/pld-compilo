@@ -26,3 +26,8 @@ Expression * ReturnInstruction::getValue() const
 {
     return value;
 }
+
+void ReturnInstruction::fillSymbolTable(SymbolTableStack& stack)
+{
+    value->fillSymbolTable(stack);
+}

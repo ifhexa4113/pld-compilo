@@ -14,6 +14,8 @@ public:
     FunctionDefinition(FunctionDeclaration* declaration_, std::vector<AstNode*> children_);
     ~FunctionDefinition();
     int walkTree();
+
+    void fillSymbolTable(SymbolTableStack& stack);
 };
 
 #endif

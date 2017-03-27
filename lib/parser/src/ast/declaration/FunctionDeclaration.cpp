@@ -1,8 +1,8 @@
 #include "FunctionDeclaration.h"
 
-FunctionDeclaration::FunctionDeclaration(std::string name_, Type type_, int nbArgs_) :
+FunctionDeclaration::FunctionDeclaration(std::string name_, Type type_, std::vector<Declaration*> arguments_) :
     Declaration(name_, type_),
-    nbArgs(nbArgs_)
+    arguments(arguments_)
 {
     // Nothing else to do
 }
@@ -14,7 +14,7 @@ FunctionDeclaration::~FunctionDeclaration()
 
 int FunctionDeclaration::getNbArgs()
 {
-    return nbArgs;
+    return arguments.size();
 }
 
 int FunctionDeclaration::walkTree()
@@ -25,4 +25,9 @@ int FunctionDeclaration::walkTree()
 FunctionDefinition * FunctionDeclaration::toEmptyDefinition()
 {
     return new FunctionDefinition(this);
+}
+
+std::vector<Declaration*>& FunctionDeclaration::getArguments()
+{
+    return arguments;
 }

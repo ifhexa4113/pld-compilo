@@ -12,6 +12,8 @@ public:
     int walkTree();
     LValueExpression* getVariable();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     LValueExpression* variable;
 };

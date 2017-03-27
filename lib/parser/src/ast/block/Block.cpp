@@ -42,3 +42,11 @@ void Block::addChildren(AstNode *child)
 {
     children.push_back(child);
 }
+
+void Block::fillSymbolTable(SymbolTableStack& stack)
+{
+    stack.push(symbolTable);
+    for(auto child : children)
+        child->fillSymbolTable(stack);
+    stack.pop();
+}

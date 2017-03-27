@@ -18,6 +18,8 @@ public:
     Type getType() const;
     int getAddress() const;
 
+    virtual void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     std::string name;
     Type type;

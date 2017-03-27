@@ -41,3 +41,9 @@ Expression* BinaryArithmeticOperation::getLExpression()
 {
     return lExpression;
 }
+
+void BinaryArithmeticOperation::fillSymbolTable(SymbolTableStack& stack)
+{
+    lExpression->fillSymbolTable(stack);
+    rExpression->fillSymbolTable(stack);
+}

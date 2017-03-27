@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "LValueExpression.h"
 
 LValueExpression::LValueExpression(std::string name_) :
@@ -20,5 +22,14 @@ int LValueExpression::walkTree()
 std::string LValueExpression::getName()
 {
     return name;
+}
+
+void LValueExpression::fillSymbolTable(SymbolTableStack& stack)
+{
+    if(!stack.checkSymbol(name))
+    {
+        std::cerr << "Error: use of unknown symbol " << name << "." << std::endl;
+        // TODO global flag error
+    }
 }
 

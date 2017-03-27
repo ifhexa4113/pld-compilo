@@ -13,6 +13,8 @@ public:
     int walkTree();
     Expression* getRExpression();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+
 protected:
     Expression* rExpression;
 };

@@ -5,6 +5,8 @@
     #include <iostream>
 #endif
 
+#include "SymbolTableStack.h"
+
 class AstNode {
 
 public:
@@ -27,6 +29,7 @@ public:
 #endif
     
     virtual int walkTree() = 0;
+    virtual void fillSymbolTable(SymbolTableStack& stack){};
 
 protected:
 #ifdef DEBUG

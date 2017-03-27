@@ -9,6 +9,8 @@ public:
     ArrayDefinition(LValueDeclaration* declaration_);
     ~ArrayDefinition();
     int walkTree();
+
+    // TODO missing an expression !
 };
 
 #endif //ARRAY_DEFINITION_H

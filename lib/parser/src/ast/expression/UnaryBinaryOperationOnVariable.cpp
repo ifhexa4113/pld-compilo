@@ -22,3 +22,8 @@ LValueExpression* UnaryBinaryOperationOnVariable::getVariable()
 {
     return variable;
 }
+
+void UnaryBinaryOperationOnVariable::fillSymbolTable(SymbolTableStack& stack)
+{
+    variable->fillSymbolTable(stack);
+}

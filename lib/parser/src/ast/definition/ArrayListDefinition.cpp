@@ -24,3 +24,10 @@ std::vector<Expression *> ArrayListDefinition::getListExpression()
 {
     return listExpression;
 }
+
+void ArrayListDefinition::fillSymbolTable(SymbolTableStack& stack)
+{
+    Definition::fillSymbolTable(stack);
+    for(auto expression : listExpression)
+        expression->fillSymbolTable(stack);
+}

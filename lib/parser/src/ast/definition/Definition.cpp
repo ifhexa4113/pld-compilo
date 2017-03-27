@@ -25,3 +25,9 @@ Type Definition::getType()
 {
     return declaration->getType();
 }
+
+void Definition::fillSymbolTable(SymbolTableStack& stack)
+{
+    if(!stack.contains(declaration->getName()))
+        stack.addEntry(declaration->getName(), declaration);
+}
