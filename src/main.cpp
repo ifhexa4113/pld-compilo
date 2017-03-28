@@ -1,13 +1,11 @@
 #include <iostream>
 #include <cstdio>
-#include "module1/module1.h"
-#include "module1/submodule1/module1.h"
-#include "calc.tab.h"
-
 #include <cassert>
+#include "calc.tab.h"
 
 #include "ast/Ast.h"
 #include "ast/block/CmmProgram.h"
+#include "cfg/CFG.h"
 
 int main()
 {
@@ -15,8 +13,9 @@ int main()
     CmmProgram& program = ast.getProgram();
 
     int result = yyparse(program);
+    program.walkTree(); // TODO: this will be obsolete soon
 
-    program.walkTree();
+    // CFG cfg(&ast);
 
     return result;
 }
