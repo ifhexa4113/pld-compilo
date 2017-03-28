@@ -5,7 +5,9 @@
 CFG::CFG(Ast *ast_) : ast(ast_), input(nullptr), blocks()
 {
     Translator* t = TranslatorFactory::getFactory().getTranslator(&(ast->getProgram()), this);
-    input = t->translate()->getInput();
+    SubGraph* sb = t->translate();
+    input = sb->getInput();
+    delete sb;
     delete t;
 }
 
