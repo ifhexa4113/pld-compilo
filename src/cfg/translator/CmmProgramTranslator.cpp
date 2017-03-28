@@ -24,6 +24,8 @@ SubGraph * CmmProgramTranslator::translate()
 
     // Then create a variable to memorize the previous block
     std::vector<BasicBlock*> previousBlocks;
+    // And the one to return the pseudo-subgraph at the end
+    BasicBlock* firstBlock = nullptr;
 
     // Then appends each child to the cfg
     // (children are only functions definitions here, so it's linear)
@@ -32,6 +34,12 @@ SubGraph * CmmProgramTranslator::translate()
         Translator * t = getFactory().getTranslator(child, cfg);
         SubGraph* sb = t->translate();
         BasicBlock* bb = sb->getInput();
+
+        if(!firstBlock)
+        {
+            // This is the first block, the one that will be returned as the input of the CFG
+            firstBlock = bb;
+        }
 
         for(BasicBlock* output: previousBlocks)
         {
@@ -43,6 +51,6 @@ SubGraph * CmmProgramTranslator::translate()
         delete t;
     }
 
-    // No need to return anything here, we're at the top
-    return nullptr;
+    // Just return a subgraph containing only the outputs of the last subgraph
+    return new SubGraph(firstBlock, previousBlocks);
 }
