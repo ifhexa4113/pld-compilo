@@ -11,6 +11,7 @@
 class FunctionDeclaration : public Declaration
 {
 public:
+    FunctionDeclaration(std::string name_, Type type_);
     FunctionDeclaration(std::string name_, Type type_, std::vector<LValueDeclaration*> arguments_);
     ~FunctionDeclaration();
     int walkTree();

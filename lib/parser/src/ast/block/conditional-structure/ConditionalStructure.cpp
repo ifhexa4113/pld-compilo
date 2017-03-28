@@ -38,5 +38,6 @@ Expression * ConditionalStructure::getCondition()
 
 void ConditionalStructure::fillSymbolTable(SymbolTableStack& stack)
 {
+    condition->fillSymbolTable(stack);
     Block::fillSymbolTable(stack);
 }

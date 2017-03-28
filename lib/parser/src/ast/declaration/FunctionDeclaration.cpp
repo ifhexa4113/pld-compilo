@@ -1,5 +1,11 @@
 #include "FunctionDeclaration.h"
 
+FunctionDeclaration::FunctionDeclaration(std::string name_, Type type_) :
+    Declaration(name_, type_)
+{
+
+}
+
 FunctionDeclaration::FunctionDeclaration(std::string name_, Type type_, std::vector<LValueDeclaration*> arguments_) :
     Declaration(name_, type_),
     arguments(arguments_)

@@ -270,7 +270,9 @@ decl_arg  : decl_arg SYM_COMMA decl_var { $1->push_back($3); $$ = $1; }
           ;
           
 decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE {
-                $$ = new FunctionDeclaration(std::string($2), $1, *$4);
+                if($4 == nullptr)
+                    $$ = new FunctionDeclaration(std::string($2), $1);
+                else $$ = new FunctionDeclaration(std::string($2), $1, *$4);
                 delete $4;
             }
           ;
