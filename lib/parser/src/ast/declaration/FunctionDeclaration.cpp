@@ -1,6 +1,6 @@
 #include "FunctionDeclaration.h"
 
-FunctionDeclaration::FunctionDeclaration(std::string name_, Type type_, std::vector<Declaration*> arguments_) :
+FunctionDeclaration::FunctionDeclaration(std::string name_, Type type_, std::vector<LValueDeclaration*> arguments_) :
     Declaration(name_, type_),
     arguments(arguments_)
 {
@@ -27,7 +27,7 @@ FunctionDefinition * FunctionDeclaration::toEmptyDefinition()
     return new FunctionDefinition(this);
 }
 
-std::vector<Declaration*>& FunctionDeclaration::getArguments()
+std::vector<LValueDeclaration*>& FunctionDeclaration::getArguments()
 {
     return arguments;
 }

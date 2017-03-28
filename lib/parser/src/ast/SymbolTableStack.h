@@ -5,7 +5,6 @@
 #include <string>
 
 #include "SymbolTable.h"
-#include "declaration/Declaration.h"
 
 class SymbolTableStack
 {
@@ -22,7 +21,7 @@ public:
 
 
 protected:
-    std::deque<SymbolTable&> stack;
+    std::deque<SymbolTable*> stack;
 
 };
 

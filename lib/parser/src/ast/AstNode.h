@@ -29,7 +29,7 @@ public:
 #endif
     
     virtual int walkTree() = 0;
-    virtual void fillSymbolTable(SymbolTableStack& stack){};
+    virtual void fillSymbolTable(SymbolTableStack&){};
 
 protected:
 #ifdef DEBUG

@@ -3,7 +3,8 @@
 
 #include <map>
 #include <string>
-#include "declaration/Declaration.h"
+
+class Declaration;
 
 class SymbolTable
 {

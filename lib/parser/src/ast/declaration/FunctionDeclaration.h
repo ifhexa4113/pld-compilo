@@ -5,21 +5,22 @@
 #include <vector>
 #include "Type.h"
 #include "Declaration.h"
+#include "LValueDeclaration.h"
 #include "ast/definition/FunctionDefinition.h"
 
 class FunctionDeclaration : public Declaration
 {
 public:
-    FunctionDeclaration(std::string name_, Type type_, std::vector<Declaration*> arguments_);
+    FunctionDeclaration(std::string name_, Type type_, std::vector<LValueDeclaration*> arguments_);
     ~FunctionDeclaration();
     int walkTree();
     int getNbArgs();
     FunctionDefinition* toEmptyDefinition();
 
-    std::vector<Declaration*>& getArguments();
+    std::vector<LValueDeclaration*>& getArguments();
 
 protected:
-    std::vector<Declaration*> arguments;
+    std::vector<LValueDeclaration*> arguments;
 };
 
 #endif

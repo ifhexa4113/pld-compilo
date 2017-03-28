@@ -4,6 +4,7 @@
 #include <string>
 #include "ast/AstNode.h"
 #include "ast/declaration/Type.h"
+
 class Declaration;
 
 class Definition : public virtual AstNode

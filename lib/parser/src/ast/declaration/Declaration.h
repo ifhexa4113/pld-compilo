@@ -1,5 +1,5 @@
-#ifndef SYMBOL_H
-#define SYMBOL_H
+#ifndef DECLARATION_H
+#define DECLARATION_H
 
 #include <string>
 #include "Type.h"
@@ -18,7 +18,7 @@ public:
     Type getType() const;
     int getAddress() const;
 
-    virtual void fillSymbolTable(SymbolTableStack& stack);
+    //virtual void fillSymbolTable(SymbolTableStack& stack);
 
 protected:
     std::string name;

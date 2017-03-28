@@ -28,6 +28,6 @@ Type Definition::getType()
 
 void Definition::fillSymbolTable(SymbolTableStack& stack)
 {
-    if(!stack.contains(declaration->getName()))
+    if(!stack.checkSymbolImmediate(declaration->getName()))
         stack.addEntry(declaration->getName(), declaration);
 }

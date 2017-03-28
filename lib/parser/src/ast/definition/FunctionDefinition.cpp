@@ -1,6 +1,7 @@
 #include <iostream>
 #include "FunctionDefinition.h"
 #include "ast/declaration/FunctionDeclaration.h"
+#include "ast/declaration/LValueDeclaration.h"
 
 FunctionDefinition::FunctionDefinition(FunctionDeclaration* declaration_) :
     Definition(declaration_),
@@ -34,11 +35,11 @@ void FunctionDefinition::fillSymbolTable(SymbolTableStack& stack)
     stack.push(symbolTable);
     if(FunctionDeclaration* functionDeclaration = dynamic_cast<FunctionDeclaration*>(declaration))
     {
-        std::vector<Declaration*>& arguments = functionDeclaration->getArguments();
+        std::vector<LValueDeclaration*>& arguments = functionDeclaration->getArguments();
         for(auto argument : arguments)
         {
             argument->fillSymbolTable(stack);
         }
     }
-
+    Block::fillSymbolTable(stack);
 }

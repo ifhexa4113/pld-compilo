@@ -55,8 +55,8 @@ Expression * For::getIncrement()
 void For::fillSymbolTable(SymbolTableStack& stack)
 {
     stack.push(symbolTable);
-    initialization->fillTableSymbol(stack);
+    initialization->fillSymbolTable(stack);
     for(auto child : children)
-        child->fillTableSymbol(stack);
+        child->fillSymbolTable(stack);
 
 }
