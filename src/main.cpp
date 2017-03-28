@@ -16,6 +16,7 @@ int main()
     program.walkTree(); // TODO: this will be obsolete soon
 
     // CFG cfg(&ast);
+    // cfg.print(std::cout);
 
     return result;
 }
