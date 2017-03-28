@@ -21,3 +21,8 @@ void CFG::addBasicBlock(BasicBlock *block)
 {
     blocks.push_back(block);
 }
+
+void CFG::print(std::ostream &ost) const
+{
+    input->print(ost);
+}
