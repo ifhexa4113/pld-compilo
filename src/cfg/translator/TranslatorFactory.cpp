@@ -1,6 +1,8 @@
+#include <iostream>
 #include "TranslatorFactory.h"
 #include "Translator.h"
 #include "CmmProgramTranslator.h"
+#include "FunctionDefinitionTranslator.h"
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
@@ -10,8 +12,11 @@
 #include "ast/expression/Expression.h"
 #include "ast/expression/Expression.h"
 
+using namespace std;
+
 TranslatorFactory& TranslatorFactory::getFactory()
 {
+    cout << "Gathering factory" << endl;
     static TranslatorFactory tf;
     return tf;
 }
@@ -23,16 +28,20 @@ TranslatorFactory::TranslatorFactory()
 
 Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
 {
+    cout << "TranslatorFactory::getTranslator : Trying to get a Translator..." << endl;
     // TODO: not fully implemented yet !
     // TODO: put each big part in a small method ?
     if(dynamic_cast<Block*>(node))
     {
+        cout << "It's a block..." << endl;
         if(CmmProgram* p = dynamic_cast<CmmProgram*>(node))
         {
+            cout << "It's a CmmProgram - returning the right translator." << endl;
             return new CmmProgramTranslator(p, cfg);
-        } else if(dynamic_cast<FunctionDefinition*>(node))
+        } else if(FunctionDefinition* f = dynamic_cast<FunctionDefinition*>(node))
         {
-            // return new FunctionDefinitionTranslator();
+            cout << "It's a FunctionDefinition - returning the right translator." << endl;
+            return new FunctionDefinitionTranslator(f, cfg);
         }
         // check what type of block it is
     } else if(dynamic_cast<Expression*>(node))
