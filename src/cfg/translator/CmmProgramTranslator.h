@@ -8,7 +8,7 @@ class CmmProgramTranslator : public Translator {
 public:
     CmmProgramTranslator(CmmProgram* program, CFG* cfg);
     ~CmmProgramTranslator();
-    BasicBlock* translate();
+    SubGraph* translate();
 };
 
 

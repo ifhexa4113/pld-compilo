@@ -1,5 +1,6 @@
 #include "CmmProgramTranslator.h"
 #include <iostream>
+#include <vector>
 
 CmmProgramTranslator::CmmProgramTranslator(CmmProgram* program, CFG* cfg) : Translator(program, cfg)
 {
@@ -11,26 +12,34 @@ CmmProgramTranslator::~CmmProgramTranslator()
     // Nothing else to do
 }
 
-BasicBlock * CmmProgramTranslator::translate()
+SubGraph * CmmProgramTranslator::translate()
 {
+    // First cast it in something we can manipulate as we want
     CmmProgram* cmmProgram = dynamic_cast<CmmProgram*>(node);
     if(cmmProgram == nullptr)
     {
         std::cerr << "CmmProgramTranslator::translate() : ERROR - associated node is not a CmmProgram" << std::endl;
         return nullptr;
     }
+
+    // Then create a variable to memorize the previous block
+    std::vector<BasicBlock*> previousBlocks;
+
+    // Then appends each child to the cfg
+    // (children are only functions definitions here, so it's linear)
     for(AstNode* child: cmmProgram->getChildren())
     {
         Translator * t = getFactory().getTranslator(child, cfg);
-        BasicBlock* bb = t->translate();
-        if(bb != nullptr)
+        SubGraph* sb = t->translate();
+        BasicBlock* bb = sb->getInput();
+
+        for(BasicBlock* output: previousBlocks)
         {
-            cfg->addBasicBlock(bb);
+            // NOTE: if we're at the first child, this should never be executed
+            output->setExitTrue(bb);
         }
-        else
-        {
-            std::cout << "CmmProgramTranslator::translate() : a basic block was null!" << std::endl;
-        }
+        previousBlocks = sb->getOutputs();
+        delete sb;
         delete t;
     }
 
