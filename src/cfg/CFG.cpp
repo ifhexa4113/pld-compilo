@@ -2,10 +2,10 @@
 #include "translator/Translator.h"
 #include "translator/TranslatorFactory.h"
 
-CFG::CFG(Ast *ast_) : ast(ast_), blocks()
+CFG::CFG(Ast *ast_) : ast(ast_), input(nullptr), blocks()
 {
     Translator* t = TranslatorFactory::getFactory().getTranslator(&(ast->getProgram()), this);
-    t->translate();
+    input = t->translate()->getInput();
     delete t;
 }
 

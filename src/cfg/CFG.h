@@ -2,6 +2,7 @@
 #define CFG_H
 
 #include <vector>
+#include <ostream>
 #include "ast/Ast.h"
 #include "BasicBlock.h"
 
@@ -9,9 +10,17 @@ class CFG {
 public:
     CFG(Ast* ast_);
     ~CFG();
+    void print(std::ostream& ost) const;
+
+    /**
+     * @deprecated
+     * @param block
+     */
     void addBasicBlock(BasicBlock* block);
+
 protected:
     Ast* ast;
+    BasicBlock* input;
     std::vector<BasicBlock*> blocks;
 };
 
