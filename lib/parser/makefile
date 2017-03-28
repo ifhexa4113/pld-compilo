@@ -79,6 +79,7 @@ OUTDIR = $(OUTDIR_ROOT) $(TEMPPATH) $(HEADPATH)
 #---------------------------------------------------------------
 
 #Variables pour les options de compilation----------------------
+DEBUG_FLAG = -g
 W = -W
 WA = -Wall
 STDLIB = -std=gnu++11
@@ -130,7 +131,7 @@ endif
 
 
 ifeq ($(DEBUG),yes)
-	CFLAGS += $(W) $(WA) $(STDLIB)
+	CFLAGS += $(W) $(WA) $(STDLIB) $(DEBUG_FLAG)
 else
 	CFLAGS = $(STDLIB)
 endif

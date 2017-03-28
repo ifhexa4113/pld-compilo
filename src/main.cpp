@@ -8,6 +8,7 @@
 
 #include "ast/Ast.h"
 #include "ast/block/CmmProgram.h"
+#include "ast/SymbolTableStack.h"
 
 int main()
 {
@@ -17,6 +18,9 @@ int main()
     int result = yyparse(program);
 
     program.walkTree();
+
+    SymbolTableStack stack;
+    program.fillSymbolTable(stack);
 
     return result;
 }
