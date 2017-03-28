@@ -1,8 +1,12 @@
 #include "CFG.h"
+#include "translator/Translator.h"
+#include "translator/TranslatorFactory.h"
 
 CFG::CFG(Ast *ast_) : ast(ast_), blocks()
 {
-    // Nothing else to do
+    Translator* t = TranslatorFactory::getFactory().getTranslator(&(ast->getProgram()), this);
+    t->translate();
+    delete t;
 }
 
 CFG::~CFG()
