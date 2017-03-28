@@ -75,3 +75,20 @@ void BasicBlock::merge(BasicBlock * otherBlock)
         instructions.push_back(instruction);
     }
 }
+
+void BasicBlock::print(std::ostream &ost) const
+{
+    ost << label << ":" << std::endl;
+    for(IRInstruction* instruction: instructions)
+    {
+        instruction->print(ost);
+    }
+    if(exitTrue)
+    {
+        exitTrue->print(ost);
+    }
+    if(exitFalse)
+    {
+        exitFalse->print(ost);
+    }
+}

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <ostream>
 #include "ir/IRInstruction.h"
 
 class BasicBlock {
@@ -23,6 +24,7 @@ public:
     // Others
     void addInstruction(IRInstruction* instruction);
     void merge(BasicBlock* otherBlock);
+    void print(std::ostream& ost) const;
 
 protected:
     std::string label;
