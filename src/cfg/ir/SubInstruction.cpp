@@ -4,8 +4,8 @@
 
 #include "SubInstruction.h"
 
-SubInstruction::SubInstruction(Register *destination, Operand *value, Operand *param2)
-        : IRInstruction(), destination(destination), param1(param1), param2(param2) {
+SubInstruction::SubInstruction(Register *destination_, Operand *param1_, Operand *param2_)
+        : IRInstruction(), destination(destination_), param1(param1_), param2(param2_) {
 
 }
 
