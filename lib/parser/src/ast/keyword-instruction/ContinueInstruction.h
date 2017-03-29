@@ -1,9 +1,9 @@
 #ifndef CONTINUE_INSTRUCTION_H
 #define CONTINUE_INSTRUCTION_H
 
-#include "ast/AstNode.h"
+#include "Instruction.h"
 
-class ContinueInstruction : public AstNode
+class ContinueInstruction : public Instruction
 {
 public:
     ContinueInstruction();

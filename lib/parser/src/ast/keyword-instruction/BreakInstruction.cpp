@@ -2,7 +2,7 @@
 #include "BreakInstruction.h"
 
 BreakInstruction::BreakInstruction() :
-    AstNode()
+    Instruction()
 {
     // Nothing else to do
 }
