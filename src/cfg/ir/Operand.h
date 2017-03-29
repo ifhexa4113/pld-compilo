@@ -1,7 +1,3 @@
-//
-// Created by charles on 2017-03-29.
-//
-
 #ifndef OPERAND_H
 #define OPERAND_H
 
@@ -14,8 +10,7 @@ public:
     ~Operand();
 
     int getValue();
-
-    friend ostream& operator<<(ostream& os, const Operand& dt);
+    friend std::ostream& operator<<(std::ostream& os, const Operand& dt);
     virtual std::string toString() = 0;
 
 protected:

@@ -1,4 +1,5 @@
 #include "LiteralNumber.h"
+#include <sstream>
 
 LiteralNumber::LiteralNumber(int value_) : Operand(value_)
 {
@@ -12,6 +13,7 @@ LiteralNumber::~LiteralNumber()
 
 std::string LiteralNumber::toString()
 {
-    std::string stringValue = std::stoi(value);
-    return stringValue;
+    std::ostringstream stm ;
+    stm << value ;
+    return stm.str() ;
 }
