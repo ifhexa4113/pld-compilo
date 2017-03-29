@@ -1,7 +1,7 @@
 #include "MovInstruction.h"
 
-MovInstruction::MovInstruction(Register aRegister, unsigned int value_) :
-    IRInstruction(), reg(aRegister), value(value_)
+MovInstruction::MovInstruction(Register* aRegister, Register* bRegister) :
+    IRInstruction(), regA(aRegister), regB(bRegister)
 {
     // Nothing else to do
 }
@@ -13,5 +13,5 @@ MovInstruction::~MovInstruction()
 
 void MovInstruction::print(std::ostream& ost) const
 {
-    ost << "MOV " << reg.getName() << ", #" << value << std::endl;
+    ost << "MOV " << regA->getName() << ", " << regB->getName() << std::endl;
 }
