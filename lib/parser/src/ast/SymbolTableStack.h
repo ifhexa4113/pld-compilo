@@ -14,13 +14,13 @@ public:
     /**
      *  Verify whether the SymbolTable at the top of the stack contains
      *  the symbol.
-     *  @ param name the name of the symbol
+     *  @param name the name of the symbol
     **/
     bool checkSymbolImmediate(std::string name) const;
 
     /**
      *  Verify whether one of the SymbolTable contained in the stack contain the symbol 
-     *  @ param name the name of the symbol
+     *  @param name the name of the symbol
     **/
     bool checkSymbol(std::string name) const;
 
