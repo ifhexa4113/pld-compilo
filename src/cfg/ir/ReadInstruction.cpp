@@ -16,10 +16,6 @@ void ReadInstruction::print(std::ostream &ost) const {
     ost << "READ\t" << destination << ", " << address << std::endl;
 }
 
-const Register *ReadInstruction::getDestination() const {
-    return destination;
-}
-
 const Operand *ReadInstruction::getAddress() const {
     return address;
 }

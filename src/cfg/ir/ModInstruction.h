@@ -6,13 +6,13 @@
 #define PLD_COMPILO_MODINSTRUCTION_H
 
 
-#include "IRInstruction.h"
+#include "RegisterInstruction.h"
 #include "Register.h"
 
 /**
  * Mnemonic representing a Write value : Store the given value in the given memory address
  */
-class ModInstruction : public IRInstruction {
+class ModInstruction : public RegisterInstruction {
 public:
     ModInstruction(Register *destination, Operand *param1, Operand *param2);
 
@@ -20,14 +20,11 @@ public:
 
     void print(std::ostream &ost) const override;
 
-    Register *getDestination() const;
-
     Operand *getParam1() const;
 
     Operand *getParam2() const;
 
 protected:
-    Register *destination;
     Operand *param1;
     Operand *param2;
 };

@@ -5,7 +5,7 @@
 #include "SubInstruction.h"
 
 SubInstruction::SubInstruction(Register *destination, Operand *param1, Operand *param2)
-        : IRInstruction(), destination(destination), param1(param1), param2(param2) {
+        : RegisterInstruction(destination), param1(param1), param2(param2) {
 
 }
 

@@ -6,20 +6,16 @@
 #define PLD_COMPILO_NOTINSTRUCTION_H
 
 
-#include "IRInstruction.h"
+#include "RegisterInstruction.h"
 #include "Register.h"
 
-class NotInstruction : public IRInstruction {
+class NotInstruction : public RegisterInstruction {
 public:
     NotInstruction(Register *source, Operand *destination);
 
     ~NotInstruction() override;
 
     void print(std::ostream &ost) const override;
-protected:
-    Register *destination;
-public:
-    Register *getDestination() const;
 
     Operand *getSource() const;
 

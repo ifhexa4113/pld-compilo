@@ -5,22 +5,17 @@
 #include "RshiftInstruction.h"
 
 RshiftInstruction::RshiftInstruction(Register *destination, Operand *param1, Operand *param2)
-        : IRInstruction(), destination(destination), param1(param1), param2(param2) {
+        : RegisterInstruction(destination), param1(param1), param2(param2) {
 
 }
 
 RshiftInstruction::~RshiftInstruction() {
-    delete destination;
     delete param1;
     delete param2;
 }
 
 void RshiftInstruction::print(std::ostream &ost) const {
     ost << "AND\t" << destination << ", " << param1 << ", " << param2;
-}
-
-Register *RshiftInstruction::getDestination() const {
-    return destination;
 }
 
 Operand *RshiftInstruction::getParam1() const {

@@ -5,7 +5,7 @@
 #ifndef PROJECT_LOADINSTRUCTION_H
 #define PROJECT_LOADINSTRUCTION_H
 
-#include "IRInstruction.h"
+#include "RegisterInstruction.h"
 #include "Register.h"
 
 /**
