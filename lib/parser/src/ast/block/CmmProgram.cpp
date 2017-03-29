@@ -26,7 +26,5 @@ int CmmProgram::walkTree()
 
 void CmmProgram::addFunction(FunctionDefinition* function)
 {
-    // TODO: check symbol table
-    // TODO: update symbol table
     children.push_back(function);
 }

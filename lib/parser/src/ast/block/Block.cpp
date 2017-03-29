@@ -12,7 +12,7 @@ Block::Block(std::vector<AstNode*> children_) :
     AstNode(),
     children(children_)
 {
-    // TODO: fill symbols table
+
 }
 
 Block::~Block()
