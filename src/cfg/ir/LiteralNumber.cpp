@@ -13,7 +13,7 @@ LiteralNumber::~LiteralNumber()
 
 std::string LiteralNumber::toString() const
 {
-    std::ostringstream stm ;
-    stm << value ;
-    return stm.str() ;
+    std::ostringstream stm;
+    stm << "#" << value;
+    return stm.str();
 }
