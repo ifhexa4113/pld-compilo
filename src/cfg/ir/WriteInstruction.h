@@ -20,7 +20,11 @@ public:
 
     void print(std::ostream &ost) const override;
 
-private:
+    const Operand &getAddress() const;
+
+    const Operand &getValue() const;
+
+protected:
     Operand address;
     Operand value;
 };

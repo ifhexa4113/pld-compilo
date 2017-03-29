@@ -2,20 +2,20 @@
 // Created by Element on 29/03/2017.
 //
 
-#include "JmpInstruction.h"
+#include "JmpnzInstruction.h"
 
-JmpInstruction::JmpInstruction(std::string label) : IRInstruction(), label(label){
-
-}
-
-JmpInstruction::~JmpInstruction() {
+JmpnzInstruction::JmpnzInstruction(std::string label) : IRInstruction(), label(label){
 
 }
 
-void JmpInstruction::print(std::ostream &ost) const {
-    ost << "JMP\t" << label << std::endl;
+JmpnzInstruction::~JmpnzInstruction() {
+
 }
 
-const std::string &JmpInstruction::getLabel() const {
+void JmpnzInstruction::print(std::ostream &ost) const {
+    ost << "JMPNZ\t" << label << std::endl;
+}
+
+const std::string &JmpnzInstruction::getLabel() const {
     return label;
 }
