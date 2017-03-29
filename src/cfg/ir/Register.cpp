@@ -1,7 +1,7 @@
 #include "Register.h"
 
-Register::Register(std::string name_, unsigned int value_) :
-    name(name_), value(value_)
+Register::Register(int value_, std::string name_) :
+    Operand(value_),name(name_)
 {
     // Nothing else to do
 }
@@ -22,7 +22,7 @@ std::string Register::getName() const
     return name;
 }
 
-int Register::getValue() const
+std::string toString()
 {
-    return value;
+    return name;
 }
