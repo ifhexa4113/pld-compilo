@@ -31,36 +31,36 @@ SubGraph * BinaryArithmeticOperationTranslator::translate()
     BasicBlock* bb = new BasicBlock("");
     std::vector<BasicBlock*> outputs(1, bb);
 
-    Translator* leftT = getFactory().getTranslator( binArithOp->getLExpression, cfg);
-    Subgraph* leftSb = leftT->translate();
-    Translator* rightT = getFactory().getTranslator( binArithOp->getLExpression, cfg);
-    Subgraph* rightSb = rightT->translate();
+    Translator* leftT = getFactory().getTranslator( binArithOp->getLExpression(), cfg);
+    SubGraph* leftSb = leftT->translate();
+    Translator* rightT = getFactory().getTranslator( binArithOp->getLExpression(), cfg);
+    SubGraph* rightSb = rightT->translate();
 
     switch (binArithOp->getOperator()){
         case ArithmeticOperator::PLUS:
             bb->addInstruction(new AddInstruction(new Register(),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestionation)),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestionation))));
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination())),
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination()))));
             break;
         case ArithmeticOperator::MINUS:
             bb->addInstruction(new SubInstruction(new Register(),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestionation)),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestionation))));
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination())),
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination()))));
             break;
         case ArithmeticOperator::MUL:
             bb->addInstruction(new MulInstruction(new Register(),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestionation)),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestionation))));
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination())),
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination()))));
             break;
         case ArithmeticOperator::DIV:
             bb->addInstruction(new DivInstruction(new Register(),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestionation)),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestionation))));
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination())),
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination()))));
             break;
         case ArithmeticOperator::MOD:
             bb->addInstruction(new ModInstruction(new Register(),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestionation)),
-                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestionation))));
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination())),
+                                                  new Register(*(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination()))));
             break;
     }
 
