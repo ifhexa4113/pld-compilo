@@ -2,25 +2,31 @@
 // Created by Element on 29/03/2017.
 //
 
-#include "CmpInstruction.h"
+#include "AddInstruction.h"
 
-CmpInstruction::CmpInstruction(Operand *address, Operand *value) : IRInstruction(), address(address), value(value) {
+AddInstruction::AddInstruction(Register *destination, Operand *value, Operand *param2)
+        : IRInstruction(), destination(destination), param1(param1), param2(param2) {
 
 }
 
-CmpInstruction::~CmpInstruction() {
-    delete address;
-    delete value;
+AddInstruction::~AddInstruction() {
+    delete destination;
+    delete param1;
+    delete param2;
 }
 
-void CmpInstruction::print(std::ostream &ost) const {
-    ost << "CMP\t" << address << ", " << value;
+void AddInstruction::print(std::ostream &ost) const {
+    ost << "ADD\t" << destination << ", " << param1 << ", " << param2;
 }
 
-const Operand *CmpInstruction::getAddress() const {
-    return address;
+Register *AddInstruction::getDestination() const {
+    return destination;
 }
 
-const Operand *CmpInstruction::getValue() const {
-    return value;
+Operand *AddInstruction::getParam1() const {
+    return param1;
+}
+
+Operand *AddInstruction::getParam2() const {
+    return param2;
 }

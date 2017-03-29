@@ -2,17 +2,17 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_JMPINSTRUCTION_H
-#define PLD_COMPILO_JMPINSTRUCTION_H
+#ifndef PLD_COMPILO_CALLINSTRUCTION_H
+#define PLD_COMPILO_CALLINSTRUCTION_H
 
 
 #include "IRInstruction.h"
 
-class JmpInstruction : public IRInstruction {
+class CallInstruction : public IRInstruction {
 public:
-    JmpInstruction(std::string label);
+    CallInstruction(std::string label);
 
-    ~JmpInstruction() override;
+    ~CallInstruction() override;
 
     void print(std::ostream &ost) const override;
 

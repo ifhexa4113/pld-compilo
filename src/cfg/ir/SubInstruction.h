@@ -2,8 +2,8 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_ADDINSTRUCTION_H
-#define PLD_COMPILO_ADDINSTRUCTION_H
+#ifndef PLD_COMPILO_SUBINSTRUCTION_H
+#define PLD_COMPILO_SUBINSTRUCTION_H
 
 
 #include "IRInstruction.h"
@@ -12,11 +12,11 @@
 /**
  * Mnemonic representing a Write value : Store the given value in the given memory address
  */
-class AddInstruction : public IRInstruction {
+class SubInstruction : public IRInstruction {
 public:
-    AddInstruction(Register *destination, Operand *param1, Operand *param2);
+    SubInstruction(Register *destination, Operand *param1, Operand *param2);
 
-    ~AddInstruction() override;
+    ~SubInstruction() override;
 
     void print(std::ostream &ost) const override;
 

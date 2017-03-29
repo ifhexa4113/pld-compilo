@@ -3,3 +3,15 @@
 //
 
 #include "RetInstruction.h"
+
+RetInstruction::RetInstruction() : IRInstruction() {
+
+}
+
+RetInstruction::~RetInstruction() {
+
+}
+
+void RetInstruction::print(std::ostream &ost) const {
+    ost << "RET" << std::endl;
+}

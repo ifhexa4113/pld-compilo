@@ -2,25 +2,25 @@
 // Created by Element on 29/03/2017.
 //
 
-#include "WriteInstruction.h"
+#include "CmpInstruction.h"
 
-WriteInstruction::WriteInstruction(Operand *address, Operand *value) : IRInstruction(), address(address), value(value) {
+CmpInstruction::CmpInstruction(Operand *address, Operand *value) : IRInstruction(), address(address), value(value) {
 
 }
 
-WriteInstruction::~WriteInstruction() {
+CmpInstruction::~CmpInstruction() {
     delete address;
     delete value;
 }
 
-void WriteInstruction::print(std::ostream &ost) const {
-    ost << "WRITE\t" << address << ", " << value;
+void CmpInstruction::print(std::ostream &ost) const {
+    ost << "CMP\t" << address << ", " << value;
 }
 
-const Operand *WriteInstruction::getAddress() const {
+const Operand *CmpInstruction::getAddress() const {
     return address;
 }
 
-const Operand *WriteInstruction::getValue() const {
+const Operand *CmpInstruction::getValue() const {
     return value;
 }

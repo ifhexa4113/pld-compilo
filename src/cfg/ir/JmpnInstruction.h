@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif //PLD_COMPILO_JMPNINSTRUCTION_H
+#endif //PLD_COMPILO_JmpnInstruction_H
