@@ -11,6 +11,7 @@
 #include "ast/definition/VariableDefinition.h"
 #include "ast/expression/Expression.h"
 #include "ast/expression/Expression.h"
+#include "ast/keyword-instruction/Instruction.h"
 
 using namespace std;
 
@@ -51,14 +52,21 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
 //        {
 //            // return new TODO;
 //        }
-    } else if(dynamic_cast<Definition*>(node)){
+    } else if(dynamic_cast<Definition*>(node))
+    {
         // check what type definition it is
-        if(dynamic_cast<VariableDefinition*>(node))
-        {
+        if (dynamic_cast<VariableDefinition *>(node)) {
             // return new VariableDefinitionTranslator();
         }
+    } else if(dynamic_cast<Instruction*>(node))
+    {
+        cout << "It's an instruction..." << endl;
+
     } else {
         // check what type of other thing it is
     }
+
+    cout << "Can't find a translator." << endl;
+
     return nullptr;
 }

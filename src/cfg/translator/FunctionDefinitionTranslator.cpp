@@ -37,18 +37,20 @@ SubGraph * FunctionDefinitionTranslator::translate()
     // For each child, link subgraphs
     for(AstNode* child: fDef->getChildren())
     {
-        Translator * t = getFactory().getTranslator(child, cfg);
-        SubGraph* sb = t->translate();
-        BasicBlock* bb = sb->getInput();
-
-        for(BasicBlock* output: previousBlocks)
+        if(Translator * t = getFactory().getTranslator(child, cfg))
         {
-            // NOTE: if we're at the first child, this should never be executed
-            output->setExitTrue(bb);
+            SubGraph* sb = t->translate();
+            BasicBlock* bb = sb->getInput();
+
+            for(BasicBlock* output: previousBlocks)
+            {
+                // NOTE: if we're at the first child, this should never be executed
+                output->setExitTrue(bb);
+            }
+            previousBlocks = sb->getOutputs();
+            delete sb;
+            delete t;
         }
-        previousBlocks = sb->getOutputs();
-        delete sb;
-        delete t;
     }
 
     outputs = previousBlocks;

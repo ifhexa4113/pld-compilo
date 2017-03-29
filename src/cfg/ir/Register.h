@@ -1,19 +1,20 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include <string>
+#include "Operand.h"
 
-class Register {
+class Register: public Operand {
 public:
-    Register(std::string name_, unsigned int value_);
+    Register(int value_, std::string name_);
     Register(Register const & other);
     ~Register();
     std::string getName() const;
     int getValue() const;
 
+    std::string toString();
+
 protected:
     std::string name;
-    unsigned int value;
 };
 
 
