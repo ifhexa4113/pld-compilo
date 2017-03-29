@@ -1,7 +1,7 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include <string>
+#include "Operand.h"
 
 class Register: public Operand {
 public:
