@@ -14,6 +14,7 @@ public:
     std::string getName();
 
     virtual void fillSymbolTable(SymbolTableStack& stack);
+    virtual Type getType(SymbolTableStack& stack);
 
 protected:
     std::string name;

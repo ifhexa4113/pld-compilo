@@ -1,6 +1,7 @@
 #include <iostream>
 #include "FunctionExpression.h"
 #include "ast/declaration/FunctionDeclaration.h"
+#include "ast/declaration/Declaration.h"
 
 FunctionExpression::FunctionExpression(std::string name_) :
     FunctionExpression(name_, std::vector<Expression*>())
@@ -44,6 +45,13 @@ std::string FunctionExpression::getName()
 std::vector<Expression *> FunctionExpression::getParameters()
 {
     return parameters;
+}
+
+Type FunctionExpression::getType(SymbolTableStack& stack)
+{
+    
+    return (stack.getSymbol(name))->getType();
+
 }
 
 void FunctionExpression::fillSymbolTable(SymbolTableStack& stack)

@@ -23,6 +23,7 @@ public:
     ArithmeticOperator getOperator();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
 
 protected:
     ArithmeticOperator op;

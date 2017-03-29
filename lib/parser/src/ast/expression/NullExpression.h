@@ -9,6 +9,8 @@ public:
     NullExpression();
     ~NullExpression();
     int walkTree();
+
+    Type getType(SymbolTableStack&);
 };
 
 #endif //NULL_EXPRESSION_H

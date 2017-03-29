@@ -13,6 +13,7 @@ public:
     LValueExpression* getVariable();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
 
 protected:
     LValueExpression* variable;

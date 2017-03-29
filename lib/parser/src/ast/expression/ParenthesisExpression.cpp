@@ -25,3 +25,8 @@ void ParenthesisExpression::fillSymbolTable(SymbolTableStack& stack)
 {
     expression->fillSymbolTable(stack);
 }
+
+Type ParenthesisExpression::getType(SymbolTableStack& stack)
+{
+    return expression->getType(stack);
+}

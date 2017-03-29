@@ -47,3 +47,20 @@ void BinaryArithmeticOperation::fillSymbolTable(SymbolTableStack& stack)
     lExpression->fillSymbolTable(stack);
     rExpression->fillSymbolTable(stack);
 }
+
+Type BinaryArithmeticOperation::getType(SymbolTableStack& stack)
+{
+    Type lType = lExpression->getType(stack);
+    if(lType == Type::VOID_T)
+    {
+        // TODO global flag error
+    }
+
+    Type rType = rExpression->getType(stack);
+    if(rType == Type::VOID_T)
+    {
+        // TODO global flag error
+    }
+
+    return static_cast<Type>(std::max<int>(static_cast<int>(lType), static_cast<int>(rType)));
+}

@@ -16,6 +16,7 @@ public:
     std::vector<Expression*> getParameters();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
 
 protected:
     std::string name;

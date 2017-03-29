@@ -28,6 +28,7 @@ public:
     Expression* getRExpression();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
 
 protected:
     AffectionOperator op;

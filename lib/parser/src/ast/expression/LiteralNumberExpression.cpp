@@ -19,3 +19,8 @@ int64_t LiteralNumberExpression::getValue()
     return value;
 }
 
+Type LiteralNumberExpression::getType(SymbolTableStack&)
+{
+    return Type::INT64_T;
+}
+

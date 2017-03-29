@@ -30,3 +30,14 @@ void UnaryBinaryOperationOnExpression::fillSymbolTable(SymbolTableStack& stack)
 {
     expression->fillSymbolTable(stack);
 }
+
+Type UnaryBinaryOperationOnExpression::getType(SymbolTableStack& stack)
+{
+    Type type = expression->getType(stack);
+    if(type == Type::VOID_T)
+    {
+        // TODO global flag error
+    }
+
+    return type;
+}

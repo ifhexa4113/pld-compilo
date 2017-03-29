@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "LValueExpression.h"
+#include "ast/declaration/Declaration.h"
 
 LValueExpression::LValueExpression(std::string name_) :
     Expression(),
@@ -22,6 +23,11 @@ int LValueExpression::walkTree()
 std::string LValueExpression::getName()
 {
     return name;
+}
+
+Type LValueExpression::getType(SymbolTableStack& stack)
+{
+    return (stack.getSymbol(name))->getType();
 }
 
 void LValueExpression::fillSymbolTable(SymbolTableStack& stack)

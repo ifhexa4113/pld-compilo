@@ -79,3 +79,14 @@ void BinaryAffectionOperation::fillSymbolTable(SymbolTableStack& stack)
     lvalue->fillSymbolTable(stack);
     rExpression->fillSymbolTable(stack);
 }
+
+Type BinaryAffectionOperation::getType(SymbolTableStack& stack)
+{
+    Type rType = rExpression->getType(stack);
+    if(rType == Type::VOID_T)
+    {
+        // TODO global flag error
+    }
+
+    return lvalue->getType(stack);
+}

@@ -26,6 +26,7 @@ public:
     LogicOperator getOperator();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
 
 protected:
     LogicOperator op;

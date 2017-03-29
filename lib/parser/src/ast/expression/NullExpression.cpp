@@ -14,3 +14,8 @@ int NullExpression::walkTree()
 {
     return 0;
 }
+
+Type NullExpression::getType(SymbolTableStack&)
+{
+    return Type::VOID_T;
+}

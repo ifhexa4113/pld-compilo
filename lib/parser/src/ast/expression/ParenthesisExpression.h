@@ -11,6 +11,7 @@ public:
     int walkTree();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
 
 protected:
     Expression* expression;

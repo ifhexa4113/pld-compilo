@@ -12,6 +12,8 @@ public:
     int walkTree();
     int64_t getValue();
 
+    Type getType(SymbolTableStack&);
+
 protected:
     int64_t value;
 };

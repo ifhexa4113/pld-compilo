@@ -13,6 +13,7 @@ public:
     Expression* getExpression();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
 
 protected:
     Expression* expression;

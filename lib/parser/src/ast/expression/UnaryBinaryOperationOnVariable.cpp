@@ -27,3 +27,10 @@ void UnaryBinaryOperationOnVariable::fillSymbolTable(SymbolTableStack& stack)
 {
     variable->fillSymbolTable(stack);
 }
+
+Type UnaryBinaryOperationOnVariable::getType(SymbolTableStack& stack)
+{
+    // A variable can't be of type void
+    return variable->getType(stack);
+
+}
