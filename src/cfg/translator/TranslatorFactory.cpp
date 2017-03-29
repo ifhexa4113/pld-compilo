@@ -2,6 +2,7 @@
 #include "TranslatorFactory.h"
 #include "Translator.h"
 #include "CmmProgramTranslator.h"
+#include "definition/VariableDefinitionTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
 #include "instruction/ReturnInstructionTranslator.h"
 
@@ -56,9 +57,11 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
 //        }
     } else if(dynamic_cast<Definition*>(node))
     {
+        cout << "It's a definition..." << endl;
         // check what type definition it is
-        if (dynamic_cast<VariableDefinition *>(node)) {
-            // return new VariableDefinitionTranslator();
+        if (VariableDefinition* vDef = dynamic_cast<VariableDefinition *>(node)) {
+            cout << "It's a VariableDefinition - returning the right translator." << endl;
+            return new VariableDefinitionTranslator(vDef, cfg);
         }
     } else if(dynamic_cast<Instruction*>(node))
     {
