@@ -24,7 +24,7 @@ public:
     int getAddress() const;
 
 private:
-    virtual Declaration* doClone() { return new (*this); }
+    virtual Declaration* doClone() { return new Declaration(*this); }
 protected:
     std::string name;
     Type type;
