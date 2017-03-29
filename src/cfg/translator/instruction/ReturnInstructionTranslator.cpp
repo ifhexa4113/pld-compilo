@@ -47,7 +47,7 @@ SubGraph * ReturnInstructionTranslator::translate()
     outputs = previousBlocks;
 
     //TODO: ABI (where should we store Expr's intermediates results and ret value) + MovInstr with 2 registers + No value for register ??????
-    retBlock->addInstruction(new MovInstruction(new Register(0/*???*/, "R0"), new Register(0, "R1")));
+    retBlock->addInstruction(new MovInstruction(new Register(), new Register()));
 
     // Return a subgraph describing what we just created
     return new SubGraph(retBlock, outputs);

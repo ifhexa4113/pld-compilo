@@ -1,7 +1,14 @@
 #include "Register.h"
 
-Register::Register(int value_, std::string name_) :
-    Operand(value_),name(name_)
+unsigned int Register::nextRegister = 0;
+
+Register::Register(std::string name_, int value_) :
+    Operand(value_), name(name_)
+{
+    // Nothing else to do
+}
+
+Register::Register(int value_) : Operand(value_), name("%reg" + Register::nextRegister++)
 {
     // Nothing else to do
 }
