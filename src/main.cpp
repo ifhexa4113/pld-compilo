@@ -7,16 +7,21 @@
 #include "ast/block/CmmProgram.h"
 #include "cfg/CFG.h"
 
+using namespace std;
+
 int main()
 {
     Ast ast;
     CmmProgram& program = ast.getProgram();
 
+    cout << "Creating AST..." << endl;
     int result = yyparse(program);
-    program.walkTree(); // TODO: this will be obsolete soon
+    cout << "AST done" << endl;
 
-    // CFG cfg(&ast);
-    // cfg.print(std::cout);
+//    cout << "Creating CFG..." << endl;
+//    CFG cfg(&ast);
+//    cout << "CFG done:" << endl;
+//    cfg.print(cout);
 
     return result;
 }
