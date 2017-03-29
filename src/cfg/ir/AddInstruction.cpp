@@ -5,12 +5,11 @@
 #include "AddInstruction.h"
 
 AddInstruction::AddInstruction(Register *destination_, Operand *param1_, Operand *param2_)
-        : IRInstruction(), destination(destination_), param1(param1_), param2(param2_) {
+        : RegisterInstruction(destination_), param1(param1_), param2(param2_) {
 
 }
 
 AddInstruction::~AddInstruction() {
-    delete destination;
     delete param1;
     delete param2;
 }

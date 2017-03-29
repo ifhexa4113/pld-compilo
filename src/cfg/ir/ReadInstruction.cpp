@@ -4,12 +4,11 @@
 
 #include "ReadInstruction.h"
 
-ReadInstruction::ReadInstruction(Register *destination, Operand *address) : IRInstruction() , destination(destination), address(address) {
+ReadInstruction::ReadInstruction(Register *destination, Operand *address) : RegisterInstruction(destination), address(address) {
 
 }
 
 ReadInstruction::~ReadInstruction() {
-    delete destination;
     delete address;
 }
 

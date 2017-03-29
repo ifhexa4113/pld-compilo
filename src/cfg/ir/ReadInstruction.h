@@ -11,7 +11,7 @@
 /**
  * Mnemonic representing a Read Operation : Get a value from the given address and store it in the given register.
  */
-class ReadInstruction : public IRInstruction {
+class ReadInstruction : public RegisterInstruction {
 public:
     ReadInstruction(Register *destination, Operand *address);
 
@@ -19,12 +19,9 @@ public:
 
     void print(std::ostream &ost) const override;
 
-    const Register *getDestination() const;
-
     const Operand *getAddress() const;
 
 protected:
-    Register *destination;
     Operand *address;
 };
 
