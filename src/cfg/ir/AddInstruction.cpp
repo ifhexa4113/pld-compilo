@@ -4,8 +4,8 @@
 
 #include "AddInstruction.h"
 
-AddInstruction::AddInstruction(Register *destination_, Operand *param1_, Operand *param2_)
-        : RegisterInstruction(destination_), param1(param1_), param2(param2_) {
+AddInstruction::AddInstruction(Register *destination, Operand *param1, Operand *param2)
+        : IRInstruction(), destination(destination), param1(param1), param2(param2) {
 
 }
 
@@ -16,10 +16,6 @@ AddInstruction::~AddInstruction() {
 
 void AddInstruction::print(std::ostream &ost) const {
     ost << "ADD\t" << destination << ", " << param1 << ", " << param2;
-}
-
-Register *AddInstruction::getDestination() const {
-    return destination;
 }
 
 Operand *AddInstruction::getParam1() const {
