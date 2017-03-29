@@ -2,18 +2,19 @@
 #define MOV_INSTRUCTION_H
 
 #include "IRInstruction.h"
+#include "Operand.h"
 #include "Register.h"
 
 class MovInstruction : IRInstruction
 {
 public:
-    MovInstruction(Register aRegister, unsigned int value_);
+    MovInstruction(Register* destination_, Operand* source_);
     ~MovInstruction();
     void print(std::ostream& ost) const;
 
 protected:
-    Register reg;
-    unsigned int value;
+    Register* destination;
+    Operand* source;
 };
 
 
