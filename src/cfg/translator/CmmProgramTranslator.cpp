@@ -31,24 +31,26 @@ SubGraph * CmmProgramTranslator::translate()
     // (children are only functions definitions here, so it's linear)
     for(AstNode* child: cmmProgram->getChildren())
     {
-        Translator * t = getFactory().getTranslator(child, cfg);
-        SubGraph* sb = t->translate();
-        BasicBlock* bb = sb->getInput();
-
-        if(!firstBlock)
+        if(Translator * t = getFactory().getTranslator(child, cfg))
         {
-            // This is the first block, the one that will be returned as the input of the CFG
-            firstBlock = bb;
-        }
+            SubGraph* sb = t->translate();
+            BasicBlock* bb = sb->getInput();
 
-        for(BasicBlock* output: previousBlocks)
-        {
-            // NOTE: if we're at the first child, this should never be executed
-            output->setExitTrue(bb);
+            if(!firstBlock)
+            {
+                // This is the first block, the one that will be returned as the input of the CFG
+                firstBlock = bb;
+            }
+
+            for(BasicBlock* output: previousBlocks)
+            {
+                // NOTE: if we're at the first child, this should never be executed
+                output->setExitTrue(bb);
+            }
+            previousBlocks = sb->getOutputs();
+            delete sb;
+            delete t;
         }
-        previousBlocks = sb->getOutputs();
-        delete sb;
-        delete t;
     }
 
     // Just return a subgraph containing only the outputs of the last subgraph
