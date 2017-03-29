@@ -3,6 +3,7 @@
 #include "Translator.h"
 #include "CmmProgramTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
+#include "instruction/ReturnInstructionTranslator.h"
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
@@ -12,6 +13,7 @@
 #include "ast/expression/Expression.h"
 #include "ast/expression/Expression.h"
 #include "ast/instruction/Instruction.h"
+#include "ast/instruction/ReturnInstruction.h"
 
 using namespace std;
 
@@ -61,7 +63,10 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
     } else if(dynamic_cast<Instruction*>(node))
     {
         cout << "It's an instruction..." << endl;
-
+        if (ReturnInstruction* retInstr = dynamic_cast<ReturnInstruction*>(node)) {
+            cout << "It's a ReturnInstruction - returning the right translator." << endl;
+            return new ReturnInstructionTranslator(retInstr, cfg);
+        }
     } else {
         // check what type of other thing it is
     }

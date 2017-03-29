@@ -7,7 +7,7 @@
 class Operand {
 public:
     Operand(int value_);
-    ~Operand();
+    virtual  ~Operand();
 
     int getValue();
     friend std::ostream& operator<<(std::ostream& os, const Operand& dt);
