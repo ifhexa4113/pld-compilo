@@ -5,6 +5,8 @@
 #ifndef OPERAND_H
 #define OPERAND_H
 
+#include <string>
+
 class Operand {
 public:
     Operand(int value_);

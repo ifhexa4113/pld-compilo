@@ -1,3 +1,5 @@
+#include "LiteralNumber.h"
+
 LiteralNumber::LiteralNumber(int value_) : Operand(value_)
 {
     // Nothing else to do
