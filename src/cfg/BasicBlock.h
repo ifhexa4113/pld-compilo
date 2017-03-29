@@ -8,7 +8,7 @@
 
 class BasicBlock {
 public:
-    BasicBlock(std::string label_, BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr);
+    BasicBlock(std::string label_ = "", BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr);
     ~BasicBlock();
 
     // Getters

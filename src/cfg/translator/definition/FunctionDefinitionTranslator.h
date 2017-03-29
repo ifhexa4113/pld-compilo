@@ -1,7 +1,7 @@
 #ifndef FUNCTION_DEFINITION_TRANSLATOR_H
 #define FUNCTION_DEFINITION_TRANSLATOR_H
 
-#include "Translator.h"
+#include "cfg/translator/Translator.h"
 #include "ast/definition/FunctionDefinition.h"
 
 class FunctionDefinitionTranslator : public Translator

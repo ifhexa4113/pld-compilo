@@ -5,7 +5,7 @@
 #include "Operand.h"
 #include "Register.h"
 
-class MovInstruction : IRInstruction
+class MovInstruction : public IRInstruction
 {
 public:
     MovInstruction(Register* destination_, Operand* source_);

@@ -2,26 +2,20 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_JMPINSTRUCTION_H
-#define PLD_COMPILO_JMPINSTRUCTION_H
+#ifndef PLD_COMPILO_RETINSTRUCTION_IR_H
+#define PLD_COMPILO_RETINSTRUCTION_IR_H
 
 
 #include "IRInstruction.h"
 
-class JmpInstruction : public IRInstruction {
+class RetInstruction : public IRInstruction{
 public:
-    JmpInstruction(std::string label);
+    RetInstruction();
 
-    ~JmpInstruction() override;
+    ~RetInstruction() override;
 
     void print(std::ostream &ost) const override;
-
-protected:
-
-    std::string label;
-public:
-    const std::string &getLabel() const;
 };
 
 
-#endif //PLD_COMPILO_JMPINSTRUCTION_H
+#endif //PLD_COMPILO_RETINSTRUCTION_H
