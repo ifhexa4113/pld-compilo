@@ -14,7 +14,7 @@ int Operand::getValue() {
     return value;
 }
 
-ostream& operator<<(ostream& os, const Operand& op)
+std::ostream& operator<<(std::ostream& os, const Operand& op)
 {
     os << op.toString();
     return os;

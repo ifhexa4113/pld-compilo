@@ -11,7 +11,7 @@ public:
 
     int getValue();
     friend std::ostream& operator<<(std::ostream& os, const Operand& dt);
-    virtual std::string toString() = 0;
+    virtual std::string toString() const = 0;
 
 protected:
     int value;

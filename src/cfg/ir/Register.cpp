@@ -7,7 +7,7 @@ Register::Register(int value_, std::string name_) :
 }
 
 Register::Register(Register const &other) :
-    name(other.name), value(other.value)
+    Operand(other.value), name(other.name)
 {
     // Nothing else to do
 }
@@ -22,7 +22,7 @@ std::string Register::getName() const
     return name;
 }
 
-std::string Register::toString()
+std::string Register::toString() const
 {
     return name;
 }

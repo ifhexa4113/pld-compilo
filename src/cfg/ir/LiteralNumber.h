@@ -1,7 +1,3 @@
-//
-// Created by charles on 2017-03-29.
-//
-
 #ifndef LITERALNUMBER_H
 #define LITERALNUMBER_H
 
@@ -12,7 +8,7 @@ public:
     LiteralNumber(int value_);
     ~LiteralNumber();
 
-    std::string toString();
+    std::string toString() const;
 
 };
 

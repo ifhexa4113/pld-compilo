@@ -11,7 +11,7 @@ LiteralNumber::~LiteralNumber()
     // Nothing else to do
 }
 
-std::string LiteralNumber::toString()
+std::string LiteralNumber::toString() const
 {
     std::ostringstream stm ;
     stm << value ;

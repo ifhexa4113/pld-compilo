@@ -11,7 +11,7 @@ public:
     std::string getName() const;
     int getValue() const;
 
-    std::string toString();
+    std::string toString() const;
 
 protected:
     std::string name;
