@@ -5,7 +5,7 @@
 #include "AddInstruction.h"
 
 AddInstruction::AddInstruction(Register *destination_, Operand *param1_, Operand *param2_)
-        : IRInstruction(), destination(destination), param1(param1_), param2(param2_) {
+        : IRInstruction(), destination(destination_), param1(param1_), param2(param2_) {
 
 }
 
