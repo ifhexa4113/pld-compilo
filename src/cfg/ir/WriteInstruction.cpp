@@ -4,7 +4,7 @@
 
 #include "WriteInstruction.h"
 
-WriteInstruction::WriteInstruction(Operand address, Operand value) : IRInstruction(), address(address), value(value) {
+WriteInstruction::WriteInstruction(Operand *address, Operand *value) : IRInstruction(), address(address), value(value) {
 
 }
 
@@ -16,10 +16,10 @@ void WriteInstruction::print(std::ostream &ost) const {
     ost << "WRITE\t" << address << ", " << value;
 }
 
-const Operand &WriteInstruction::getAddress() const {
+const Operand *WriteInstruction::getAddress() const {
     return address;
 }
 
-const Operand &WriteInstruction::getValue() const {
+const Operand *WriteInstruction::getValue() const {
     return value;
 }

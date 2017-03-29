@@ -14,19 +14,19 @@
  */
 class WriteInstruction : public IRInstruction {
 public:
-    WriteInstruction(Operand address, Operand value);
+    WriteInstruction(Operand *address, Operand *value);
 
     ~WriteInstruction() override;
 
     void print(std::ostream &ost) const override;
 
-    const Operand &getAddress() const;
+    const Operand *getAddress() const;
 
-    const Operand &getValue() const;
+    const Operand *getValue() const;
 
 protected:
-    Operand address;
-    Operand value;
+    Operand *address;
+    Operand *value;
 };
 
 
