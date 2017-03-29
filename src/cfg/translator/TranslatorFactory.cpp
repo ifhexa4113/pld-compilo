@@ -2,7 +2,7 @@
 #include "TranslatorFactory.h"
 #include "Translator.h"
 #include "CmmProgramTranslator.h"
-#include "FunctionDefinitionTranslator.h"
+#include "definition/FunctionDefinitionTranslator.h"
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
@@ -11,7 +11,7 @@
 #include "ast/definition/VariableDefinition.h"
 #include "ast/expression/Expression.h"
 #include "ast/expression/Expression.h"
-#include "ast/keyword-instruction/Instruction.h"
+#include "ast/instruction/Instruction.h"
 
 using namespace std;
 

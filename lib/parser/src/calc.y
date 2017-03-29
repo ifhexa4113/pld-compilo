@@ -5,9 +5,9 @@
     #include "ast/AstNode.h"
     #include "ast/block/CmmProgram.h"
     #include "ast/NullNode.h"
-    #include "ast/keyword-instruction/ReturnInstruction.h"
-    #include "ast/keyword-instruction/BreakInstruction.h"
-    #include "ast/keyword-instruction/ContinueInstruction.h"
+    #include "ast/instruction/ReturnInstruction.h"
+    #include "ast/instruction/BreakInstruction.h"
+    #include "ast/instruction/ContinueInstruction.h"
 
     // Includes for expressions
     #include "ast/expression/Expression.h"
@@ -63,9 +63,9 @@
 #include "ast/AstNode.h"
 #include "ast/block/CmmProgram.h"
 #include "ast/NullNode.h"
-#include "ast/keyword-instruction/ReturnInstruction.h"
-#include "ast/keyword-instruction/BreakInstruction.h"
-#include "ast/keyword-instruction/ContinueInstruction.h"
+#include "ast/instruction/ReturnInstruction.h"
+#include "ast/instruction/BreakInstruction.h"
+#include "ast/instruction/ContinueInstruction.h"
 
 // Includes for expressions
 #include "ast/expression/Expression.h"
