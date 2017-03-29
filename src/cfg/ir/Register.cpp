@@ -22,7 +22,7 @@ std::string Register::getName() const
     return name;
 }
 
-std::string toString()
+std::string Register::toString()
 {
     return name;
 }

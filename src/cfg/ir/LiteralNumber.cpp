@@ -10,8 +10,8 @@ LiteralNumber::~LiteralNumber()
     // Nothing else to do
 }
 
-std::string toString()
+std::string LiteralNumber::toString()
 {
-    std::string stringValue = std::to_string(value);
+    std::string stringValue = std::stoi(value);
     return stringValue;
 }

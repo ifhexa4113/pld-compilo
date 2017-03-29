@@ -6,6 +6,7 @@
 #define OPERAND_H
 
 #include <string>
+#include <ostream>
 
 class Operand {
 public:
