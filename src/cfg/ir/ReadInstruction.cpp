@@ -4,22 +4,23 @@
 
 #include "ReadInstruction.h"
 
-ReadInstruction::ReadInstruction(Register destination, Operand address) : IRInstruction() ,  destination(destination), address(address) {
+ReadInstruction::ReadInstruction(Register *destination, Operand *address) : IRInstruction() , destination(destination), address(address) {
 
 }
 
 ReadInstruction::~ReadInstruction() {
-
+    delete destination;
+    delete address;
 }
 
 void ReadInstruction::print(std::ostream &ost) const {
     ost << "READ\t" << destination << ", " << address << std::endl;
 }
 
-const Register &ReadInstruction::getDestination() const {
+const Register *ReadInstruction::getDestination() const {
     return destination;
 }
 
-const Operand &ReadInstruction::getAddress() const {
+const Operand *ReadInstruction::getAddress() const {
     return address;
 }

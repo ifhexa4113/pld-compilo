@@ -9,7 +9,8 @@ WriteInstruction::WriteInstruction(Operand *address, Operand *value) : IRInstruc
 }
 
 WriteInstruction::~WriteInstruction() {
-
+    delete address;
+    delete value;
 }
 
 void WriteInstruction::print(std::ostream &ost) const {

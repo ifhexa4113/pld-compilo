@@ -13,19 +13,19 @@
  */
 class ReadInstruction : public IRInstruction {
 public:
-    ReadInstruction(Register destination, Operand address);
+    ReadInstruction(Register *destination, Operand *address);
 
     ~ReadInstruction() override;
 
     void print(std::ostream &ost) const override;
 
-    const Register &getDestination() const;
+    const Register *getDestination() const;
 
-    const Operand &getAddress() const;
+    const Operand *getAddress() const;
 
 protected:
-    Register destination;
-    Operand address;
+    Register *destination;
+    Operand *address;
 };
 
 
