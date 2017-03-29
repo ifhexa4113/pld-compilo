@@ -11,6 +11,7 @@ class ArrayDeclaration : public LValueDeclaration
 public:
     ArrayDeclaration(std::string name, Type type, int size);
     ~ArrayDeclaration();
+    virtual std::auto_ptr<ArrayDeclaration> clone() const;
     int getSize();
     int walkTree();
     ArrayDefinition* toEmptyDefinition();
