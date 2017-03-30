@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
+#include "module/module.h"
 #include "module1/module1.h"
 #include "module1/submodule1/module1.h"
 #include "calc.tab.h"
