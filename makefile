@@ -171,9 +171,10 @@ endef
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
     OUTDIR := $(OUTDIR) $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     UTESTDIR = $(UTESTPATH) $(subst $(SRCPATH),$(UTESTPATH),$(ALLDIR))
-    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,-,$(dir)))
-    UTESTDIRTOCREATE = mkdir -p $(UTESTDIR)
-    NRTESTDIRTOCREATE =
+	NRTESTDIR := $(subst $(TESTPATH),$(OBJPATH),$(shell find $(NRTESTPATH) -type d))
+    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,+,$(dir)))
+    UTESTDIRTOCREATE := $(foreach dir,$(UTESTDIR),makedir-$(subst /,+,$(dir)))
+    NRTESTDIRTOCREATE = $(foreach dir,$(NRTESTDIR),makedir-$(subst \,+,$(dir)))
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
 	NRTESTS := $(subst $(NRTESTPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRTESTPATH),$(shell find $(NRTESTPATH) -type d)))
@@ -279,8 +280,7 @@ else
 	@echo Non-regression tests build in release mode
 endif
 
-tests: all libs-tests
-	make OS=$(OS) DEBUG=$(DEBUG) build-utest
+tests: all u-tests nr-tests
 	@echo UNIT TESTS
 	$(EXE2)
 	@echo NON-REGRESSION TESTS
