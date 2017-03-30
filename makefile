@@ -36,7 +36,7 @@ DELOPT =
 DELDIROPT =
 MKDIR =
 DIRTOCREATE =
-MAKETESTDIR =
+TESTDIRTOCREATE =
 SUBSEPARATOR =
 SEVERAL_CMD =
 NULLREDIRECT =
@@ -128,10 +128,11 @@ endef
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR := $(OUTDIR) $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    TESTDIR = $(TESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(TESTPATH),$(ALLDIR))
+    UTESTPATH := $(subst /,\,$(UTESTPATH))
+    TESTDIR = $(UTESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(UTESTPATH),$(ALLDIR))
     SEVERAL_CMD = &
     DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst \,-,$(dir)))
-    MAKETESTDIR := $(foreach dir,$(TESTDIR),(if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD)))
+    TESTDIRTOCREATE := $(foreach dir,$(TESTDIR),makedir-$(subst \,-,$(dir)))
     SUBSEPARATOR = "\"
 	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
 	NRPATH := $(subst /,$(SUBSEPARATOR),$(NRPATH))
@@ -156,9 +157,9 @@ endef
 	ALLDIRCMD = find $(SRCPATH) -type d
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
     OUTDIR := $(OUTDIR) $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    TESTDIR = $(TESTPATH) $(subst $(SRCPATH),$(TESTPATH),$(ALLDIR))
+    TESTDIR = $(UTESTPATH) $(subst $(SRCPATH),$(UTESTPATH),$(ALLDIR))
     DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,-,$(dir)))
-    MAKETESTDIR = mkdir -p $(TESTDIR)
+    TESTDIRTOCREATE = mkdir -p $(TESTDIR)
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
 	NRTESTS := $(subst $(NRPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRPATH),$(shell find $(NRPATH) -type d)))
@@ -259,8 +260,7 @@ run: $(EXE1)
 	$(EXE1)
 
 #Construct folders tree
-test-tree: libs-test-tree
-	$(MAKETESTDIR)
+test-tree: libs-test-tree $(TESTDIRTOCREATE)
 
 libs-test-tree:
 	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) test-tree $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
