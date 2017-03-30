@@ -36,7 +36,8 @@ DELOPT =
 DELDIROPT =
 MKDIR =
 DIRTOCREATE =
-TESTDIRTOCREATE =
+UTESTDIRTOCREATE =
+NRTESTDIRTOCREATE =
 SUBSEPARATOR =
 SEVERAL_CMD =
 NULLREDIRECT =
@@ -70,17 +71,18 @@ INCLUDEPATH = $(wildcard $(LIBPATH)/*/$(INCLUDEFOLDER))
 INCLUDEPATH := $(subst $(LIBPATH)/catch/$(INCLUDEFOLDER),,$(INCLUDEPATH))
 SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
 SRCUTEST = $(call rwildcard,$(UTESTPATH)/,*.$(SRCTESTFILE))
-SRCNRTEST = $(call rwildcard,$(NRPATH)/,*.$(SRCFILE))
+SRCNRTEST = $(call rwildcard,$(NRTESTPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 HEADNRTEST = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 OBJLIB = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
 OBJUTEST = $(SRCUTEST:$(UTESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 OBJLIBUTEST = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
-OBJNRTEST = $(SRCNRTEST:$(NRTESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+OBJNRTEST = $(SRCNRTEST:$(NRTESTPATH)/%.$(SRCFILE)=$(OBJPATH)/$(NRFOLDER)/%.$(OFILE))
 WORKINGDIR =
 ALLDIR =
-TESTDIR =
+UTESTDIR =
+NRTESTDIR =
 ALLDIRCMD =
 LIBS = $(wildcard $(LIBPATH)/*)
 OUTDIR_ROOT = $(OBJPATH)
@@ -90,10 +92,12 @@ OUTDIR = $(OUTDIR_ROOT) $(EXEPATH)
 PROMPTSEPARATOR = ------------
 
 #Unit tests
-UTESTPATH = $(TESTPATH)/unit
+UNITFOLDER = unit
+UTESTPATH = $(TESTPATH)/$(UNITFOLDER)
 
 #Non-regression tests
-NRPATH = $(TESTPATH)/non-regression
+NRFOLDER = non-regression
+NRTESTPATH = $(TESTPATH)/$(NRFOLDER)
 NRTESTS =
 NRDESC = desc
 NRINPUT = input.cmm
@@ -116,7 +120,7 @@ INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib))
 
 CFLAGS = $(INCLUDES)
 CUTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
-CNRTESTFLAGS = $(CFLAGS) -I $(SRCPATH) -I $(NRPATH)
+CNRTESTFLAGS = $(CFLAGS) -I $(SRCPATH) -I $(NRTESTPATH)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
@@ -135,15 +139,17 @@ endef
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR := $(OUTDIR) $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    TESTDIR = $(UTESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(UTESTPATH),$(ALLDIR))
+    UTESTDIR := $(subst /,\,$(UTESTPATH)) $(subst $(WORKINGDIR)\$(SRCPATH),$(subst /,\,$(UTESTPATH)),$(ALLDIR))
+    NRTESTDIR = $(shell dir /s /b /o:n /ad $(subst /,\,$(NRTESTPATH)))
+    NRTESTDIR := $(subst $(TESTPATH)/,$(OBJPATH)\,$(NRTESTPATH)) $(subst $(WORKINGDIR)\$(TESTPATH),$(OBJPATH),$(NRTESTDIR))
     SEVERAL_CMD = &
-    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,-,$(subst \,-,$(dir))))
-    TESTDIRTOCREATE := $(foreach dir,$(TESTDIR),makedir-$(subst /,-,$(subst \,-,$(dir))))
+    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,+,$(subst \,+,$(dir))))
+    UTESTDIRTOCREATE := $(foreach dir,$(UTESTDIR),makedir-$(subst /,+,$(subst \,+,$(dir))))
+    NRTESTDIRTOCREATE := $(foreach dir,$(NRTESTDIR),makedir-$(subst \,+,$(dir)))
     SUBSEPARATOR = "\"
 	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
-	NRPATH := $(subst /,$(SUBSEPARATOR),$(NRPATH))
-    NRTESTS := $(shell dir /s /b /o:n /ad $(NRPATH))
-    NRTESTS := $(addprefix $(NRTARGETPREFIX),$(subst $(WORKINGDIR)\$(NRPATH)\,,$(NRTESTS)))
+    NRTESTS := $(shell dir /s /b /o:n /ad $(subst /,$(SUBSEPARATOR),$(NRTESTPATH)))
+    NRTESTS := $(addprefix $(NRTARGETPREFIX),$(subst $(WORKINGDIR)\$(subst /,$(SUBSEPARATOR),$(NRTESTPATH))\,,$(NRTESTS)))
     NRPASSCMD = if not errorlevel 1 (echo [92mPASSED[0m) else ((echo [91mFAILED[0m) && exit 1)
     NULLREDIRECT = nul
     EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
@@ -164,12 +170,13 @@ endef
 	ALLDIRCMD = find $(SRCPATH) -type d
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
     OUTDIR := $(OUTDIR) $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    TESTDIR = $(UTESTPATH) $(subst $(SRCPATH),$(UTESTPATH),$(ALLDIR))
+    UTESTDIR = $(UTESTPATH) $(subst $(SRCPATH),$(UTESTPATH),$(ALLDIR))
     DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,-,$(dir)))
-    TESTDIRTOCREATE = mkdir -p $(TESTDIR)
+    UTESTDIRTOCREATE = mkdir -p $(UTESTDIR)
+    NRTESTDIRTOCREATE =
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
-	NRTESTS := $(subst $(NRPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRPATH),$(shell find $(NRPATH) -type d)))
+	NRTESTS := $(subst $(NRTESTPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRTESTPATH),$(shell find $(NRTESTPATH) -type d)))
 	NRPASSCMD = if [ $$? -eq 0 ]; then (echo [92mPASSED[0m); else (echo [91mFAILED[0m) && exit 1; fi
     NULLREDIRECT = /dev/null
 else
@@ -207,8 +214,10 @@ default: all
 #Pre build
 makedir: $(DIRTOCREATE)
 
+makenrdir: $(NRTESTDIRTOCREATE)
+
 makedir-%:
-	$(call mkdir-cmd,$(subst -,$(SUBSEPARATOR),$*))
+	$(call mkdir-cmd,$(subst +,$(SUBSEPARATOR),$*))
 
 #Builds
 all: makedir libs
@@ -217,6 +226,14 @@ ifeq ($(DEBUG),yes)
 	@echo Projet compile en mode debug
 else
 	@echo Projet compile en mode release
+endif
+
+nr-tests: makedir makenrdir libs
+	make OS=$(OS) DEBUG=$(DEBUG) build-nrtest
+ifeq ($(DEBUG),yes)
+	@echo Non-regression tests build in debug mode
+else
+	@echo Non-regression tests build in release mode
 endif
 
 build: $(EXE1)
@@ -248,10 +265,10 @@ $(OBJPATH)/$(MAINSRCUTESTFILE).$(TESTFILE).$(OFILE): $(UTESTPATH)/$(MAINSRCUTEST
 $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(UTESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CUTESTFLAGS)
 
-$(OBJPATH)/$(MAINSRCNRTESTFILE).$(OFILE): $(NRPATH)/$(MAINSRCNRTESTFILE).$(SRCFILE) $(HEAD)
+$(OBJPATH)/$(NRFOLDER)/$(MAINSRCNRTESTFILE).$(OFILE): $(NRTESTPATH)/$(MAINSRCNRTESTFILE).$(SRCFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CNRTESTFLAGS)
-#$(OBJPATH)/%.$(OFILE) : $(NRPATH)/%.$(SRCFILE) $(NRPATH)/%.$(HEADFILE)
-#	$(CC) -o $@ -c $< $(CNRTESTFLAGS)
+$(OBJPATH)/$(NRFOLDER)/%.$(OFILE) : $(NRTESTPATH)/%.$(SRCFILE) $(NRTESTPATH)/%.$(HEADFILE)
+	$(CC) -o $@ -c $< $(CNRTESTFLAGS)
 
 #Tests
 tests: all libs-tests
@@ -259,25 +276,20 @@ tests: all libs-tests
 	@echo UNIT TESTS
 	$(EXE2)
 	@echo NON-REGRESSION TESTS
-	make OS=$(OS) DEBUG=$(DEBUG) nr-tests
-
-$(NRTARGETPREFIX)%:
-	@echo $(PROMPTSEPARATOR)
-	@echo TEST $*
-	@$(CAT) $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
-	@$(ECHONEWLINE)
-	@$(EXE1) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT) $(SEVERAL_CMD) $(NRPASSCMD)
-
-nr-tests: $(NRTESTS)
-	@echo $(PROMPTSEPARATOR)
-	@echo ALL TESTS PASSED
+	$(EXE3)
 
 #Runs
 run: $(EXE1)
 	$(EXE1)
 
+run-utests: $(EXE2)
+	$(EXE2)
+
+run-nrtests: $(EXE3)
+	$(EXE3)
+
 #Construct folders tree
-test-tree: libs-test-tree $(TESTDIRTOCREATE)
+test-tree: libs-test-tree $(UTESTDIRTOCREATE)
 
 libs-test-tree:
 	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) test-tree $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
