@@ -1,10 +1,9 @@
 #include <iostream>
 #include <cstdio>
+#include <vector>
 #include "module1/module1.h"
 #include "module1/submodule1/module1.h"
 #include "calc.tab.h"
-
-#include <cassert>
 
 #include "ast/Ast.h"
 #include "ast/block/CmmProgram.h"
@@ -12,14 +11,17 @@
 #include "ast/AstNode.h"
 #include "ast/ErrorManager.h"
 
-bool errorManagerTest(std::string expectedErrorsTrace) {
+using namespace std;
+
+bool errorManagerTest(string expectedErrorsTrace) {
 	ErrorManager& errorManager = ErrorManager::getInstance();
-	std::string errorsTrace = errorManager.getErrorsTrace();
+	string errorsTrace = errorManager.getErrorsTrace();
 	return expectedErrorsTrace.compare(errorsTrace) == 0;
 }
 
 bool astTest(AstNode* astNode, vector<string>) {
 	// TODO
+    return true;
 }
 
 int main() {
