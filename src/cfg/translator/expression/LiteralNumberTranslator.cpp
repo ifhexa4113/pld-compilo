@@ -28,7 +28,6 @@ SubGraph * LiteralNumberTranslator::translate()
     BasicBlock* bb = new BasicBlock("");
     std::vector<BasicBlock*> outputs(1, bb);
 
-    // TODO: better handle the register's names
     bb->addInstruction(new MovInstruction(new Register(), new LiteralNumber(litNumExpr->getValue())));
 
     // Return a subgraph describing what we just created

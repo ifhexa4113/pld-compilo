@@ -4,6 +4,7 @@
 #include "CmmProgramTranslator.h"
 #include "definition/VariableDefinitionTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
+#include "expression/LiteralNumberTranslator.h"
 #include "instruction/ReturnInstructionTranslator.h"
 
 #include "ast/block/Block.h"
@@ -12,7 +13,7 @@
 #include "ast/definition/FunctionDefinition.h"
 #include "ast/definition/VariableDefinition.h"
 #include "ast/expression/Expression.h"
-#include "ast/expression/Expression.h"
+#include "ast/expression/LiteralNumberExpression.h"
 #include "ast/instruction/Instruction.h"
 #include "ast/instruction/ReturnInstruction.h"
 
@@ -50,11 +51,13 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
         // check what type of block it is
     } else if(dynamic_cast<Expression*>(node))
     {
+        cout << "It's an expression..." << endl;
         // check what type of expression it is
-//        if(dynamic_cast</*TODO*/>(node))
-//        {
-//            // return new TODO;
-//        }
+        if(LiteralNumberExpression* lne = dynamic_cast<LiteralNumberExpression*>(node))
+        {
+            cout << "It's a LiteralNumberExpression - returning the right translator." << endl;
+            return new LiteralNumberTranslator(lne, cfg);
+        }
     } else if(dynamic_cast<Definition*>(node))
     {
         cout << "It's a definition..." << endl;
