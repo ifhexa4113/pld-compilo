@@ -16,9 +16,13 @@
 #
 #---------------------------------------------------------------
 
-#Fonctions------------------------------------------------------
-# Wildcard recursif
+#Functions------------------------------------------------------
+# Recursive wildcard
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
+
+# Create mkdir command
+# --> mkdir-cmd
+# --> This depends of the OS and is therefore located further away
 
 #Variables generales--------------------------------------------
 #OS specific commands
@@ -38,7 +42,7 @@ SEVERAL_CMD =
 NULLREDIRECT =
 ECHONEWLINE =
 
-#Files extentions
+#Files extensions
 CC = g++
 MAINFILE = main
 MAINSRCTESTFILE = main
@@ -66,7 +70,7 @@ SRCTEST = $(call rwildcard,$(TESTPATH)/,*.$(SRCTESTFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 OBJLIB = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
-OBJTEST = $(SRCTEST:$(TESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+OBJTEST = $(SRCTEST:$(UTESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 OBJLIBTEST = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
 WORKINGDIR =
 ALLDIR =
@@ -78,6 +82,9 @@ OUTDIR = $(OUTDIR_ROOT) $(EXEPATH)
 
 #Convenient strings
 PROMPTSEPARATOR = ------------
+
+#Unit tests
+UTESTPATH = $(TESTPATH)/unit
 
 #Non-regression tests
 NRPATH = $(TESTPATH)/non-regression
@@ -91,6 +98,7 @@ NRPASSCMD =
 #Executables
 EXE1 = $(EXEPATH)/pld-compilo.$(EXEFILE)
 EXE2 = $(EXEPATH)/tests.$(EXEFILE)
+EXE3 =
 EXECS = $(EXE1) $(EXE2)
 #---------------------------------------------------------------
 
@@ -202,7 +210,9 @@ endif
 
 build: $(EXE1)
 
-build-test: $(EXE2)
+build-utest: $(EXE2)
+
+build-nrtest: $(EXE3)
 
 libs:
 	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
@@ -220,14 +230,14 @@ $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-$(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(TESTPATH)/$(MAINSRCTESTFILE).$(SRCTESTFILE) $(HEAD)
+$(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(UTESTPATH)/$(MAINSRCTESTFILE).$(SRCTESTFILE) $(HEAD)
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
-$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(TESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
+$(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(UTESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 #Tests
 tests: all libs-tests
-	make OS=$(OS) DEBUG=$(DEBUG) build-test
+	make OS=$(OS) DEBUG=$(DEBUG) build-utest
 	@echo UNIT TESTS
 	$(EXE2)
 	@echo NON-REGRESSION TESTS
