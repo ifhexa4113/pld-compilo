@@ -2,7 +2,8 @@
 #define ERROR_MANAGER_H
 
 #include<vector>
-
+#include<string>
+#include<map>
 
 class ErrorManager
 {
@@ -22,14 +23,14 @@ public:
 
 	void printEncounteredErrors();
 
-	string getErrorsTrace();
+	std::string getErrorsTrace();
+
+    ErrorManager& operator= (const ErrorManager&)   = delete;
+    ErrorManager(const ErrorManager&)               = delete;
 
 private:
 	ErrorManager();
 	~ErrorManager();
-
-	ErrorManager& operator= (const ErrorManager&) {}
-	ErrorManager(const ErrorManager&) {}
 
 	std::vector<Error> encounteredErrors;
 	std::vector<std::string> errorsSourcesNames;

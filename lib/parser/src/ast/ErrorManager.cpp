@@ -1,15 +1,15 @@
 #include <iostream>
 #include "ErrorManager.h"
 
-
-ErrorManager::ErrorManager()
+ErrorManager::ErrorManager() :
+    encounteredErrors(), errorsSourcesNames(),
+    errorsMessage(), encounteredErrorsTrace("")
 {
 	std::cout << "ErrorManager creation" << std::endl;
-	errorsMessage.insert(UNKNOWN_LVALUE_SYMBOL, "Error: use of unknown symbol ");
-	errorsMessage.insert(UNKNOWN_FUNCTION_SYMBOL, "Error: use of unknown symbol ");
-	errorsMessage.insert(SYMBOL_REDECLARATION, "Error : redeclaration of symbol ");
-	errorsMessage.insert(INAPPROPRIATE_ARGUMENTS_NUMBER, "Error : inappropriate number of arguments for function call ");
-	encounteredErrorsTrace = "";
+    errorsMessage.insert(std::make_pair(UNKNOWN_LVALUE_SYMBOL, "Error: use of unknown symbol "));
+    errorsMessage.insert(std::make_pair(UNKNOWN_FUNCTION_SYMBOL, "Error: use of unknown symbol "));
+    errorsMessage.insert(std::make_pair(SYMBOL_REDECLARATION, "Error : redeclaration of symbol "));
+    errorsMessage.insert(std::make_pair(INAPPROPRIATE_ARGUMENTS_NUMBER, "Error : inappropriate number of arguments for function call "));
 }
 
 ErrorManager::~ErrorManager()
@@ -38,13 +38,13 @@ void ErrorManager::printEncounteredErrorsNumber()
 void ErrorManager::printEncounteredErrors()
 {
 	Error encounteredError;
-	for (int i = 0; i < encounteredErrors.size(); i++) {
+	for (unsigned int i = 0; i < encounteredErrors.size(); i++) {
 		encounteredError = encounteredErrors[i];
-		std::cerr << errorsMessage.find(encounteredError) << errorsSourcesNames[i] << "." << std::endl;
+		std::cerr << errorsMessage.find(encounteredError)->second << errorsSourcesNames[i] << "." << std::endl;
 	}
 }
 
-string ErrorManager::getErrorsTrace()
+std::string ErrorManager::getErrorsTrace()
 {
 	return encounteredErrorsTrace;
 }
