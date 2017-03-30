@@ -11,8 +11,10 @@ class FunctionDeclaration : public Declaration
 public:
     FunctionDeclaration(std::string name, Type type, int nbArgs);
     ~FunctionDeclaration();
-    virtual FunctionDeclaration* clone() const
-    { return new FunctionDeclaration( *this ); }
+    virtual const shared_ptr<Declaration> clone() const
+    {
+        return shared_ptr<Declaration>( new FunctionDeclaration(*this));
+    }
     int walkTree();
     int getNbArgs();
     FunctionDefinition* toEmptyDefinition();
