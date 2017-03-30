@@ -42,10 +42,10 @@ SEVERAL_CMD =
 NULLREDIRECT =
 ECHONEWLINE =
 
-#Files extensions
+#Other commands
 CC = g++
-MAINFILE = main
-MAINSRCTESTFILE = main
+
+#Files extensions
 OFILE = o
 SRCFILE = cpp
 HEADFILE = h
@@ -62,16 +62,22 @@ OBJPATH = build
 LIBPATH = lib
 EXEPATH = bin
 TESTPATH = test
+MAINFILE = main
+MAINSRCUTESTFILE = main
+MAINSRCNRTESTFILE = main
 INCLUDEFOLDER = include
 INCLUDEPATH = $(wildcard $(LIBPATH)/*/$(INCLUDEFOLDER))
 INCLUDEPATH := $(subst $(LIBPATH)/catch/$(INCLUDEFOLDER),,$(INCLUDEPATH))
 SRC = $(filter-out %.$(SRCTESTFILE),$(call rwildcard,$(SRCPATH)/,*.$(SRCFILE)))
-SRCTEST = $(call rwildcard,$(TESTPATH)/,*.$(SRCTESTFILE))
+SRCUTEST = $(call rwildcard,$(UTESTPATH)/,*.$(SRCTESTFILE))
+SRCNRTEST = $(call rwildcard,$(NRPATH)/,*.$(SRCFILE))
 HEAD = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
+HEADNRTEST = $(call rwildcard,$(SRCPATH)/,*.$(HEADFILE))
 OBJ = $(SRC:$(SRCPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 OBJLIB = $(filter-out %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
-OBJTEST = $(SRCTEST:$(UTESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
-OBJLIBTEST = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
+OBJUTEST = $(SRCUTEST:$(UTESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
+OBJLIBUTEST = $(filter %.$(TESTFILE).$(OFILE),$(call rwildcard,$(LIBPATH)/,*.$(OFILE)))
+OBJNRTEST = $(SRCNRTEST:$(NRTESTPATH)/%.$(SRCFILE)=$(OBJPATH)/%.$(OFILE))
 WORKINGDIR =
 ALLDIR =
 TESTDIR =
@@ -96,10 +102,10 @@ NRTARGETPREFIX = test-
 NRPASSCMD =
 
 #Executables
-EXE1 = $(EXEPATH)/pld-compilo.$(EXEFILE)
-EXE2 = $(EXEPATH)/tests.$(EXEFILE)
-EXE3 =
-EXECS = $(EXE1) $(EXE2)
+EXE1 = $(EXEPATH)/gmm.$(EXEFILE)
+EXE2 = $(EXEPATH)/unit-tests.$(EXEFILE)
+EXE3 = $(EXEPATH)/nr-tests.$(EXEFILE)
+EXECS = $(EXE1) $(EXE2) $(EXE3)
 #---------------------------------------------------------------
 
 #Variables pour les options de compilation----------------------
@@ -109,7 +115,8 @@ STDLIB = -std=gnu++11
 INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib))
 
 CFLAGS = $(INCLUDES)
-CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
+CUTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
+CNRTESTFLAGS = $(CFLAGS) -I $(SRCPATH) -I $(NRPATH)
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
@@ -141,6 +148,7 @@ endef
     NULLREDIRECT = nul
     EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
     EXE2 := $(subst /,$(SUBSEPARATOR),$(EXE2))
+    EXE3 := $(subst /,$(SUBSEPARATOR),$(EXE3))
 else ifeq ($(OS),$(OSUNIX))
 define mkdir-cmd
 	mkdir -p $1
@@ -225,7 +233,9 @@ libs-tests:
 
 $(EXE1): $(OBJ) $(OBJLIB)
 	$(CC) -o $@ $^ $(LDFLAGS)
-$(EXE2): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(OBJTEST) $(OBJLIB) $(OBJLIBTEST)
+$(EXE2): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(OBJUTEST) $(OBJLIB) $(OBJLIBUTEST)
+	$(CC) -o $@ $^ $(LDFLAGS)
+$(EXE3): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(OBJLIB) $(OBJNRTEST)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
@@ -233,10 +243,15 @@ $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
 $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-$(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(UTESTPATH)/$(MAINSRCTESTFILE).$(SRCTESTFILE) $(HEAD)
-	$(CC) -o $@ -c $< $(CTESTFLAGS)
+$(OBJPATH)/$(MAINSRCUTESTFILE).$(TESTFILE).$(OFILE): $(UTESTPATH)/$(MAINSRCUTESTFILE).$(SRCTESTFILE) $(HEAD)
+	$(CC) -o $@ -c $< $(CUTESTFLAGS)
 $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(UTESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
-	$(CC) -o $@ -c $< $(CTESTFLAGS)
+	$(CC) -o $@ -c $< $(CUTESTFLAGS)
+
+$(OBJPATH)/$(MAINSRCNRTESTFILE).$(OFILE): $(NRPATH)/$(MAINSRCNRTESTFILE).$(SRCFILE) $(HEAD)
+	$(CC) -o $@ -c $< $(CNRTESTFLAGS)
+#$(OBJPATH)/%.$(OFILE) : $(NRPATH)/%.$(SRCFILE) $(NRPATH)/%.$(HEADFILE)
+#	$(CC) -o $@ -c $< $(CNRTESTFLAGS)
 
 #Tests
 tests: all libs-tests
