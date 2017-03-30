@@ -128,11 +128,10 @@ endef
 	ALLDIRCMD = dir /s /b /o:n /ad $(SRCPATH)
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR := $(OUTDIR) $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
-    UTESTPATH := $(subst /,\,$(UTESTPATH))
     TESTDIR = $(UTESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(UTESTPATH),$(ALLDIR))
     SEVERAL_CMD = &
-    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst \,-,$(dir)))
-    TESTDIRTOCREATE := $(foreach dir,$(TESTDIR),makedir-$(subst \,-,$(dir)))
+    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,-,$(subst \,-,$(dir))))
+    TESTDIRTOCREATE := $(foreach dir,$(TESTDIR),makedir-$(subst /,-,$(subst \,-,$(dir))))
     SUBSEPARATOR = "\"
 	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
 	NRPATH := $(subst /,$(SUBSEPARATOR),$(NRPATH))
