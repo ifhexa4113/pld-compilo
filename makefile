@@ -194,6 +194,9 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Regles de construction-----------------------------------------
+#Specify default rule (names here are just a convention)
+default: all
+
 #Pre build
 makedir: $(DIRTOCREATE)
 
