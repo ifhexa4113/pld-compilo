@@ -228,14 +228,6 @@ else
 	@echo Projet compile en mode release
 endif
 
-nr-tests: makedir makenrdir libs
-	make OS=$(OS) DEBUG=$(DEBUG) build-nrtest
-ifeq ($(DEBUG),yes)
-	@echo Non-regression tests build in debug mode
-else
-	@echo Non-regression tests build in release mode
-endif
-
 build: $(EXE1)
 
 build-utest: $(EXE2)
@@ -271,6 +263,22 @@ $(OBJPATH)/$(NRFOLDER)/%.$(OFILE) : $(NRTESTPATH)/%.$(SRCFILE) $(NRTESTPATH)/%.$
 	$(CC) -o $@ -c $< $(CNRTESTFLAGS)
 
 #Tests
+u-tests: makedir libs libs-tests
+	make OS=$(OS) DEBUG=$(DEBUG) build-utest
+ifeq ($(DEBUG),yes)
+	@echo Unit tests build in debug mode
+else
+	@echo Unit tests build in release mode
+endif
+
+nr-tests: makedir makenrdir libs
+	make OS=$(OS) DEBUG=$(DEBUG) build-nrtest
+ifeq ($(DEBUG),yes)
+	@echo Non-regression tests build in debug mode
+else
+	@echo Non-regression tests build in release mode
+endif
+
 tests: all libs-tests
 	make OS=$(OS) DEBUG=$(DEBUG) build-utest
 	@echo UNIT TESTS
