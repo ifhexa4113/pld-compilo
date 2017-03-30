@@ -90,6 +90,7 @@ OUTDIR = $(OUTDIR_ROOT) $(EXEPATH)
 
 #Convenient strings
 PROMPTSEPARATOR = ------------
+SUBSTSEPARATOR = +
 
 #Unit tests
 UNITFOLDER = unit
@@ -143,9 +144,9 @@ endef
     NRTESTDIR = $(shell dir /s /b /o:n /ad $(subst /,\,$(NRTESTPATH)))
     NRTESTDIR := $(subst $(TESTPATH)/,$(OBJPATH)\,$(NRTESTPATH)) $(subst $(WORKINGDIR)\$(TESTPATH),$(OBJPATH),$(NRTESTDIR))
     SEVERAL_CMD = &
-    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,+,$(subst \,+,$(dir))))
-    UTESTDIRTOCREATE := $(foreach dir,$(UTESTDIR),makedir-$(subst /,+,$(subst \,+,$(dir))))
-    NRTESTDIRTOCREATE := $(foreach dir,$(NRTESTDIR),makedir-$(subst \,+,$(dir)))
+    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(subst \,$(SUBSTSEPARATOR),$(dir))))
+    UTESTDIRTOCREATE := $(foreach dir,$(UTESTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(subst \,$(SUBSTSEPARATOR),$(dir))))
+    NRTESTDIRTOCREATE := $(foreach dir,$(NRTESTDIR),makedir-$(subst \,$(SUBSTSEPARATOR),$(dir)))
     SUBSEPARATOR = "\"
 	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
     NRTESTS := $(shell dir /s /b /o:n /ad $(subst /,$(SUBSEPARATOR),$(NRTESTPATH)))
@@ -172,9 +173,9 @@ endef
     OUTDIR := $(OUTDIR) $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     UTESTDIR = $(UTESTPATH) $(subst $(SRCPATH),$(UTESTPATH),$(ALLDIR))
 	NRTESTDIR := $(subst $(TESTPATH),$(OBJPATH),$(shell find $(NRTESTPATH) -type d))
-    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,+,$(dir)))
-    UTESTDIRTOCREATE := $(foreach dir,$(UTESTDIR),makedir-$(subst /,+,$(dir)))
-    NRTESTDIRTOCREATE = $(foreach dir,$(NRTESTDIR),makedir-$(subst \,+,$(dir)))
+    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(dir)))
+    UTESTDIRTOCREATE := $(foreach dir,$(UTESTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(dir)))
+    NRTESTDIRTOCREATE = $(foreach dir,$(NRTESTDIR),makedir-$(subst \,$(SUBSTSEPARATOR),$(dir)))
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
 	NRTESTS := $(subst $(NRTESTPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRTESTPATH),$(shell find $(NRTESTPATH) -type d)))
@@ -218,7 +219,7 @@ makedir: $(DIRTOCREATE)
 makenrdir: $(NRTESTDIRTOCREATE)
 
 makedir-%:
-	$(call mkdir-cmd,$(subst +,$(SUBSEPARATOR),$*))
+	$(call mkdir-cmd,$(subst $(SUBSTSEPARATOR),$(SUBSEPARATOR),$*))
 
 #Builds
 all: makedir libs
