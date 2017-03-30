@@ -42,5 +42,5 @@ SubGraph * VariableDefinitionTranslator::translate()
     bb->addInstruction(new MovInstruction(new Register(), new Register(*(dynamic_cast<RegisterInstruction*>(expr->getInstructions().back())->getDestination()))));
 
     // Return a subgraph describing what we just created
-    return new SubGraph(bb, std::vector<BasicBlock*>());
+    return new SubGraph(expr, std::vector<BasicBlock*>());
 }
