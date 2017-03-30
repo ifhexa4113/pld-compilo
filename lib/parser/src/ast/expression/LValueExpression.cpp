@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "LValueExpression.h"
+#include "ast/ErrorManager.h"
 
 LValueExpression::LValueExpression(std::string name_) :
     Expression(),
@@ -28,8 +29,8 @@ void LValueExpression::fillSymbolTable(SymbolTableStack& stack)
 {
     if(!stack.checkSymbol(name))
     {
-        std::cerr << "Error: use of unknown symbol " << name << "." << std::endl;
-        // TODO global flag error
+		ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::UNKNOWN_LVALUE_SYMBOL, name);
     }
 }
 

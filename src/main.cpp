@@ -9,6 +9,7 @@
 #include "ast/Ast.h"
 #include "ast/block/CmmProgram.h"
 #include "ast/SymbolTableStack.h"
+#include "ast/ErrorManager.h"
 
 int main()
 {
@@ -21,6 +22,10 @@ int main()
 
     SymbolTableStack stack;
     program.fillSymbolTable(stack);
+
+	ErrorManager& errorManager = ErrorManager::getInstance();
+	errorManager.printEncounteredErrorsNumber();
+	errorManager.printEncounteredErrors();
 
     return result;
 }

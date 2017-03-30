@@ -1,6 +1,7 @@
 #include <iostream>
 #include "FunctionExpression.h"
 #include "ast/declaration/FunctionDeclaration.h"
+#include "ast/ErrorManager.h"
 
 FunctionExpression::FunctionExpression(std::string name_) :
     FunctionExpression(name_, std::vector<Expression*>())
@@ -50,8 +51,8 @@ void FunctionExpression::fillSymbolTable(SymbolTableStack& stack)
 {
     if(!stack.checkSymbol(name))
     {
-        std::cerr << "Error: use of unknown symbol \"" << name << "\"." << std::endl;
-        // TODO global flag error
+		ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::UNKNOWN_FUNCTION_SYMBOL, name);
     }
 
     // TODO stack.getSymbol can be null ?
@@ -59,8 +60,8 @@ void FunctionExpression::fillSymbolTable(SymbolTableStack& stack)
     {
         if(static_cast<int>(parameters.size()) != functionDeclaration->getNbArgs())
         {
-            std::cerr << "Error: inappropriate number of arguments for function call \"" << name << "\"." << std::endl;
-            // TODO global flag error
+			ErrorManager& errorManager = ErrorManager::getInstance();
+			errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_ARGUMENTS_NUMBER, name);
         }
     }
 

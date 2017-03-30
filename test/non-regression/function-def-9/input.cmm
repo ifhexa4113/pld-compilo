@@ -1,0 +1,7 @@
+void foo(uint32_t a);
+
+uint32_t main(){
+	uint32_t a = 1, b = 2;
+	foo(a,b);
+	return 0;
+}
