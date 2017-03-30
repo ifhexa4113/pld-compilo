@@ -31,7 +31,7 @@ DELDIR =
 DELOPT =
 DELDIROPT =
 MKDIR =
-MAKEDIR =
+DIRTOCREATE =
 MAKETESTDIR =
 SUBSEPARATOR =
 SEVERAL_CMD =
@@ -106,6 +106,9 @@ CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
 
 #Compilation conditionnelle-------------------------------------
 ifeq ($(OS),$(OSWIN))
+define mkdir-cmd
+	if not exist $1 mkdir $1
+endef
 	CAT = type
 	DEL = del
 	DELDIR = rd
@@ -119,7 +122,7 @@ ifeq ($(OS),$(OSWIN))
     OUTDIR := $(OUTDIR) $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     TESTDIR = $(TESTPATH) $(subst $(WORKINGDIR)\$(SRCPATH),$(TESTPATH),$(ALLDIR))
     SEVERAL_CMD = &
-    MAKEDIR := $(foreach dir,$(OUTDIR),if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD))
+    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst \,-,$(dir)))
     MAKETESTDIR := $(foreach dir,$(TESTDIR),(if not exist $(dir) mkdir $(dir) $(SEVERAL_CMD)))
     SUBSEPARATOR = "\"
 	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
@@ -131,6 +134,9 @@ ifeq ($(OS),$(OSWIN))
     EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
     EXE2 := $(subst /,$(SUBSEPARATOR),$(EXE2))
 else ifeq ($(OS),$(OSUNIX))
+define mkdir-cmd
+	mkdir -p $1
+endef
 	CAT = cat
 	DEL = rm
 	DELDIR = rm
@@ -143,7 +149,7 @@ else ifeq ($(OS),$(OSUNIX))
 	ALLDIR=$(filter-out $(SRCPATH),$(shell $(ALLDIRCMD)))
     OUTDIR := $(OUTDIR) $(subst $(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     TESTDIR = $(TESTPATH) $(subst $(SRCPATH),$(TESTPATH),$(ALLDIR))
-    MAKEDIR := mkdir -p $(OUTDIR)
+    DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,-,$(dir)))
     MAKETESTDIR = mkdir -p $(TESTDIR)
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
@@ -172,13 +178,19 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir test libs libs-tests test-tree libs-test-tree $(NRTARGETPREFIX)% nr-test
+.PHONY: clean mrproper print-% makedir-% test libs libs-tests test-tree libs-test-tree $(NRTARGETPREFIX)% nr-test
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
 #---------------------------------------------------------------
 
 #Regles de construction-----------------------------------------
+#Pre build
+makedir: $(DIRTOCREATE)
+
+makedir-%:
+	$(call mkdir-cmd,$(subst -,$(SUBSEPARATOR),$*))
+
 #Builds
 all: makedir libs
 	make OS=$(OS) DEBUG=$(DEBUG) build
@@ -237,9 +249,6 @@ run: $(EXE1)
 	$(EXE1)
 
 #Construct folders tree
-makedir:
-	$(MAKEDIR)
-
 test-tree: libs-test-tree
 	$(MAKETESTDIR)
 
