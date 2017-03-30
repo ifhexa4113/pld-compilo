@@ -149,9 +149,6 @@ endef
     NRTESTDIRTOCREATE := $(foreach dir,$(NRTESTDIR),makedir-$(subst \,$(SUBSTSEPARATOR),$(dir)))
     SUBSEPARATOR = "\"
 	SUBSEPARATOR := $(subst ",,$(SUBSEPARATOR))
-    NRTESTS := $(shell dir /s /b /o:n /ad $(subst /,$(SUBSEPARATOR),$(NRTESTPATH)))
-    NRTESTS := $(addprefix $(NRTARGETPREFIX),$(subst $(WORKINGDIR)\$(subst /,$(SUBSEPARATOR),$(NRTESTPATH))\,,$(NRTESTS)))
-    NRPASSCMD = if not errorlevel 1 (echo [92mPASSED[0m) else ((echo [91mFAILED[0m) && exit 1)
     NULLREDIRECT = nul
     EXE1 := $(subst /,$(SUBSEPARATOR),$(EXE1))
     EXE2 := $(subst /,$(SUBSEPARATOR),$(EXE2))
@@ -203,7 +200,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir-% test libs libs-tests test-tree libs-test-tree $(NRTARGETPREFIX)% nr-test
+.PHONY: clean mrproper print-% makedir-% test libs libs-tests test-tree libs-test-tree
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
@@ -225,9 +222,9 @@ makedir-%:
 all: makedir libs
 	make OS=$(OS) DEBUG=$(DEBUG) build
 ifeq ($(DEBUG),yes)
-	@echo Projet compile en mode debug
+	@echo [92mProject build in debug mode[0m
 else
-	@echo Projet compile en mode release
+	@echo [92mProject build in release mode[0m
 endif
 
 build: $(EXE1)
@@ -268,17 +265,17 @@ $(OBJPATH)/$(NRFOLDER)/%.$(OFILE) : $(NRTESTPATH)/%.$(SRCFILE) $(NRTESTPATH)/%.$
 u-tests: makedir libs libs-tests
 	make OS=$(OS) DEBUG=$(DEBUG) build-utest
 ifeq ($(DEBUG),yes)
-	@echo Unit tests build in debug mode
+	@echo [92mUnit tests build in debug mode[0m
 else
-	@echo Unit tests build in release mode
+	@echo [92mUnit tests build in release mode[0m
 endif
 
 nr-tests: makedir makenrdir libs
 	make OS=$(OS) DEBUG=$(DEBUG) build-nrtest
 ifeq ($(DEBUG),yes)
-	@echo Non-regression tests build in debug mode
+	@echo [92mNon-regression tests build in debug mode[0m
 else
-	@echo Non-regression tests build in release mode
+	@echo [92mNon-regression tests build in release mode[0m
 endif
 
 tests: all u-tests nr-tests
