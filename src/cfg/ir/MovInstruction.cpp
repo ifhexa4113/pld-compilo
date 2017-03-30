@@ -1,7 +1,7 @@
 #include "MovInstruction.h"
 
 MovInstruction::MovInstruction(Register* destination_, Operand* source_) :
-    IRInstruction(), destination(destination_), source(source_)
+    RegisterInstruction(destination_), source(source_)
 {
     // Nothing else to do
 }

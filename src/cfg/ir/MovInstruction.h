@@ -1,11 +1,11 @@
 #ifndef MOV_INSTRUCTION_H
 #define MOV_INSTRUCTION_H
 
-#include "IRInstruction.h"
+#include "RegisterInstruction.h"
 #include "Operand.h"
 #include "Register.h"
 
-class MovInstruction : public IRInstruction
+class MovInstruction : public RegisterInstruction
 {
 public:
     MovInstruction(Register* destination_, Operand* source_);
@@ -13,7 +13,6 @@ public:
     void print(std::ostream& ost) const;
 
 protected:
-    Register* destination;
     Operand* source;
 };
 
