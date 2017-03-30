@@ -5,15 +5,15 @@
 #include "Type.h"
 #include "Declaration.h"
 #include "ast/definition/FunctionDefinition.h"
-
+#include <memory>
 class FunctionDeclaration : public Declaration
 {
 public:
     FunctionDeclaration(std::string name, Type type, int nbArgs);
     ~FunctionDeclaration();
-    virtual const shared_ptr<Declaration> clone() const
+    virtual const std::shared_ptr<Declaration> clone() const
     {
-        return shared_ptr<Declaration>( new FunctionDeclaration(*this));
+        return std::shared_ptr<Declaration>( new FunctionDeclaration(*this));
     }
     int walkTree();
     int getNbArgs();

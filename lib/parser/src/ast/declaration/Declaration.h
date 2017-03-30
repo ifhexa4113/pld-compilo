@@ -16,7 +16,7 @@ public:
     std::string getName() const;
     Type getType() const;
     int getAddress() const;
-    virtual const shared_ptr<Declaration> clone() const =0;
+    virtual const std::shared_ptr<Declaration> clone() const =0;
 protected:
     std::string name;
     Type type;
