@@ -172,7 +172,7 @@ endef
 	NRTESTDIR := $(subst $(TESTPATH),$(OBJPATH),$(shell find $(NRTESTPATH) -type d))
     DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(dir)))
     UTESTDIRTOCREATE := $(foreach dir,$(UTESTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(dir)))
-    NRTESTDIRTOCREATE = $(foreach dir,$(NRTESTDIR),makedir-$(subst \,$(SUBSTSEPARATOR),$(dir)))
+    NRTESTDIRTOCREATE = $(foreach dir,$(NRTESTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(dir)))
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
 	NRTESTS := $(subst $(NRTESTPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRTESTPATH),$(shell find $(NRTESTPATH) -type d)))
