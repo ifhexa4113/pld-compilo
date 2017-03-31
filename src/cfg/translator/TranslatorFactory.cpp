@@ -2,6 +2,7 @@
 #include "TranslatorFactory.h"
 #include "Translator.h"
 #include "block/CmmProgramTranslator.h"
+#include "block/WhileTranslator.h"
 #include "definition/VariableDefinitionTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
 #include "expression/LiteralNumberTranslator.h"
@@ -9,6 +10,7 @@
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
+#include "ast/block/conditional-structure/While.h"
 #include "ast/definition/Definition.h"
 #include "ast/definition/FunctionDefinition.h"
 #include "ast/definition/VariableDefinition.h"
@@ -38,6 +40,7 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
     // TODO: put each big part in a small method ?
     if(dynamic_cast<Block*>(node))
     {
+        // check what type of block it is
         cout << "It's a block..." << endl;
         if(CmmProgram* p = dynamic_cast<CmmProgram*>(node))
         {
@@ -47,8 +50,11 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
         {
             cout << "It's a FunctionDefinition - returning the right translator." << endl;
             return new FunctionDefinitionTranslator(f, cfg);
+        } else if(While* wh = dynamic_cast<While*>(node))
+        {
+            cout << "It's a While - returning the right translator." << endl;
+            return new WhileTranslator(wh, cfg);
         }
-        // check what type of block it is
     } else if(dynamic_cast<Expression*>(node))
     {
         cout << "It's an expression..." << endl;
