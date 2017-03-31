@@ -1,7 +1,7 @@
 #ifndef CMM_PROGRAM_TRANSLATOR_H
 #define CMM_PROGRAM_TRANSLATOR_H
 
-#include "Translator.h"
+#include "cfg/translator/Translator.h"
 #include "ast/block/CmmProgram.h"
 
 class CmmProgramTranslator : public Translator {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "TranslatorFactory.h"
 #include "Translator.h"
-#include "CmmProgramTranslator.h"
+#include "block/CmmProgramTranslator.h"
 #include "definition/VariableDefinitionTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
 #include "expression/LiteralNumberTranslator.h"
