@@ -18,10 +18,10 @@ int main()
     int result = yyparse(program);
     cout << "AST done" << endl;
 
-    cout << "Creating CFG..." << endl;
-    CFG cfg(&ast);
-    cout << "CFG done:" << endl;
-    cfg.print(cout);
+//    cout << "Creating CFG..." << endl;
+//    CFG cfg(&ast);
+//    cout << "CFG done:" << endl;
+//    cfg.print(cout);
 
     return result;
 }

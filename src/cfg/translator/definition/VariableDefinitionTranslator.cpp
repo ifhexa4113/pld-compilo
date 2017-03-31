@@ -1,8 +1,8 @@
 #include "VariableDefinitionTranslator.h"
 #include <iostream>
 #include "cfg/ir/RegisterInstruction.h"
-#include "cfg/ir/MovInstruction.h"
-#include "cfg/ir/Register.h"
+#include "cfg/ir/basic/MovInstruction.h"
+#include "cfg/ir/operand/Register.h"
 
 VariableDefinitionTranslator::VariableDefinitionTranslator(VariableDefinition *variableDef, CFG *cfg) :
     Translator(variableDef, cfg)

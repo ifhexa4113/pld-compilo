@@ -1,5 +1,5 @@
 #include "ReturnInstructionTranslator.h"
-#include "cfg/ir/MovInstruction.h"
+#include "cfg/ir/basic/MovInstruction.h"
 #include <iostream>
 
 ReturnInstructionTranslator::ReturnInstructionTranslator(ReturnInstruction* returnInstruction, CFG* cfg) : Translator(returnInstruction, cfg)

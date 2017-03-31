@@ -2,21 +2,21 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_ANDINSTRUCTION_H
-#define PLD_COMPILO_ANDINSTRUCTION_H
+#ifndef XORINSTRUCTION_H
+#define XORINSTRUCTION_H
 
 
-#include "RegisterInstruction.h"
-#include "Register.h"
+#include "cfg/ir/RegisterInstruction.h"
+#include "cfg/ir/operand/Register.h"
 
 /**
  * Mnemonic representing a Write value : Store the given value in the given memory address
  */
-class AndInstruction : public RegisterInstruction {
+class XorInstruction : public RegisterInstruction {
 public:
-    AndInstruction(Register *destination, Operand *param1, Operand *param2);
+    XorInstruction(Register *destination, Operand *param1, Operand *param2);
 
-    ~AndInstruction() override;
+    ~XorInstruction() override;
 
     void print(std::ostream &ost) const override;
 
@@ -30,4 +30,4 @@ protected:
 };
 
 
-#endif //PLD_COMPILO_ANDINSTRUCTION_H
+#endif //ORINSTRUCTION_H

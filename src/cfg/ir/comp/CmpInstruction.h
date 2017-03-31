@@ -2,12 +2,12 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_CMPINSTRUCTION_H
-#define PLD_COMPILO_CMPINSTRUCTION_H
+#ifndef CMPINSTRUCTION_H
+#define CMPINSTRUCTION_H
 
 
-#include "IRInstruction.h"
-#include "Register.h"
+#include "cfg/ir/IRInstruction.h"
+#include "cfg/ir/operand/Register.h"
 
 /**
  * Mnemonic representing a Write value : Store the given value in the given memory address
@@ -30,4 +30,4 @@ protected:
 };
 
 
-#endif //PLD_COMPILO_WRITEINSTRUCTION_H
+#endif //WRITEINSTRUCTION_H

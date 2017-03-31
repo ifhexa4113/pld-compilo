@@ -2,7 +2,7 @@
 #define REGISTER_INSTRUCTION_H
 
 #include "IRInstruction.h"
-#include "Register.h"
+#include "operand/Register.h"
 
 class RegisterInstruction : public IRInstruction
 {

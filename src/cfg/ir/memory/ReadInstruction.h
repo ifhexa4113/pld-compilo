@@ -1,12 +1,8 @@
-//
-// Created by Element on 29/03/2017.
-//
+#ifndef LOADINSTRUCTION_H
+#define LOADINSTRUCTION_H
 
-#ifndef PROJECT_LOADINSTRUCTION_H
-#define PROJECT_LOADINSTRUCTION_H
-
-#include "RegisterInstruction.h"
-#include "Register.h"
+#include "cfg/ir/RegisterInstruction.h"
+#include "cfg/ir/operand/Register.h"
 
 /**
  * Mnemonic representing a Read Operation : Get a value from the given address and store it in the given register.
@@ -26,4 +22,4 @@ protected:
 };
 
 
-#endif //PROJECT_LOADINSTRUCTION_H
+#endif //LOADINSTRUCTION_H

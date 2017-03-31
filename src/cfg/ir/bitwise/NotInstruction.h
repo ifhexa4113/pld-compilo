@@ -2,12 +2,12 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_NOTINSTRUCTION_H
-#define PLD_COMPILO_NOTINSTRUCTION_H
+#ifndef NOTINSTRUCTION_H
+#define NOTINSTRUCTION_H
 
 
-#include "RegisterInstruction.h"
-#include "Register.h"
+#include "cfg/ir/RegisterInstruction.h"
+#include "cfg/ir/operand/Register.h"
 
 class NotInstruction : public RegisterInstruction {
 public:
@@ -24,4 +24,4 @@ protected:
 };
 
 
-#endif //PLD_COMPILO_NOTINSTRUCTION_H
+#endif //NOTINSTRUCTION_H

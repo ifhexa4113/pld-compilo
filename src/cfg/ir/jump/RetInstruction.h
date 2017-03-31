@@ -2,11 +2,11 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_RETINSTRUCTION_IR_H
-#define PLD_COMPILO_RETINSTRUCTION_IR_H
+#ifndef RETINSTRUCTION_IR_H
+#define RETINSTRUCTION_IR_H
 
 
-#include "IRInstruction.h"
+#include "cfg/ir/IRInstruction.h"
 
 class RetInstruction : public IRInstruction{
 public:
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //PLD_COMPILO_RETINSTRUCTION_H
+#endif //RETINSTRUCTION_H

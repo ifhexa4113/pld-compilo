@@ -1,9 +1,9 @@
-#ifndef PLD_COMPILO_ADDINSTRUCTION_H
-#define PLD_COMPILO_ADDINSTRUCTION_H
+#ifndef ADDINSTRUCTION_H
+#define ADDINSTRUCTION_H
 
 
-#include "RegisterInstruction.h"
-#include "Register.h"
+#include "cfg/ir/RegisterInstruction.h"
+#include "cfg/ir/operand/Register.h"
 
 /**
  * Mnemonic representing a Write value : Store the given value in the given memory address
@@ -26,4 +26,4 @@ protected:
 };
 
 
-#endif //PLD_COMPILO_WRITEINSTRUCTION_H
+#endif //WRITEINSTRUCTION_H
