@@ -10,6 +10,8 @@ public:
     ~ParenthesisExpression();
     int walkTree();
 
+    Expression* getExpression() const;
+
 protected:
     Expression* expression;
 };
