@@ -99,10 +99,16 @@ UTESTPATH = $(TESTPATH)/$(UNITFOLDER)
 #Non-regression tests
 NRFOLDER = non-regression
 NRTESTPATH = $(TESTPATH)/$(NRFOLDER)
+NRSETPATH = $(TESTPATH)/set
 NRTESTS =
 NRDESC = desc
 NRINPUT = input.cmm
 NROUTPUT = output
+NROUTPUTST = $(NROUTPUT).st
+NROUTPUTAST = $(NROUTPUT).ast
+NROUTPUTCFG = $(NROUTPUT).cfg
+NROUTPUTASM = $(NROUTPUT).asm
+NRALLOUTPUTS = $(NROUTPUTST) $(NROUTPUTAST) $(NROUTPUTCFG) $(NROUTPUTASM)
 NRTARGETPREFIX = test-
 NRPASSCMD =
 
@@ -143,6 +149,8 @@ endef
     UTESTDIR := $(subst /,\,$(UTESTPATH)) $(subst $(WORKINGDIR)\$(SRCPATH),$(subst /,\,$(UTESTPATH)),$(ALLDIR))
     NRTESTDIR = $(shell dir /s /b /o:n /ad $(subst /,\,$(NRTESTPATH)))
     NRTESTDIR := $(subst $(TESTPATH)/,$(OBJPATH)\,$(NRTESTPATH)) $(subst $(WORKINGDIR)\$(TESTPATH),$(OBJPATH),$(NRTESTDIR))
+    NRTESTS = $(subst $(WORKINGDIR)\$(subst /,\,$(NRSETPATH))\,,$(shell dir /s /b /o:n /ad $(subst /,$(SUBSEPARATOR),$(NRSETPATH))))
+    NRPASSCMD = if not errorlevel 1 (echo [92mPASSED[0m) else ((echo [91mFAILED[0m) && exit 1)
     SEVERAL_CMD = &
     DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(subst \,$(SUBSTSEPARATOR),$(dir))))
     UTESTDIRTOCREATE := $(foreach dir,$(UTESTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(subst \,$(SUBSTSEPARATOR),$(dir))))
@@ -175,7 +183,7 @@ endef
     NRTESTDIRTOCREATE = $(foreach dir,$(NRTESTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(dir)))
     SEVERAL_CMD = ;
     SUBSEPARATOR = /
-	NRTESTS := $(subst $(NRTESTPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRTESTPATH),$(shell find $(NRTESTPATH) -type d)))
+	NRTESTS := $(subst $(NRSETPATH)/,$(NRTARGETPREFIX),$(filter-out $(NRSETPATH),$(shell find $(NRSETPATH) -type d)))
 	NRPASSCMD = if [ $$? -eq 0 ]; then (echo [92mPASSED[0m); else (echo [91mFAILED[0m) && exit 1; fi
     NULLREDIRECT = /dev/null
 else
@@ -282,7 +290,14 @@ tests: all u-tests nr-tests
 	@echo UNIT TESTS
 	$(EXE2)
 	@echo NON-REGRESSION TESTS
-	$(EXE3)
+	@make run-nrtests
+
+$(NRTARGETPREFIX)%:
+	@echo $(PROMPTSEPARATOR)
+	@echo TEST $*
+	@$(CAT) $(NRSETPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
+	@$(ECHONEWLINE)
+	@$(EXE3) $(foreach output,$(NRALLOUTPUTS),$(WORKINGDIR)/$(NRSETPATH)/$*/$(output)) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT) $(SEVERAL_CMD) $(NRPASSCMD)
 
 #Runs
 run: $(EXE1)
@@ -291,8 +306,8 @@ run: $(EXE1)
 run-utests: $(EXE2)
 	$(EXE2)
 
-run-nrtests: $(EXE3)
-	$(EXE3)
+run-nrtests: $(EXE3) $(NRTESTS)
+	@echo [92mALL NR TESTS PASSED[0m
 
 #Construct folders tree
 test-tree: libs-test-tree $(UTESTDIRTOCREATE)
