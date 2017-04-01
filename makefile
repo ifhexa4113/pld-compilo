@@ -208,7 +208,7 @@ LDFLAGS =
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
-.PHONY: clean mrproper print-% makedir-% test libs libs-tests test-tree libs-test-tree
+.PHONY: clean mrproper print-% makedir-% test libs libs-tests test-tree libs-test-tree $(NRTARGETPREFIX)%
 #---------------------------------------------------------------
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
