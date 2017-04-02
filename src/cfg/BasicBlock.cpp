@@ -3,7 +3,7 @@
 
 int BasicBlock::labelCounter = 0;
 
-BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* exitFalse_) :
+BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* exitFalse_, JumpType exitJumpType_) :
     label(([&label_]() {
         if(label_ == "$$unnamed$$") {
             std::stringstream ss;
@@ -14,7 +14,8 @@ BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* ex
     })()),
     instructions(),
     exitTrue(exitTrue_),
-    exitFalse(exitFalse_)
+    exitFalse(exitFalse_),
+    exitJumpType(exitJumpType_)
 {
     // Nothing else to do
 }
@@ -55,6 +56,11 @@ BasicBlock* BasicBlock::getExitFalse()
     return exitFalse;
 }
 
+JumpType BasicBlock::getExitJumpType() const
+{
+    return exitJumpType;
+}
+
 void BasicBlock::setExitTrue(BasicBlock *exitTrue_)
 {
     if(exitTrue != nullptr)
@@ -71,6 +77,11 @@ void BasicBlock::setExitFalse(BasicBlock *exitFalse_)
         delete exitFalse;
     }
     exitFalse = exitFalse_;
+}
+
+void BasicBlock::setExitJumpType(JumpType j)
+{
+    exitJumpType = j;
 }
 
 void BasicBlock::addInstruction(IRInstruction * instruction)
