@@ -6,8 +6,17 @@
 #include "block/ForTranslator.h"
 #include "definition/VariableDefinitionTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
-#include "expression/LiteralNumberTranslator.h"
 #include "instruction/ReturnInstructionTranslator.h"
+
+#include "expression/LiteralNumberTranslator.h"
+#include "expression/BinaryArithmeticOperationTranslator.h"
+#include "expression/BinaryBinaryOperationTranslator.h"
+
+#include "ast/expression/Expression.h"
+#include "ast/expression/LiteralNumberExpression.h"
+#include "ast/expression/BinaryBinaryOperation.h"
+#include "ast/expression/BinaryArithmeticOperation.h"
+#include "ast/expression/ParenthesisExpression.h"
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
@@ -16,8 +25,6 @@
 #include "ast/definition/Definition.h"
 #include "ast/definition/FunctionDefinition.h"
 #include "ast/definition/VariableDefinition.h"
-#include "ast/expression/Expression.h"
-#include "ast/expression/LiteralNumberExpression.h"
 #include "ast/instruction/Instruction.h"
 #include "ast/instruction/ReturnInstruction.h"
 
@@ -70,6 +77,23 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
             cout << "It's a LiteralNumberExpression - returning the right translator." << endl;
             return new LiteralNumberTranslator(lne, cfg);
         }
+        else if(BinaryArithmeticOperation* binArOp = dynamic_cast<BinaryArithmeticOperation*>(node))
+        {
+            cout << "It's a BinaryArithmeticOperation - returning the right translator." << endl;
+            return new BinaryArithmeticOperationTranslator(binArOp, cfg);
+        }
+        else if(BinaryBinaryOperation* binBinOp = dynamic_cast<BinaryBinaryOperation*>(node))
+        {
+            cout << "It's a BinaryBinaryOperation - returning the right translator." << endl;
+            return new BinaryBinaryOperationTranslator(binBinOp, cfg);
+        }
+        else if(ParenthesisExpression* parenthesis = dynamic_cast<ParenthesisExpression*>(node))
+        {
+            // TODO EXPRESSION do we need to encapsulate it to a ParenthesisTranslator ?
+            cout << "It's a ParenthesisExpression - returning the translator of the expression." << endl;
+            return getTranslator(parenthesis->getExpression(), cfg);
+        }
+
     } else if(dynamic_cast<Definition*>(node))
     {
         cout << "It's a definition..." << endl;

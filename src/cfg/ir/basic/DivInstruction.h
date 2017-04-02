@@ -2,21 +2,21 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_MULINSTRUCTION_H
-#define PLD_COMPILO_MULINSTRUCTION_H
+#ifndef DIVINSTRUCTION_H
+#define DIVINSTRUCTION_H
 
 
-#include "RegisterInstruction.h"
-#include "Register.h"
+#include "cfg/ir/RegisterInstruction.h"
+#include "cfg/ir/operand/Register.h"
 
 /**
  * Mnemonic representing a Write value : Store the given value in the given memory address
  */
-class MulInstruction : public RegisterInstruction {
+class DivInstruction : public RegisterInstruction {
 public:
-    MulInstruction(Register *destination, Operand *param1, Operand *param2);
+    DivInstruction(Register *destination, Operand *param1, Operand *param2);
 
-    ~MulInstruction() override;
+    ~DivInstruction() override;
 
     void print(std::ostream &ost) const override;
 
@@ -30,4 +30,4 @@ protected:
 };
 
 
-#endif //PLD_COMPILO_MULINSTRUCTION_H
+#endif //MULINSTRUCTION_H

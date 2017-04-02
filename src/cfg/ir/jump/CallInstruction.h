@@ -2,11 +2,11 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_CALLINSTRUCTION_H
-#define PLD_COMPILO_CALLINSTRUCTION_H
+#ifndef CALLINSTRUCTION_H
+#define CALLINSTRUCTION_H
 
 
-#include "IRInstruction.h"
+#include "cfg/ir/IRInstruction.h"
 
 class CallInstruction : public IRInstruction {
 public:
@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif //PLD_COMPILO_JMPINSTRUCTION_H
+#endif //JMPINSTRUCTION_H

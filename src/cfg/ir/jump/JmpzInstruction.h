@@ -2,11 +2,11 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_JMPZINSTRUCTION_H
-#define PLD_COMPILO_JMPZINSTRUCTION_H
+#ifndef JMPZINSTRUCTION_H
+#define JMPZINSTRUCTION_H
 
 
-#include "IRInstruction.h"
+#include "cfg/ir/IRInstruction.h"
 
 class JmpzInstruction : public IRInstruction {
 public:
@@ -24,4 +24,4 @@ public:
 };
 
 
-#endif //PLD_COMPILO_JMPZINSTRUCTION_H
+#endif //JMPZINSTRUCTION_H

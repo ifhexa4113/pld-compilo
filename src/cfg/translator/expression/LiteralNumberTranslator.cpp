@@ -1,7 +1,7 @@
 #include "LiteralNumberTranslator.h"
-#include "cfg/ir/MovInstruction.h"
-#include "cfg/ir/Register.h"
-#include "cfg/ir/LiteralNumber.h"
+#include "cfg/ir/basic/MovInstruction.h"
+#include "cfg/ir/operand/Register.h"
+#include "cfg/ir/operand/LiteralNumber.h"
 #include <iostream>
 
 LiteralNumberTranslator::LiteralNumberTranslator(LiteralNumberExpression* litNumExp, CFG* cfg) : Translator(litNumExp, cfg)

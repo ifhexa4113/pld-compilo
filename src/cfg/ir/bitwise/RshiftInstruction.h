@@ -2,12 +2,12 @@
 // Created by Element on 29/03/2017.
 //
 
-#ifndef PLD_COMPILO_RSHIFTINSTRUCTION_H
-#define PLD_COMPILO_RSHIFTINSTRUCTION_H
+#ifndef RSHIFTINSTRUCTION_H
+#define RSHIFTINSTRUCTION_H
 
 
-#include "RegisterInstruction.h"
-#include "Register.h"
+#include "cfg/ir/RegisterInstruction.h"
+#include "cfg/ir/operand/Register.h"
 
 /**
  * Mnemonic representing a Write value : Store the given value in the given memory address
@@ -30,4 +30,4 @@ protected:
 };
 
 
-#endif //PLD_COMPILO_RSHIFTINSTRUCTION_H
+#endif //RSHIFTINSTRUCTION_H

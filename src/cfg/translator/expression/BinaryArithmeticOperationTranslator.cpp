@@ -1,10 +1,10 @@
 #include "BinaryArithmeticOperationTranslator.h"
-#include "cfg/ir/AddInstruction.h"
-#include "cfg/ir/SubInstruction.h"
-#include "cfg/ir/MulInstruction.h"
-#include "cfg/ir/DivInstruction.h"
-#include "cfg/ir/ModInstruction.h"
-#include "cfg/ir/Register.h"
+#include "cfg/ir/basic/AddInstruction.h"
+#include "cfg/ir/basic/SubInstruction.h"
+#include "cfg/ir/basic/MulInstruction.h"
+#include "cfg/ir/basic/DivInstruction.h"
+#include "cfg/ir/basic/ModInstruction.h"
+#include "cfg/ir/operand/Register.h"
 #include <iostream>
 
 BinaryArithmeticOperationTranslator::BinaryArithmeticOperationTranslator(BinaryArithmeticOperation* binaryArithmeticOperation, CFG* cfg) : Translator(binaryArithmeticOperation, cfg)

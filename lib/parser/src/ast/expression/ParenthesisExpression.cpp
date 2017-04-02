@@ -20,3 +20,8 @@ int ParenthesisExpression::walkTree()
 {
     return 0;
 }
+
+Expression* ParenthesisExpression::getExpression() const
+{
+    return expression;
+}

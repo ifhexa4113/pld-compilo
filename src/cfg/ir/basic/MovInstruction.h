@@ -1,9 +1,9 @@
 #ifndef MOV_INSTRUCTION_H
 #define MOV_INSTRUCTION_H
 
-#include "RegisterInstruction.h"
-#include "Operand.h"
-#include "Register.h"
+#include "cfg/ir/RegisterInstruction.h"
+#include "cfg/ir/operand/Operand.h"
+#include "cfg/ir/operand/Register.h"
 
 class MovInstruction : public RegisterInstruction
 {
