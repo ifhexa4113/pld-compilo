@@ -1,5 +1,6 @@
 #include "ForTranslator.h"
 #include "ast/expression/Expression.h"
+#include "ast/expression/NullExpression.h"
 #include <iostream>
 #include <vector>
 
