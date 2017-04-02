@@ -32,11 +32,11 @@
  *       trueBlock [label="reg1 <- 0"]
  *       output [label="reg1 <- reg1"]
  *
- *       input -> trueBlock[label="True (not equal)"]
- *       input -> firstLevelFalseBlock[label="False (equal)"]
+ *       input -> trueBlock[label="True"]
+ *       input -> firstLevelFalseBlock[label="False"]
  *
- *       firstLevelFalseBlock -> trueBlock [label="True (not equal)"]
- *       firstLevelFalseBlock -> secondLevelFalseBlock [label="False (equal)"]
+ *       firstLevelFalseBlock -> trueBlock [label="True"]
+ *       firstLevelFalseBlock -> secondLevelFalseBlock [label="False"]
  *
  *       trueBlock -> output[label="True"]
  *       secondLevelFalseBlock -> output[label="True"]
@@ -51,11 +51,11 @@
  *       falseBlock [label="reg1 <- 1"]
  *       output [label="reg1 <- reg1"]
  *
- *       input -> falseBlock[label="False (equal)"]
- *       input -> firstLevelTrueBlock[label="True (not equal)"]
+ *       input -> falseBlock[label="False"]
+ *       input -> firstLevelTrueBlock[label="True"]
  *
- *       firstLevelTrueBlock -> falseBlock [label="False (equal)"]
- *       firstLevelTrueBlock -> secondLevelTrueBlock [label="True (not equal)"]
+ *       firstLevelTrueBlock -> falseBlock [label="False"]
+ *       firstLevelTrueBlock -> secondLevelTrueBlock [label="True"]
  *
  *       falseBlock -> output[label="True"]
  *       secondLevelTrueBlock -> output[label="True"]

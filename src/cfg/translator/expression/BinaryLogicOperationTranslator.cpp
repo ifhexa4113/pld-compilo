@@ -71,10 +71,148 @@ SubGraph* BinaryLogicOperationTranslator::translate()
             break;
         }
         case LogicOperator::GREATER:
+        {
+            // Create specific object
+            // TODO EXPRESSION need a label ?
+            BasicBlock* trueBlock = new BasicBlock("");
+            BasicBlock* falseBlock = new BasicBlock("");
+            Register* commonRegister = new Register();
+
+            // Add their instructtion to each block
+            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
+                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            
+            trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
+            falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
+
+            // TODO EXPRESSION create a new register ?
+            outputBlock->addInstruction(new MovInstruction(commonRegister, commonRegister));
+                            
+            // Set transition between basic block
+            inputBlock->setExitTrue(trueBlock);
+            inputBlock->setExitFalse(falseBlock);
+            inputBlock->setExitJumpType(BasicBlock::JumpType::NZ);
+
+            trueBlock->setExitTrue(outputBlock);
+            falseBlock->setExitTrue(outputBlock);
+
+            break;
+        }
+
         case LogicOperator::GREATER_EQUAL:
+        {
+            // Create specific object
+            // TODO EXPRESSION need a label ?
+            BasicBlock* trueBlock = new BasicBlock("");
+            BasicBlock* falseBlock = new BasicBlock("");
+            Register* commonRegister = new Register();
+
+            // Add their instructtion to each block
+            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
+                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            
+            trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
+            falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
+
+            // TODO EXPRESSION create a new register ?
+            outputBlock->addInstruction(new MovInstruction(commonRegister, commonRegister));
+                            
+            // Set transition between basic block
+            inputBlock->setExitTrue(trueBlock);
+            inputBlock->setExitFalse(falseBlock);
+            inputBlock->setExitJumpType(BasicBlock::JumpType::N);
+
+            trueBlock->setExitTrue(outputBlock);
+            falseBlock->setExitTrue(outputBlock);
+
+            break;
+        }
+
         case LogicOperator::LESSER:
+        {
+            // Create specific object
+            // TODO EXPRESSION need a label ?
+            BasicBlock* trueBlock = new BasicBlock("");
+            BasicBlock* falseBlock = new BasicBlock("");
+            Register* commonRegister = new Register();
+
+            // Add their instructtion to each block
+            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
+                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            
+            trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
+            falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
+
+            // TODO EXPRESSION create a new register ?
+            outputBlock->addInstruction(new MovInstruction(commonRegister, commonRegister));
+                            
+            // Set transition between basic block
+            inputBlock->setExitTrue(trueBlock);
+            inputBlock->setExitFalse(falseBlock);
+            inputBlock->setExitJumpType(BasicBlock::JumpType::N);
+
+            trueBlock->setExitTrue(outputBlock);
+            falseBlock->setExitTrue(outputBlock);
+
+            break;
+        }
+
         case LogicOperator::LESSER_EQUAL:
+        {
+            // Create specific object
+            // TODO EXPRESSION need a label ?
+            BasicBlock* trueBlock = new BasicBlock("");
+            BasicBlock* falseBlock = new BasicBlock("");
+            Register* commonRegister = new Register();
+
+            // Add their instructtion to each block
+            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
+                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            
+            trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
+            falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
+
+            // TODO EXPRESSION create a new register ?
+            outputBlock->addInstruction(new MovInstruction(commonRegister, commonRegister));
+                            
+            // Set transition between basic block
+            inputBlock->setExitTrue(trueBlock);
+            inputBlock->setExitFalse(falseBlock);
+            inputBlock->setExitJumpType(BasicBlock::JumpType::NZ);
+
+            trueBlock->setExitTrue(outputBlock);
+            falseBlock->setExitTrue(outputBlock);
+
+            break;
+        }
         case LogicOperator::NOT_EQUAL:
+                {
+            // Create specific object
+            // TODO EXPRESSION need a label ?
+            BasicBlock* trueBlock = new BasicBlock("");
+            BasicBlock* falseBlock = new BasicBlock("");
+            Register* commonRegister = new Register();
+
+            // Add their instructtion to each block
+            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
+                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            
+            trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
+            falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
+
+            // TODO EXPRESSION create a new register ?
+            outputBlock->addInstruction(new MovInstruction(commonRegister, commonRegister));
+                            
+            // Set transition between basic block
+            inputBlock->setExitTrue(trueBlock);
+            inputBlock->setExitFalse(falseBlock);
+            inputBlock->setExitJumpType(BasicBlock::JumpType::Z);
+
+            trueBlock->setExitTrue(outputBlock);
+            falseBlock->setExitTrue(outputBlock);
+
+            break;
+        }
         case LogicOperator::AND:
         {
             // Create specific object
