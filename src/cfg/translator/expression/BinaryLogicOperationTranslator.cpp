@@ -2,6 +2,11 @@
 
 #include "BinaryLogicOperationTranslator.h"
 
+#include "cfg/ir/comp/CmpInstruction.h"
+#include "cfg/ir/basic/MovInstruction.h"
+#include "cfg/ir/operand/Register.h"
+#include "cfg/ir/operand/LiteralNumber.h"
+
 
 BinaryLogicOperationTranslator::BinaryLogicOperationTranslator(BinaryLogicOperation* binaryLogicOperation, CFG* cfg) : 
     Translator(binaryLogicOperation, cfg)
@@ -30,12 +35,12 @@ SubGraph* BinaryLogicOperationTranslator::translate()
     BasicBlock* outputBlock = new BasicBlock("");
     std::vector<BasicBlock*> outputs(1, outputBlock);
 
-    Translator* leftT = getFactory().getTranslator(binBinOp->getLExpression(), cfg);
+    Translator* leftT = getFactory().getTranslator(binLogOp->getLExpression(), cfg);
     SubGraph* leftSb = leftT->translate();
-    Translator* rightT = getFactory().getTranslator(binBinOp->getRExpression(), cfg);
+    Translator* rightT = getFactory().getTranslator(binLogOp->getRExpression(), cfg);
     SubGraph* rightSb = rightT->translate();
 
-    switch(binLogOp->getOperation())
+    switch(binLogOp->getOperator())
     {
         case LogicOperator::EQUAL:
         {
@@ -58,7 +63,7 @@ SubGraph* BinaryLogicOperationTranslator::translate()
             // Set transition between basic block
             inputBlock->setExitTrue(trueBlock);
             inputBlock->setExitFalse(falseBlock);
-            inputBlock->setExitJumpType(JumpType::Z);
+            inputBlock->setExitJumpType(BasicBlock::JumpType::Z);
 
             trueBlock->setExitTrue(outputBlock);
             falseBlock->setExitTrue(outputBlock);
@@ -94,7 +99,7 @@ SubGraph* BinaryLogicOperationTranslator::translate()
             // Set transition between basic block
             inputBlock->setExitTrue(trueBlock);
             inputBlock->setExitFalse(firstLevelFalseBlock);
-            inputBlock->setExitJumpType(JumpType::Z);
+            inputBlock->setExitJumpType(BasicBlock::JumpType::Z);
 
             firstLevelFalseBlock->setExitTrue(trueBlock);
             firstLevelFalseBlock->setExitFalse(secondLevelFalseBlock);
@@ -102,6 +107,10 @@ SubGraph* BinaryLogicOperationTranslator::translate()
             secondLevelFalseBlock->setExitTrue(outputBlock);
             trueBlock->setExitTrue(outputBlock);
 
+            break;
+        }
+        case LogicOperator::OR:
+        {
             break;
         }
     }
