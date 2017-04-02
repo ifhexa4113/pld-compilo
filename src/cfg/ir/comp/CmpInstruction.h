@@ -14,19 +14,19 @@
  */
 class CmpInstruction : public IRInstruction {
 public:
-    CmpInstruction(Operand *address, Operand *value);
+    CmpInstruction(Operand *param1_, Operand *param2_);
 
     ~CmpInstruction() override;
 
     void print(std::ostream &ost) const override;
 
-    const Operand *getAddress() const;
+    const Operand *getParam1() const;
 
-    const Operand *getValue() const;
+    const Operand *getParam2() const;
 
 protected:
-    Operand *address;
-    Operand *value;
+    Operand *param1;
+    Operand *param2;
 };
 
 
