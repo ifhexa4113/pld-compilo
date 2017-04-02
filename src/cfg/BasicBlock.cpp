@@ -3,7 +3,7 @@
 
 int BasicBlock::labelCounter = 0;
 
-BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* exitFalse_, JumpType exitJumpType_) :
+BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* exitFalse_, BasicBlock::JumpType exitJumpType_) :
     label(([&label_]() {
         if(label_ == "$$unnamed$$") {
             std::stringstream ss;
@@ -56,7 +56,7 @@ BasicBlock* BasicBlock::getExitFalse()
     return exitFalse;
 }
 
-JumpType BasicBlock::getExitJumpType() const
+BasicBlock::JumpType BasicBlock::getExitJumpType() const
 {
     return exitJumpType;
 }
@@ -79,7 +79,7 @@ void BasicBlock::setExitFalse(BasicBlock *exitFalse_)
     exitFalse = exitFalse_;
 }
 
-void BasicBlock::setExitJumpType(JumpType j)
+void BasicBlock::setExitJumpType(BasicBlock::JumpType j)
 {
     exitJumpType = j;
 }
