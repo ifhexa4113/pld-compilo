@@ -58,6 +58,7 @@ SubGraph* BinaryLogicOperationTranslator::translate()
             // Set transition between basic block
             inputBlock->setExitTrue(trueBlock);
             inputBlock->setExitFalse(falseBlock);
+            inputBlock->setExitJumpType(JumpType::Z);
 
             trueBlock->setExitTrue(outputBlock);
             falseBlock->setExitTrue(outputBlock);
@@ -73,32 +74,33 @@ SubGraph* BinaryLogicOperationTranslator::translate()
         {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* firstLevelTrueBlock = new BasicBlock("");
-            BasicBlock* secondLevelTrueBlock = new BasicBlock("");
-            BasicBlock* falseBlock = new BasicBlock("");
+            BasicBlock* firstLevelFalseBlock = new BasicBlock("");
+            BasicBlock* secondLevelFalseBlock = new BasicBlock("");
+            BasicBlock* trueBlock = new BasicBlock("");
             Register* commonRegister = new Register();
 
             // Add their instruction to each block
             inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
                                                           new LiteralNumber(0) ));
 
-            firstLevelTrueBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
+            firstLevelFalseBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
                                                                    new LiteralNumber(0) ));
 
-            secondLevelTrueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
-            falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
+            secondLevelFalseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
+            trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
             
             outputBlock->addInstruction(new MovInstruction(commonRegister, commonRegister));
 
             // Set transition between basic block
-            inputBlock->setExitTrue(firstLevelTrueBlock);
-            inputBlock->setExitFalse(falseBlock);
+            inputBlock->setExitTrue(trueBlock);
+            inputBlock->setExitFalse(firstLevelFalseBlock);
+            inputBlock->setExitJumpType(JumpType::Z);
 
-            firstLevelTrueBlock->setExitTrue(secondLevelTrueBlock);
-            firstLevelTrueBlock->setExitFalse(falseBlock);
+            firstLevelFalseBlock->setExitTrue(trueBlock);
+            firstLevelFalseBlock->setExitFalse(secondLevelFalseBlock);
 
-            secondLevelTrueBlock->setExitTrue(outputBlock);
-            falseBlock->setExitTrue(outputBlock);
+            secondLevelFalseBlock->setExitTrue(outputBlock);
+            trueBlock->setExitTrue(outputBlock);
 
             break;
         }
