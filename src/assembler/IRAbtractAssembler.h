@@ -11,10 +11,11 @@
  * Base class for all Assembler instructions
  */
 class IRAbtractAssembler {
-    virtual IRAbtractAssembler() = 0;
+public:
+    IRAbtractAssembler();
     virtual ~IRAbtractAssembler() = 0;
 
-    virtual std::string translate() = 0;
+    virtual std::string translate() const = 0;
 };
 
 

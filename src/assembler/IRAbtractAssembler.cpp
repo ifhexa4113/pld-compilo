@@ -3,3 +3,7 @@
 //
 
 #include "IRAbtractAssembler.h"
+
+IRAbtractAssembler::IRAbtractAssembler() {
+
+}

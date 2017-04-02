@@ -3,3 +3,11 @@
 //
 
 #include "AddAbstractAssembler.h"
+
+AddAbstractAssembler::~AddAbstractAssembler() {
+
+}
+
+AddAbstractAssembler::AddAbstractAssembler(AddInstruction *instruction) : IRAbtractAssembler(), instruction(instruction){
+
+}
