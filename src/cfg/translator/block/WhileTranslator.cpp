@@ -23,7 +23,7 @@ SubGraph * WhileTranslator::translate()
     }
 
     // Then translate the condition
-    Translator * ct = getFactory().getTranslator(wh, cfg);
+    Translator * ct = getFactory().getTranslator(wh->getCondition(), cfg);
     SubGraph* csb = ct->translate();
     // At this point, we're sure that the input and the output are the same
     BasicBlock* conditionBlock = csb->getInput();
