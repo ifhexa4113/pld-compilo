@@ -1,0 +1,1 @@
+It should parse a function declaration and definition with a variable redeclaration in its arguments.
