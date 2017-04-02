@@ -3,6 +3,7 @@
 #include "Translator.h"
 #include "block/CmmProgramTranslator.h"
 #include "block/WhileTranslator.h"
+#include "block/ForTranslator.h"
 #include "definition/VariableDefinitionTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
 #include "expression/LiteralNumberTranslator.h"
@@ -11,6 +12,7 @@
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
 #include "ast/block/conditional-structure/While.h"
+#include "ast/block/conditional-structure/For.h"
 #include "ast/definition/Definition.h"
 #include "ast/definition/FunctionDefinition.h"
 #include "ast/definition/VariableDefinition.h"
@@ -54,6 +56,10 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
         {
             cout << "It's a While - returning the right translator." << endl;
             return new WhileTranslator(wh, cfg);
+        } else if(For* f = dynamic_cast<For*>(node))
+        {
+            cout << "It's a For - returning the right translator." << endl;
+            return new ForTranslator(f, cfg);
         }
     } else if(dynamic_cast<Expression*>(node))
     {
