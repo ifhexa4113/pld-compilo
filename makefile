@@ -147,9 +147,10 @@ endef
 	ALLDIR=$(shell $(ALLDIRCMD))
     OUTDIR := $(OUTDIR) $(subst $(WORKINGDIR)\$(SRCPATH),$(OUTDIR_ROOT),$(ALLDIR))
     UTESTDIR := $(subst /,\,$(UTESTPATH)) $(subst $(WORKINGDIR)\$(SRCPATH),$(subst /,\,$(UTESTPATH)),$(ALLDIR))
+    NRSETPATH := $(subst /,\,$(NRSETPATH))
     NRTESTDIR = $(shell dir /s /b /o:n /ad $(subst /,\,$(NRTESTPATH)))
     NRTESTDIR := $(subst $(TESTPATH)/,$(OBJPATH)\,$(NRTESTPATH)) $(subst $(WORKINGDIR)\$(TESTPATH),$(OBJPATH),$(NRTESTDIR))
-    NRTESTS = $(subst $(WORKINGDIR)\$(subst /,\,$(NRSETPATH))\,,$(shell dir /s /b /o:n /ad $(subst /,$(SUBSEPARATOR),$(NRSETPATH))))
+    NRTESTS = $(subst $(WORKINGDIR)\$(NRSETPATH)\,$(NRTARGETPREFIX),$(shell dir /s /b /o:n /ad $(subst /,$(SUBSEPARATOR),$(NRSETPATH))))
     NRPASSCMD = if not errorlevel 1 (echo [92mPASSED[0m) else ((echo [91mFAILED[0m) && exit 1)
     SEVERAL_CMD = &
     DIRTOCREATE := $(foreach dir,$(OUTDIR),makedir-$(subst /,$(SUBSTSEPARATOR),$(subst \,$(SUBSTSEPARATOR),$(dir))))
@@ -297,7 +298,7 @@ $(NRTARGETPREFIX)%:
 	@echo TEST $*
 	@$(CAT) $(NRSETPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRDESC)
 	@$(ECHONEWLINE)
-	@$(EXE3) $(foreach output,$(NRALLOUTPUTS),$(WORKINGDIR)/$(NRSETPATH)/$*/$(output)) < $(NRPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT) $(SEVERAL_CMD) $(NRPASSCMD)
+	@$(EXE3) $(foreach output,$(NRALLOUTPUTS),$(WORKINGDIR)$(SUBSEPARATOR)$(NRSETPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(output)) < $(NRSETPATH)$(SUBSEPARATOR)$*$(SUBSEPARATOR)$(NRINPUT) > $(NULLREDIRECT) $(SEVERAL_CMD) $(NRPASSCMD)
 
 #Runs
 run: $(EXE1)
