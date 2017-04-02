@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cstdio>
 #include <vector>
 #include "module/module.h"
@@ -17,6 +18,7 @@ using namespace std;
 bool errorManagerTest(string expectedErrorsTrace) {
 	ErrorManager& errorManager = ErrorManager::getInstance();
 	string errorsTrace = errorManager.getErrorsTrace();
+	std::cout << errorsTrace << std::endl; // to remove
 	return expectedErrorsTrace.compare(errorsTrace) == 0;
 }
 
@@ -26,7 +28,27 @@ bool astTest(AstNode* astNode, vector<string>) {
 }
 
 int main() {
-	Ast ast;
+	/*FILE* file = fopen("test/set/for-0/input.cmm", "r");
+
+	std::ifstream in("test/set/for-0/input.cmm", std::ifstream::in);
+	std::streambuf *cinbuf = std::cin.rdbuf(); //save old buffer
+	std::cin.rdbuf(in.rdbuf()); //redirect std::cin to "test/set/for-0/input.cmm"
+	*/
+
+
+	/*
+	// Save original std::cin
+	std::streambuf *cinbuf = std::cin.rdbuf();
+
+	std::ifstream in("test/set/for-0/input.cmm");
+
+	//Read from "test/set/for-0/input.cmm" using std::cin
+	std::cin.rdbuf(in.rdbuf());
+	*/
+
+	//yyin = fopen("test/set/for-0/input.cmm", "r");
+
+	/*Ast ast;
 	CmmProgram& program = ast.getProgram();
 
 	int result = yyparse(program);
@@ -34,7 +56,14 @@ int main() {
 	program.walkTree();
 
 	SymbolTableStack stack;
-	program.fillSymbolTable(stack);
+	program.fillSymbolTable(stack); */
+
+	//errorManagerTest("");
+
+	//fclose(yyin);
+
+	std::cout << "Bonjour" << std::endl;
+
 
 	return 0;
 }
