@@ -8,7 +8,11 @@
 
 class BasicBlock {
 public:
-    BasicBlock(std::string label_ = "$$unnamed$$", BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr);
+    enum class JumpType {
+        Z, N, NZ
+    };
+
+    BasicBlock(std::string label_ = "$$unnamed$$", BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr, BasicBlock::JumpType exitJumpType_ = BasicBlock::JumpType::Z);
     ~BasicBlock();
 
     // Getters
@@ -16,10 +20,12 @@ public:
     std::vector<IRInstruction*> getInstructions() const;
     BasicBlock* getExitTrue();
     BasicBlock* getExitFalse();
+    BasicBlock::JumpType getExitJumpType() const;
 
     // Setters
     void setExitTrue(BasicBlock* exitTrue_);
     void setExitFalse(BasicBlock* exitFalse_);
+    void setExitJumpType(BasicBlock::JumpType j);
 
     // Others
     void addInstruction(IRInstruction* instruction);
@@ -32,6 +38,7 @@ protected:
     std::vector<IRInstruction*> instructions;
     BasicBlock* exitTrue;
     BasicBlock* exitFalse;
+    BasicBlock::JumpType exitJumpType;
 };
 
 #endif //BASIC_BLOCK_H
