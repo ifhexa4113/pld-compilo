@@ -5,7 +5,7 @@ ErrorManager::ErrorManager() :
     encounteredErrors(), errorsSourcesNames(),
     errorsMessage(), encounteredErrorsTrace("")
 {
-	std::cout << "ErrorManager creation" << std::endl;
+	std::cout << "ErrorManager creation" << std::endl; // TODO remove
     errorsMessage.insert(std::make_pair(UNKNOWN_LVALUE_SYMBOL, "Error: use of unknown symbol "));
     errorsMessage.insert(std::make_pair(UNKNOWN_FUNCTION_SYMBOL, "Error: use of unknown symbol "));
     errorsMessage.insert(std::make_pair(SYMBOL_REDECLARATION, "Error : redeclaration of symbol "));
@@ -27,7 +27,7 @@ void ErrorManager::addEncounteredError(Error encounteredError, std::string error
 {
 	encounteredErrors.push_back(encounteredError);
 	errorsSourcesNames.push_back(errorSourceName);
-	encounteredErrorsTrace += static_cast<int>(encounteredError);
+	encounteredErrorsTrace += std::to_string(static_cast<int>(encounteredError));
 }
 
 void ErrorManager::printEncounteredErrorsNumber()

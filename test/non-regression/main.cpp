@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cstdio>
 #include <vector>
 #include "module/module.h"
@@ -18,7 +19,7 @@ using namespace std;
 bool errorManagerTest(string expectedErrorsTrace) {
 	ErrorManager& errorManager = ErrorManager::getInstance();
 	string errorsTrace = errorManager.getErrorsTrace();
-	std::cout << errorsTrace << std::endl; // to remove
+	std::cerr << std::endl << errorsTrace << std::endl; // to remove
 	return expectedErrorsTrace.compare(errorsTrace) == 0;
 }
 
@@ -27,28 +28,9 @@ bool astTest(AstNode* astNode, vector<string>) {
     return true;
 }
 
-int main() {
-	/*FILE* file = fopen("test/set/for-0/input.cmm", "r");
+int main(int argc, char *argv[]) {
 
-	std::ifstream in("test/set/for-0/input.cmm", std::ifstream::in);
-	std::streambuf *cinbuf = std::cin.rdbuf(); //save old buffer
-	std::cin.rdbuf(in.rdbuf()); //redirect std::cin to "test/set/for-0/input.cmm"
-	*/
-
-
-	/*
-	// Save original std::cin
-	std::streambuf *cinbuf = std::cin.rdbuf();
-
-	std::ifstream in("test/set/for-0/input.cmm");
-
-	//Read from "test/set/for-0/input.cmm" using std::cin
-	std::cin.rdbuf(in.rdbuf());
-	*/
-
-	//yyin = fopen("test/set/for-0/input.cmm", "r");
-
-	/*Ast ast;
+	Ast ast;
 	CmmProgram& program = ast.getProgram();
 
 	int result = yyparse(program);
@@ -56,13 +38,34 @@ int main() {
 	program.walkTree();
 
 	SymbolTableStack stack;
-	program.fillSymbolTable(stack); */
+	program.fillSymbolTable(stack); 
 
-	//errorManagerTest("");
 
-	//fclose(yyin);
+	// Symbol table test by checking ErrorManager behaviour
+	std::ifstream errorsInputStream;
+	errorsInputStream.open(argv[1]);
 
-	std::cout << "Bonjour" << std::endl;
+	bool symbolTableTest;
+	if (errorsInputStream.is_open())
+	{
+		std::stringstream errorsStringStream;
+		errorsStringStream << errorsInputStream.rdbuf();
+		symbolTableTest = errorManagerTest(errorsStringStream.str());
+	}
+	else
+	{
+		symbolTableTest = errorManagerTest("");
+	}
+	if (symbolTableTest)
+	{
+		std::cerr << "Symbol table test : SUCCESS" << std::endl;
+	}
+	else
+	{
+		std::cerr << "Symbol table test : FAIL" << std::endl;
+	}
+
+
 
 
 	return 0;
