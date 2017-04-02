@@ -25,10 +25,6 @@ SubGraph * VariableDefinitionTranslator::translate()
         return nullptr;
     }
 
-    // Create the BasicBlock that will contain, at first, the variable definition
-    // TODO: give it a name ?
-    BasicBlock* bb = new BasicBlock("");
-
     Translator* exprTranslator = getFactory().getTranslator(vDef->getRExpression(), cfg);
     SubGraph* sb = exprTranslator->translate();
 
@@ -36,11 +32,10 @@ SubGraph * VariableDefinitionTranslator::translate()
     // This basic block contains the code needed to evaluate the expression
     // The last instruction's destination contains the evaluated expression
     BasicBlock* expr = sb->getInput();
-    expr->setExitTrue(bb);
 
     // Add the instruction
-    bb->addInstruction(new MovInstruction(new Register(), new Register(*(dynamic_cast<RegisterInstruction*>(expr->getInstructions().back())->getDestination()))));
+    expr->addInstruction(new MovInstruction(new Register(), new Register(*(dynamic_cast<RegisterInstruction*>(expr->getInstructions().back())->getDestination()))));
 
     // Return a subgraph describing what we just created
-    return new SubGraph(expr, std::vector<BasicBlock*>());
+    return new SubGraph(expr, std::vector<BasicBlock*>(1, expr));
 }
