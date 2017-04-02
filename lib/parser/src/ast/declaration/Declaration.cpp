@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Declaration.h"
+#include "ast/ErrorManager.h"
 
 Declaration::Declaration(std::string name_, Type type_, int address_) :
     AstNode(),
@@ -35,8 +36,8 @@ void Declaration::fillSymbolTable(SymbolTableStack& stack)
 {
     if(stack.checkSymbolImmediate(name))
     {
-        std::cerr << "Error: redeclaration of symbol " << name << "." << std::endl;
-        // TODO error flag
+		ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::SYMBOL_REDECLARATION, name);
     }
     stack.addEntry(name, this);
 }

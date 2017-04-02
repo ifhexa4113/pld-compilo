@@ -81,13 +81,15 @@ will be run if the others succeeded.
 
 ### Make rules
 * **all** (default): build the whole project, but not the tests.
+* **u-tests**: build the unit tests and everything it needs.
+* **nr-tests**: build the non-regression tests and everything it needs.
 * **makedir**: create build and bin folders and subfolders.
 * **libs**: build the needed libs, and in particular the parser with bison and flex.
 * **build**: build the project assuming the parser has already been built.
-* **run**: build and run the project.
+* **run**: run the project.
+* **run-utests**: run the unit tests.
+* **run-nrtests**: run the non-regression tests.
 * **tests**: build and run all the tests, unit and non-regression.
-* **nr-tests**: run all non-regression tests.
-* **test-%**: run the given non-regression test. Needs the app to be built.
 * **test-tree**: copy the folders' tree in `src` under `test`. Same for libs.
 * **clean**: remove all .o files.
 * **mrproper**: remove whole build and bin folders.
@@ -134,7 +136,7 @@ for more information about how to write unit tests with catch.
 ### How to write non-regression tests
 Non-regression tests are here to test if the app works _globally_.
 To write one, you need to create a folder named after your test
-under `test/non-regression`.
+under `test/set`.
 This folder **must** contain:
 * input.cmm: the file that the app will take as input.
 * desc: a bit a of text describing your test.
