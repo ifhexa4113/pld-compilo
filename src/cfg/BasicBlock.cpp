@@ -1,7 +1,17 @@
 #include "BasicBlock.h"
+#include <sstream>
+
+int BasicBlock::labelCounter = 0;
 
 BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* exitFalse_) :
-    label(label_),
+    label(([&label_]() {
+        if(label_ != "$$unnamed$$") {
+            stringstream ss;
+            ss << "$bb" << BasicBlock::labelCounter++;
+            return ss.str();
+        }
+        return label_;
+    })()),
     instructions(),
     exitTrue(exitTrue_),
     exitFalse(exitFalse_)

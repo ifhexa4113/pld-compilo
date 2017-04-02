@@ -8,7 +8,7 @@
 
 class BasicBlock {
 public:
-    BasicBlock(std::string label_ = "", BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr);
+    BasicBlock(std::string label_ = "$$unnamed$$", BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr);
     ~BasicBlock();
 
     // Getters
@@ -27,6 +27,7 @@ public:
     void print(std::ostream& ost) const;
 
 protected:
+    static int labelCounter;
     std::string label;
     std::vector<IRInstruction*> instructions;
     BasicBlock* exitTrue;
