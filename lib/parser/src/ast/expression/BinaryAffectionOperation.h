@@ -3,6 +3,7 @@
 
 #include "Expression.h"
 #include "LValueExpression.h"
+#include "ast/ErrorManager.h"
 
 enum class AffectionOperator
 {

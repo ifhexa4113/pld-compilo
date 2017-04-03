@@ -1,5 +1,6 @@
 #include "BinaryArithmeticOperation.h"
 #include "NullExpression.h"
+#include "ast/ErrorManager.h"
 
 BinaryArithmeticOperation::BinaryArithmeticOperation(ArithmeticOperator op_, Expression* lExpression_, Expression* rExpression_) :
     op(op_),
@@ -53,13 +54,15 @@ Type BinaryArithmeticOperation::getType(SymbolTableStack& stack)
     Type lType = lExpression->getType(stack);
     if(lType == Type::VOID_T)
     {
-        // TODO global flag error
+        ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
 
     Type rType = rExpression->getType(stack);
     if(rType == Type::VOID_T)
     {
-        // TODO global flag error
+        ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
 
     return static_cast<Type>(std::max<int>(static_cast<int>(lType), static_cast<int>(rType)));

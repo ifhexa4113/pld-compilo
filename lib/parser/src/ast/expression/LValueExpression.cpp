@@ -29,6 +29,7 @@ std::string LValueExpression::getName()
 
 Type LValueExpression::getType(SymbolTableStack& stack)
 {
+    std::cerr << "SOY AQUI" << std::endl;
     return (stack.getSymbol(name))->getType();
 }
 

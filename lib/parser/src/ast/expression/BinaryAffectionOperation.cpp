@@ -85,7 +85,8 @@ Type BinaryAffectionOperation::getType(SymbolTableStack& stack)
     Type rType = rExpression->getType(stack);
     if(rType == Type::VOID_T)
     {
-        // TODO global flag error
+        ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
 
     return lvalue->getType(stack);

@@ -10,6 +10,7 @@ ErrorManager::ErrorManager() :
     errorsMessage.insert(std::make_pair(UNKNOWN_FUNCTION_SYMBOL, "Error: use of unknown symbol "));
     errorsMessage.insert(std::make_pair(SYMBOL_REDECLARATION, "Error : redeclaration of symbol "));
     errorsMessage.insert(std::make_pair(INAPPROPRIATE_ARGUMENTS_NUMBER, "Error : inappropriate number of arguments for function call "));
+	errorsMessage.insert(std::make_pair(INAPPROPRIATE_VOID_TYPE, "Error : inappropriate type used (void)"));
 }
 
 ErrorManager::~ErrorManager()

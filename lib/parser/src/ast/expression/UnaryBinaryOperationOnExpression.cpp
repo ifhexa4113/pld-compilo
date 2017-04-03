@@ -1,5 +1,6 @@
 #include "UnaryBinaryOperationOnExpression.h"
 #include "NullExpression.h"
+#include "ast/ErrorManager.h"
 
 UnaryBinaryOperationOnExpression::UnaryBinaryOperationOnExpression(UnaryBinaryOperator op_, Expression* expression_) :
     UnaryBinaryOperation(op_),
@@ -36,7 +37,8 @@ Type UnaryBinaryOperationOnExpression::getType(SymbolTableStack& stack)
     Type type = expression->getType(stack);
     if(type == Type::VOID_T)
     {
-        // TODO global flag error
+        ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
 
     return type;

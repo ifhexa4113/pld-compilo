@@ -1,8 +1,10 @@
 #include <iostream>
 #include "BinaryLogicOperation.h"
 #include "NullExpression.h"
+#include "ast/ErrorManager.h"
 
 #include <algorithm>
+#include <typeinfo>
 
 BinaryLogicOperation::BinaryLogicOperation(LogicOperator op_, Expression* lExpression_, Expression* rExpression_) :
     Expression(),
@@ -89,13 +91,15 @@ Type BinaryLogicOperation::getType(SymbolTableStack& stack)
     Type lType = lExpression->getType(stack);
     if(lType == Type::VOID_T)
     {
-        // TODO global flag error
+        ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
-
+    
     Type rType = rExpression->getType(stack);
     if(rType == Type::VOID_T)
     {
-        // TODO global flag error
+        ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
 
     return static_cast<Type>(std::max<int>(static_cast<int>(lType), static_cast<int>(rType)));

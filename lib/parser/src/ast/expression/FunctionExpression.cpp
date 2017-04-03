@@ -51,9 +51,9 @@ std::vector<Expression *> FunctionExpression::getParameters()
 
 Type FunctionExpression::getType(SymbolTableStack& stack)
 {
-    
-    return (stack.getSymbol(name))->getType();
-
+    if (stack.checkSymbol(name))
+        return (stack.getSymbol(name))->getType();
+    return Type::NULL_T;
 }
 
 void FunctionExpression::fillSymbolTable(SymbolTableStack& stack)
