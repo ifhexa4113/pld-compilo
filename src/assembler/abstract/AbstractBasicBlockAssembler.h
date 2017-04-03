@@ -14,6 +14,10 @@ class AbstractBasicBlockAssembler {
 public:
     AbstractBasicBlockAssembler(BasicBlock *source);
 
+    std::string generateProlog();
+    std::string translateIR();
+    std::string generateEpilog();
+
     std::string translate();
 private:
     BasicBlock *source;

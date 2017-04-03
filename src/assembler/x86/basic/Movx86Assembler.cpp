@@ -5,7 +5,7 @@
 #include <sstream>
 #include "Movx86Assembler.h"
 
-Movx86Assembler::Movx86Assembler(MovInstruction *instruction) : MovAbstractAssembler(instruction) {
+Movx86Assembler::Movx86Assembler(MovInstruction *instruction) : MovAbstractAssembler(instruction, nullptr) {
 
 }
 

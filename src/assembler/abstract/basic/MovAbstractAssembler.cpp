@@ -8,6 +8,8 @@ MovAbstractAssembler::~MovAbstractAssembler() {
 
 }
 
-MovAbstractAssembler::MovAbstractAssembler(MovInstruction *instruction) : IRAbtractAssembler(), instruction(instruction){
+MovAbstractAssembler::MovAbstractAssembler(MovInstruction *instruction, AbstractBasicBlockAssembler *parent_block)
+        : IRAbtractAssembler(parent_block), instruction(instruction)
+{
 
 }

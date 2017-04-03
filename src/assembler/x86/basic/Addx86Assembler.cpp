@@ -14,9 +14,9 @@ Addx86Assembler::~Addx86Assembler() {
 }
 
 std::string Addx86Assembler::translate() const {
-    Operandx86Assembler dest(instruction->getDestination());
-    Operandx86Assembler param1(instruction->getParam1());
-    Operandx86Assembler param2(instruction->getParam2());
+    Operandx86Assembler dest(instruction->getDestination(), nullptr);
+    Operandx86Assembler param1(instruction->getParam1(), nullptr);
+    Operandx86Assembler param2(instruction->getParam2(), nullptr);
 
     std::ostringstream stm;
 

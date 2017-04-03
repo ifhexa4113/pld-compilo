@@ -7,8 +7,9 @@
 #include "Operandx86Assembler.h"
 #include <string>
 #include <sstream>
+#include <assembler/abstract/AbstractBasicBlockAssembler.h>
 
-Operandx86Assembler::Operandx86Assembler(Operand *operand){
+Operandx86Assembler::Operandx86Assembler(Operand *operand, AbstractBasicBlockAssembler *parent_block) {
     LiteralNumber *lit = nullptr;
     Register *reg = nullptr;
 
@@ -89,9 +90,9 @@ int Operandx86Assembler::getValue() const {
     return value;
 }
 
-Operandx86Assembler Operandx86Assembler::getWorkRegister(Operandx86Assembler::work_register id) {
+/*Operandx86Assembler Operandx86Assembler::getWorkRegister(Operandx86Assembler::work_register id) {
     return Operandx86Assembler(Operandx86Assembler::operand_type::WORK_REGISTER, id);
-}
+}*/
 
 void Operandx86Assembler::setType(Operandx86Assembler::operand_type type) {
     Operandx86Assembler::type = type;

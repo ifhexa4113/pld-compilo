@@ -11,7 +11,7 @@
 
 class MovAbstractAssembler : public IRAbtractAssembler {
 public:
-    MovAbstractAssembler (MovInstruction * instruction);
+    MovAbstractAssembler(MovInstruction *instruction, AbstractBasicBlockAssembler *parent_block);
 
     virtual ~MovAbstractAssembler() override;
 

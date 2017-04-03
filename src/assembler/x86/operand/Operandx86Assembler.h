@@ -6,6 +6,7 @@
 #define PLD_COMPILO_OPERANDASSEMBLER_H
 
 #include <cfg/ir/operand/Operand.h>
+#include <assembler/abstract/AbstractBasicBlockAssembler.h>
 
 /**
  * Abstract class that allows for the translation between IR operands and Assembler operands
@@ -24,7 +25,7 @@ public:
         SOURCE
     };
 
-    static Operandx86Assembler getWorkRegister(work_register id);
+    //static Operandx86Assembler getWorkRegister(work_register id);
 
     operand_type getType() const;
 
@@ -32,7 +33,7 @@ public:
 
 
     std::string toString();
-    Operandx86Assembler(Operand *operand);
+    Operandx86Assembler(Operand *operand, AbstractBasicBlockAssembler *parent_block);
 
     static const uint64_t virtualRegisterMemoryOffset = 0;
     static const int physicalRegisterCount = 4;
