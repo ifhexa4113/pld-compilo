@@ -61,3 +61,8 @@ Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
     regToInfo.insert(std::make_pair(reg, RegisterInfo(declaration.getType())));
     return reg;
 }
+
+std::map<Register *, RegisterInfo> & Table::getAllRegisters()
+{
+    return regToInfo;
+}
