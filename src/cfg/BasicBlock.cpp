@@ -3,6 +3,8 @@
 
 int BasicBlock::labelCounter = 0;
 
+// ---------------------------------------- Constructors / Destructors
+
 BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* exitFalse_, BasicBlock::JumpType exitJumpType_) :
     label(([&label_]() {
         if(label_ == "$$unnamed$$") {
@@ -15,7 +17,10 @@ BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* ex
     instructions(),
     exitTrue(exitTrue_),
     exitFalse(exitFalse_),
-    exitJumpType(exitJumpType_)
+    exitJumpType(exitJumpType_),
+    table(nullptr),
+    colored(false),
+    prologable(false)
 {
     // Nothing else to do
 }
@@ -35,6 +40,8 @@ BasicBlock::~BasicBlock()
         delete exitFalse;
     }
 }
+
+// ---------------------------------------- Getters
 
 std::string BasicBlock::getLabel() const
 {
@@ -61,6 +68,18 @@ BasicBlock::JumpType BasicBlock::getExitJumpType() const
     return exitJumpType;
 }
 
+bool BasicBlock::isColored()
+{
+    return colored;
+}
+
+bool BasicBlock::isPrologable()
+{
+    return prologable;
+}
+
+// ---------------------------------------- Setters
+
 void BasicBlock::setExitTrue(BasicBlock *exitTrue_)
 {
     if(exitTrue != nullptr)
@@ -83,6 +102,21 @@ void BasicBlock::setExitJumpType(BasicBlock::JumpType j)
 {
     exitJumpType = j;
 }
+
+void BasicBlock::setTable(Table * t)
+{
+    table = t;
+}
+
+void BasicBlock::setColored(bool colored_){
+    colored = colored_;
+}
+
+void BasicBlock::setPrologable(bool prologable_){
+    prologable = prologable_;
+}
+
+// ---------------------------------------- Others
 
 void BasicBlock::addInstruction(IRInstruction * instruction)
 {
@@ -107,15 +141,6 @@ void BasicBlock::merge(BasicBlock * otherBlock)
 
 }
 
-bool BasicBlock::isColored()
-{
-  return colored;
-}
-
-void BasicBlock::setColored(){
-  colored = true;
-}
-
 void BasicBlock::print(std::ostream &ost) const
 {
     if(label != "")
@@ -128,13 +153,13 @@ void BasicBlock::print(std::ostream &ost) const
     }
     if(exitTrue && !(exitTrue->isColored()))
     {
-        ost << "Jump to " << exitTrue->getLabel() << std::endl;
+        ost << "JMP\t " << exitTrue->getLabel() << std::endl;
         exitTrue->setColored();
         exitTrue->print(ost);
     }
     if(exitFalse && !(exitFalse->isColored()))
     {
-        ost << "Jump to " << exitFalse->getLabel() << std::endl;
+        ost << "JMP\t" << exitFalse->getLabel() << std::endl;
         exitFalse->setColored();
         exitFalse->print(ost);
     }

@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <ostream>
+
+#include "Table.h"
 #include "ir/IRInstruction.h"
 
 class BasicBlock {
@@ -21,18 +23,21 @@ public:
     BasicBlock* getExitTrue();
     BasicBlock* getExitFalse();
     BasicBlock::JumpType getExitJumpType() const;
+    bool isColored();
+    bool isPrologable();
 
     // Setters
     void setExitTrue(BasicBlock* exitTrue_);
     void setExitFalse(BasicBlock* exitFalse_);
     void setExitJumpType(BasicBlock::JumpType j);
+    void setTable(Table*);
+    void setColored(bool colored = true);
+    void setPrologable(bool prologable = true);
 
     // Others
     void addInstruction(IRInstruction* instruction);
     void merge(BasicBlock* otherBlock);
     void print(std::ostream& ost) const;
-    bool isColored();
-    void setColored();
 
 protected:
     static int labelCounter;
@@ -41,7 +46,9 @@ protected:
     BasicBlock* exitTrue;
     BasicBlock* exitFalse;
     BasicBlock::JumpType exitJumpType;
-    bool colored = false;
+    Table* table;
+    bool colored;
+    bool prologable;
 };
 
 #endif //BASIC_BLOCK_H
