@@ -107,12 +107,23 @@ void BasicBlock::print(std::ostream &ost) const
     {
         instruction->print(ost);
     }
-    if(exitTrue)
+    if(exitTrue && !(exitTrue->isColored()))
     {
+        ost << "Jump to " << exitTrue->getLabel() << std::endl;
         exitTrue->print(ost);
     }
-    if(exitFalse)
+    if(exitFalse && !(exitFalse->isColored()))
     {
+        ost << "Jump to " << exitFalse->getLabel() << std::endl;
         exitFalse->print(ost);
     }
+}
+
+bool BasicBlock::isColored()
+{
+  return colored;
+}
+
+void BasicBlock::setColored(){
+  colored = true;
 }

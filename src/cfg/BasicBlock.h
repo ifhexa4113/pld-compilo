@@ -31,6 +31,8 @@ public:
     void addInstruction(IRInstruction* instruction);
     void merge(BasicBlock* otherBlock);
     void print(std::ostream& ost) const;
+    bool isColored();
+    void setColored();
 
 protected:
     static int labelCounter;
@@ -39,6 +41,7 @@ protected:
     BasicBlock* exitTrue;
     BasicBlock* exitFalse;
     BasicBlock::JumpType exitJumpType;
+    bool colored = false;
 };
 
 #endif //BASIC_BLOCK_H
