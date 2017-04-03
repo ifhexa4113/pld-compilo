@@ -9,7 +9,7 @@ class ForTranslator : public Translator
 public:
     ForTranslator(For* f, CFG* cfg);
     ~ForTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 #endif //PLD_COMPILO_FORTRANSLATOR_H

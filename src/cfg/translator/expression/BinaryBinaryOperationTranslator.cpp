@@ -19,7 +19,7 @@ BinaryBinaryOperationTranslator::~BinaryBinaryOperationTranslator()
     // Nothing else to do
 }
 
-SubGraph* BinaryBinaryOperationTranslator::translate()
+SubGraph* BinaryBinaryOperationTranslator::translate(Table* table)
 {
     // Cast the node to its original ast node (cf constructor)
     BinaryBinaryOperation* binBinOp = dynamic_cast<BinaryBinaryOperation*>(node);
@@ -34,9 +34,9 @@ SubGraph* BinaryBinaryOperationTranslator::translate()
     std::vector<BasicBlock*> outputs(1, bb);
 
     Translator* leftT = getFactory().getTranslator(binBinOp->getLExpression(), cfg);
-    SubGraph* leftSb = leftT->translate();
+    SubGraph* leftSb = leftT->translate(table);
     Translator* rightT = getFactory().getTranslator(binBinOp->getRExpression(), cfg);
-    SubGraph* rightSb = rightT->translate();
+    SubGraph* rightSb = rightT->translate(table);
 
     switch(binBinOp->getOperator())
     {

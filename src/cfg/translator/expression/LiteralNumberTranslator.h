@@ -10,7 +10,7 @@ class LiteralNumberTranslator : public Translator
 public:
     LiteralNumberTranslator(LiteralNumberExpression* literalNumberExpression, CFG* cfg);
     ~LiteralNumberTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 

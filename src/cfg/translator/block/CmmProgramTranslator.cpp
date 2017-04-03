@@ -12,7 +12,7 @@ CmmProgramTranslator::~CmmProgramTranslator()
     // Nothing else to do
 }
 
-SubGraph * CmmProgramTranslator::translate()
+SubGraph * CmmProgramTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     CmmProgram* cmmProgram = dynamic_cast<CmmProgram*>(node);
@@ -33,7 +33,7 @@ SubGraph * CmmProgramTranslator::translate()
     {
         if(Translator * t = getFactory().getTranslator(child, cfg))
         {
-            SubGraph* sb = t->translate();
+            SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
 
             if(!firstBlock)

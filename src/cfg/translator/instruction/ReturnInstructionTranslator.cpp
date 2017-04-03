@@ -12,7 +12,7 @@ ReturnInstructionTranslator::~ReturnInstructionTranslator()
     // Nothing else to do
 }
 
-SubGraph * ReturnInstructionTranslator::translate()
+SubGraph * ReturnInstructionTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     ReturnInstruction* retInstr = dynamic_cast<ReturnInstruction*>(node);
@@ -26,7 +26,7 @@ SubGraph * ReturnInstructionTranslator::translate()
     BasicBlock* retBlock = new BasicBlock();
 
     Translator* t = getFactory().getTranslator(retInstr->getValue(), cfg);
-    SubGraph* sb = t->translate();
+    SubGraph* sb = t->translate(table);
 
     BasicBlock* expr = sb->getInput();
     expr->setExitTrue(retBlock);

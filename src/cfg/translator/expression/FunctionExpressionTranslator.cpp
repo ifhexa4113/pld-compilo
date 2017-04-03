@@ -15,7 +15,7 @@ FunctionExpressionTranslator::~FunctionExpressionTranslator()
     // Nothing else to do
 }
 
-SubGraph * FunctionExpressionTranslator::translate()
+SubGraph * FunctionExpressionTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     FunctionExpression* functionExpression = dynamic_cast<FunctionExpression*>(node);
@@ -34,7 +34,7 @@ SubGraph * FunctionExpressionTranslator::translate()
 
     for (auto param: params){
       Translator* translator = getFactory().getTranslator( param, cfg);
-      SubGraph* subGraph = translator->translate();
+      SubGraph* subGraph = translator->translate(table);
 
       registers.push_back(dynamic_cast<RegisterInstruction*>(subGraph->getOutputs().back()->getInstructions().back())->getDestination());
 

@@ -17,7 +17,7 @@ BinaryArithmeticOperationTranslator::~BinaryArithmeticOperationTranslator()
     // Nothing else to do
 }
 
-SubGraph * BinaryArithmeticOperationTranslator::translate()
+SubGraph * BinaryArithmeticOperationTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     BinaryArithmeticOperation* binArithOp = dynamic_cast<BinaryArithmeticOperation*>(node);
@@ -32,9 +32,9 @@ SubGraph * BinaryArithmeticOperationTranslator::translate()
     std::vector<BasicBlock*> outputs(1, bb);
 
     Translator* leftT = getFactory().getTranslator( binArithOp->getLExpression(), cfg);
-    SubGraph* leftSb = leftT->translate();
+    SubGraph* leftSb = leftT->translate(table);
     Translator* rightT = getFactory().getTranslator( binArithOp->getLExpression(), cfg);
-    SubGraph* rightSb = rightT->translate();
+    SubGraph* rightSb = rightT->translate(table);
 
     switch (binArithOp->getOperator()){
         case ArithmeticOperator::PLUS:

@@ -11,7 +11,7 @@ FunctionDefinitionTranslator::~FunctionDefinitionTranslator()
     // Nothing else to do
 }
 
-SubGraph * FunctionDefinitionTranslator::translate()
+SubGraph * FunctionDefinitionTranslator::translate(Table* table)
 {
     // TODO: what about the return ???
     // TODO: handle merging blocks here or after completing the whole cfg ?
@@ -39,7 +39,7 @@ SubGraph * FunctionDefinitionTranslator::translate()
     {
         if(Translator * t = getFactory().getTranslator(child, cfg))
         {
-            SubGraph* sb = t->translate();
+            SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
 
             for(BasicBlock* output: previousBlocks)

@@ -9,7 +9,7 @@ class VariableDefinitionTranslator : public Translator
 public:
     VariableDefinitionTranslator(VariableDefinition* variableDef, CFG* cfg);
     ~VariableDefinitionTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 

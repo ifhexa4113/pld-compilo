@@ -14,7 +14,7 @@ LiteralNumberTranslator::~LiteralNumberTranslator()
     // Nothing else to do
 }
 
-SubGraph * LiteralNumberTranslator::translate()
+SubGraph * LiteralNumberTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     LiteralNumberExpression* litNumExpr = dynamic_cast<LiteralNumberExpression*>(node);

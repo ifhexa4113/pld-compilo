@@ -9,7 +9,7 @@ class FunctionDefinitionTranslator : public Translator
 public:
     FunctionDefinitionTranslator(FunctionDefinition* functionDef, CFG* cfg);
     ~FunctionDefinitionTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 

@@ -12,7 +12,7 @@ WhileTranslator::~WhileTranslator()
     // Nothing else to do
 }
 
-SubGraph * WhileTranslator::translate()
+SubGraph * WhileTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     While* wh = dynamic_cast<While*>(node);
@@ -22,9 +22,9 @@ SubGraph * WhileTranslator::translate()
         return nullptr;
     }
 
-    // Then translate the condition
+    // Then translate the condition (note: it must be something, it can't be empty)
     Translator * ct = getFactory().getTranslator(wh->getCondition(), cfg);
-    SubGraph* csb = ct->translate();
+    SubGraph* csb = ct->translate(table);
     // At this point, we're sure that the input and the output are the same
     BasicBlock* conditionBlock = csb->getInput();
     delete csb;
@@ -33,12 +33,14 @@ SubGraph * WhileTranslator::translate()
     // Then create a variable to memorize the previous block
     std::vector<BasicBlock*> previousBlocks;
 
+    std::cout << "There are " << wh->getChildren().size() << " children" << std::endl;
+
     // Then gather the subgraph from children
     for(AstNode* child: wh->getChildren())
     {
         if(Translator * t = getFactory().getTranslator(child, cfg))
         {
-            SubGraph* sb = t->translate();
+            SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
 
             if(previousBlocks.size() == 0)
