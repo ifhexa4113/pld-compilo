@@ -39,7 +39,7 @@ BasicBlock::~BasicBlock()
     {
         delete exitFalse;
     }
-    if(isPrologable())
+    if(isPrologable() && table)
     {
         // Only the BB which will generate a prolog are able to destroy a Table
         delete table;
