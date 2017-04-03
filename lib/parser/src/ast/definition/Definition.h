@@ -12,7 +12,7 @@ public:
     Definition(Declaration* declaration_);
     virtual ~Definition();
     virtual int walkTree() = 0;
-    Declaration* getDeclaration();
+    virtual Declaration* getDeclaration();
     Type getType();
     std::string getName() const;
 
