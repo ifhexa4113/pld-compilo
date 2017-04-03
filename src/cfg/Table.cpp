@@ -48,7 +48,7 @@ Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
         ss << associatedVar << Table::tempCounter++;
         associatedVar = ss.str();
     } else {
-        associatedVar = declaration.getName();
+        associatedVar = declaration->getName();
     }
 
     if(getRegister(associatedVar))
@@ -58,7 +58,7 @@ Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
 
     Register* reg = new Register();
     varToReg.insert(std::make_pair(associatedVar, reg));
-    regToInfo.insert(std::make_pair(reg, RegisterInfo(declaration.getType())));
+    regToInfo.insert(std::make_pair(reg, RegisterInfo(declaration->getType())));
     return reg;
 }
 
