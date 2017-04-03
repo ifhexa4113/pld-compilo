@@ -1,5 +1,6 @@
 #include "UnaryBinaryOperationOnVariable.h"
 #include "NullExpression.h"
+#include <iostream>
 
 UnaryBinaryOperationOnVariable::UnaryBinaryOperationOnVariable(UnaryBinaryOperator op_, LValueExpression* variable_) :
     UnaryBinaryOperation(op_),

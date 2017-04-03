@@ -60,7 +60,6 @@ void For::fillSymbolTable(SymbolTableStack& stack)
 {
     stack.push(symbolTable);
     initialization->fillSymbolTable(stack);
-    ConditionalStructure::fillSymbolTable(stack);
     
     for(auto child : children)
         child->fillSymbolTable(stack);
@@ -72,6 +71,12 @@ void For::fillSymbolTable(SymbolTableStack& stack)
             ErrorManager& errorManager = ErrorManager::getInstance();
 		    errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
          }
+    }
+
+    if (!getCondition()->checkNonVoidType(stack))
+    {
+        ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
 
     if (!increment->checkNonVoidType(stack))
