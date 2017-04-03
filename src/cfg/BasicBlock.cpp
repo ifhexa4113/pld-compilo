@@ -68,6 +68,11 @@ BasicBlock::JumpType BasicBlock::getExitJumpType() const
     return exitJumpType;
 }
 
+Table* BasicBlock::getTable()
+{
+    return table;
+}
+
 bool BasicBlock::isColored()
 {
     return colored;
