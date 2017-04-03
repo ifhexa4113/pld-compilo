@@ -169,3 +169,7 @@ void BasicBlock::print(std::ostream &ost) const
         exitFalse->print(ost);
     }
 }
+
+Table *BasicBlock::getTable() const {
+    return table;
+}

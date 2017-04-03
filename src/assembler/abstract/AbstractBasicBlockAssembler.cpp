@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <map>
 #include "AbstractBasicBlockAssembler.h"
 
 std::string AbstractBasicBlockAssembler::translate() {
@@ -12,14 +13,14 @@ std::string AbstractBasicBlockAssembler::translate() {
 AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : source(source){
     std::ostringstream stream;
 
-    if (/* condition generation prologe*/ 1)
+    if (source->isPrologable())
     {
         stream << generateProlog();
     }
 
     stream << translateIR();
 
-    if (1)
+    if (source->isPrologable())
     {
         stream << generateEpilog();
     }
@@ -27,13 +28,34 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : s
 
 std::string AbstractBasicBlockAssembler::generateProlog() {
 
-    //
-    int variable_count = 0;
+    Table* table = source->getTable();
+    std::map<Register *, RegisterInfo> & map = table->getAllRegisters();
+
+
+    int variable_count = map.size();
+    int variable_index = 0;
+
+    for(auto pair : map)
+    {
+        pair.second.setOffset(variable_index * 4);
+        variable_index ++;
+    }
+
+    std::ostringstream stream;
+
+    // pushl %epb
+    // movl %esp, %epb
+    // subl $variable_count * 4, %esp
+
+    // PAS LE TEMPS DE NIAISER
+    stream << "pushl %epb" << std::endl;
+    stream << "movl %esp, %epb" << std::endl;
+    stream << "subl " << variable_count * 4 << ", %esp" << std::endl;
 
 
 
 
-    return std::__cxx11::string();
+    return stream.str();
 }
 
 std::string AbstractBasicBlockAssembler::translateIR() {
