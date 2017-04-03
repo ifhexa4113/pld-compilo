@@ -69,3 +69,11 @@ std::map<Register *, RegisterInfo> & Table::getAllRegisters()
 {
     return regToInfo;
 }
+
+void Table::print(std::ostream &stream)
+{
+    for(auto it = varToReg.cbegin(); it != varToReg.cend(); it++)
+    {
+        stream << it->first << "\t" << it->second << "\t" << regToInfo[it->second].getOffset() << std::endl;
+    }
+}

@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <ostream>
 
 #include "RegisterInfo.h"
 #include "ir/operand/Register.h"
@@ -57,6 +58,12 @@ public:
      * in the shape of a map.
      */
     std::map<Register*, RegisterInfo>& getAllRegisters();
+
+    /**
+     * Prints the table in the given stream.
+     * @param stream The stream where to print the table.
+     */
+    void print(std::ostream& stream);
 
 protected:
     std::map<std::string, Register*> varToReg;
