@@ -1,0 +1,16 @@
+//
+// Created by Element on 03/04/2017.
+//
+
+#ifndef PLD_COMPILO_ABSTRACTBASICBLOCKASSEMBLER_H
+#define PLD_COMPILO_ABSTRACTBASICBLOCKASSEMBLER_H
+
+
+
+class AbstractBasicBlockAssembler {
+
+};
+
+
+
+#endif //PLD_COMPILO_ABSTRACTBASICBLOCKASSEMBLER_H
