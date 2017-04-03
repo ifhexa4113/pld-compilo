@@ -9,8 +9,14 @@ WriteInstruction::WriteInstruction(Operand *address, Operand *value) : IRInstruc
 }
 
 WriteInstruction::~WriteInstruction() {
-    delete address;
-    delete value;
+    if(!dynamic_cast<Register*>(address))
+    {
+        delete address;
+    }
+    if(!dynamic_cast<Register*>(value))
+    {
+        delete value;
+    }
 }
 
 void WriteInstruction::print(std::ostream &ost) const {

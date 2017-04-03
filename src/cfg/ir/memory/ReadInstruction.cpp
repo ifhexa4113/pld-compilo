@@ -9,7 +9,10 @@ ReadInstruction::ReadInstruction(Register *destination, Operand *address) : Regi
 }
 
 ReadInstruction::~ReadInstruction() {
-    delete address;
+    if(!dynamic_cast<Register*>(address))
+    {
+        delete address;
+    }
 }
 
 void ReadInstruction::print(std::ostream &ost) const {

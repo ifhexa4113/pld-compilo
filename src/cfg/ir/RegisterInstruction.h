@@ -8,7 +8,7 @@ class RegisterInstruction : public IRInstruction
 {
 public:
     RegisterInstruction(Register* destination_) : IRInstruction(), destination(destination_) {};
-    virtual ~RegisterInstruction() { delete destination; };
+    virtual ~RegisterInstruction() {};
     virtual void print(std::ostream& ost) const = 0;
     Register * getDestination() const { return destination; };
 

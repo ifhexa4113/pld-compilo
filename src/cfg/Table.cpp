@@ -13,7 +13,10 @@ Table::Table() : varToReg(), regToInfo()
 Table::~Table()
 {
     // Nothing else to do
-    // TODO: delete all registers here ?
+    for(auto it = varToReg.begin(); it != varToReg.end(); it++)
+    {
+        delete it->second;
+    }
 }
 
 Register* Table::getRegister(std::string associatedVar)
