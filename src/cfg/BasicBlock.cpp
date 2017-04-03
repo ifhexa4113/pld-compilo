@@ -95,6 +95,16 @@ void BasicBlock::merge(BasicBlock * otherBlock)
     {
         instructions.push_back(instruction);
     }
+
+    // L'exit TRUE et False du otherBlock deviennent ceux du Block courant
+    setExitTrue(otherBlock->getExitTrue());
+    otherBlock->setExitTrue(nullptr);
+    setExitFalse(otherBlock->getExitFalse());
+    otherBlock->setExitFalse(nullptr);
+
+    // detruire le otherBlock
+    delete otherBlock;
+
 }
 
 bool BasicBlock::isColored()
