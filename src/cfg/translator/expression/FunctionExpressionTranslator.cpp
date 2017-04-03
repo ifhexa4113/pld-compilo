@@ -29,17 +29,30 @@ SubGraph * FunctionExpressionTranslator::translate(Table* table)
     BasicBlock* bb = new BasicBlock("");
     std::vector<BasicBlock*> outputs(1, bb);
 
+    std::vector<BasicBlock*> lastOutputs;
     std::vector<Register*> registers;
     std::vector<Expression*> params = functionExpression->getParameters();
+    bool first = true;
 
     for (auto param: params){
-      Translator* translator = getFactory().getTranslator(param, cfg);
-      SubGraph* subGraph = translator->translate(table);
+        Translator* translator = getFactory().getTranslator(param, cfg);
+        SubGraph* subGraph = translator->translate(table);
 
-      registers.push_back(table->getLastDestination(subGraph->getOutputs().back()));
+        if(lastOutputs.size() == 0)
+        {
+            bb->merge(subGraph->getInput());
+            first = false;
+        }
+        for(auto output: lastOutputs)
+        {
+            output->setExitTrue(subGraph->getInput());
+        }
+        lastOutputs = subGraph->getOutputs();
 
-      delete translator;
-      delete subGraph;
+        registers.push_back(table->getLastDestination(subGraph->getOutputs().back()));
+
+        delete translator;
+        delete subGraph;
     }
 
     bb->addInstruction(new CallInstruction(functionExpression->getName(), registers));
