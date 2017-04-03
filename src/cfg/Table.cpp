@@ -45,13 +45,16 @@ void Table::addRegister(Register * reg, std::string associatedVar, Type type)
 Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
 {
     std::string associatedVar;
+    Type type;
     if(declaration == nullptr)
     {
         std::stringstream ss;
         ss << associatedVar << Table::tempCounter++;
         associatedVar = ss.str();
+        type = Type::INT64_T;
     } else {
         associatedVar = declaration->getName();
+        declaration->getType();
     }
 
     if(getRegister(associatedVar))
@@ -61,7 +64,7 @@ Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
 
     Register* reg = new Register();
     varToReg.insert(std::make_pair(associatedVar, reg));
-    regToInfo.insert(std::make_pair(reg, RegisterInfo(declaration->getType())));
+    regToInfo.insert(std::make_pair(reg, RegisterInfo(type)));
     return reg;
 }
 
