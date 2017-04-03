@@ -96,12 +96,13 @@ void BasicBlock::merge(BasicBlock * otherBlock)
         instructions.push_back(instruction);
     }
 
-    // L'exit TRUE et False du otherBlock devienne ceux du Block courant
+    // L'exit TRUE et False du otherBlock deviennent ceux du Block courant
     setExitTrue(otherBlock->getExitTrue());
+    otherBlock->setExitTrue(nullptr);
     setExitFalse(otherBlock->getExitFalse());
+    otherBlock->setExitFalse(nullptr);
 
-
-    // detruire l'enfant
+    // detruire le otherBlock
     delete otherBlock;
 
 }
