@@ -23,6 +23,7 @@ public:
     BasicBlock* getExitTrue();
     BasicBlock* getExitFalse();
     BasicBlock::JumpType getExitJumpType() const;
+    Table* getTable();
     bool isColored();
     bool isPrologable();
 
