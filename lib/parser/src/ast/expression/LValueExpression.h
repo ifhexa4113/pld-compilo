@@ -15,6 +15,7 @@ public:
 
     virtual void fillSymbolTable(SymbolTableStack& stack);
     virtual Type getType(SymbolTableStack& stack);
+    bool checkNonVoidType(SymbolTableStack& stack);
 
 protected:
     std::string name;

@@ -24,6 +24,7 @@ public:
 
     void fillSymbolTable(SymbolTableStack& stack);
     Type getType(SymbolTableStack& stack);
+    bool checkNonVoidType(SymbolTableStack& stack);
 
 protected:
     ArithmeticOperator op;

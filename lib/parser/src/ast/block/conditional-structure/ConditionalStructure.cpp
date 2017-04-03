@@ -43,15 +43,10 @@ void ConditionalStructure::fillSymbolTable(SymbolTableStack& stack)
 {
     condition->fillSymbolTable(stack);
     Block::fillSymbolTable(stack);
-    if (FunctionExpression* functionExpression = dynamic_cast<FunctionExpression*>(condition))
+
+    if (!condition->checkNonVoidType(stack))
     {
-        Type functionExpressionType = functionExpression->getType(stack);
-        if (functionExpressionType == Type::VOID_T)
-        {
-            ErrorManager& errorManager = ErrorManager::getInstance();
-		    errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-        }
+        ErrorManager& errorManager = ErrorManager::getInstance();
+        errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
-    else if (Expression* expression = dynamic_cast<Expression*>(condition))
-        expression->getType(stack);
 }

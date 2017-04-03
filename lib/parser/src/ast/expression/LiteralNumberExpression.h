@@ -13,6 +13,7 @@ public:
     int64_t getValue();
 
     Type getType(SymbolTableStack&);
+    bool checkNonVoidType(SymbolTableStack& stack);
 
 protected:
     int64_t value;

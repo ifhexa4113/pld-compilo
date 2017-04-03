@@ -19,6 +19,7 @@ public:
     int getAddress() const;
 
     virtual void fillSymbolTable(SymbolTableStack& stack);
+    bool checkNonVoidType(SymbolTableStack& stack);
 
 protected:
     std::string name;

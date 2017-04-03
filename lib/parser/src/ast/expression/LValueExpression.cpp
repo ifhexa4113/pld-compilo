@@ -42,3 +42,16 @@ void LValueExpression::fillSymbolTable(SymbolTableStack& stack)
     }
 }
 
+bool LValueExpression::checkNonVoidType(SymbolTableStack& stack)
+{
+    std::cerr << "BONJOUR" << std::endl;
+    if (stack.checkSymbol(name))
+    {
+        return (stack.getSymbol(name))->checkNonVoidType(stack);
+    }
+    else
+    {
+        return true;
+    } 
+}
+

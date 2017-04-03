@@ -33,16 +33,10 @@ void ArrayListDefinition::fillSymbolTable(SymbolTableStack& stack)
     for(auto expression : listExpression)
     {
         expression->fillSymbolTable(stack);
-        if (FunctionExpression* functionExpression = dynamic_cast<FunctionExpression*>(expression))
+        if (!expression->checkNonVoidType(stack))
         {
-            Type functionExpressionType = functionExpression->getType(stack);
-            if (functionExpressionType == Type::VOID_T)
-            {
-                ErrorManager& errorManager = ErrorManager::getInstance();
-                errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-            }
+            ErrorManager& errorManager = ErrorManager::getInstance();
+		    errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
         }
-        else if (Expression* castExpression = dynamic_cast<Expression*>(expression))
-            castExpression->getType(stack);
     }    
 }

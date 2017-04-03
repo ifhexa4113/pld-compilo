@@ -82,12 +82,10 @@ void BinaryAffectionOperation::fillSymbolTable(SymbolTableStack& stack)
 
 Type BinaryAffectionOperation::getType(SymbolTableStack& stack)
 {
-    Type rType = rExpression->getType(stack);
-    if(rType == Type::VOID_T)
-    {
-        ErrorManager& errorManager = ErrorManager::getInstance();
-		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-    }
-
     return lvalue->getType(stack);
+}
+
+bool BinaryAffectionOperation::checkNonVoidType(SymbolTableStack& stack)
+{
+    return rExpression->checkNonVoidType(stack);
 }

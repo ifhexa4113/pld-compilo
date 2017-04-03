@@ -30,3 +30,7 @@ Type ParenthesisExpression::getType(SymbolTableStack& stack)
 {
     return expression->getType(stack);
 }
+
+bool ParenthesisExpression::checkNonVoidType(SymbolTableStack& stack) {
+    return expression->checkNonVoidType(stack);
+}

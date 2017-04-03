@@ -89,18 +89,14 @@ void BinaryLogicOperation::fillSymbolTable(SymbolTableStack& stack)
 Type BinaryLogicOperation::getType(SymbolTableStack& stack)
 {
     Type lType = lExpression->getType(stack);
-    if(lType == Type::VOID_T)
-    {
-        ErrorManager& errorManager = ErrorManager::getInstance();
-		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-    }
-    
     Type rType = rExpression->getType(stack);
-    if(rType == Type::VOID_T)
-    {
-        ErrorManager& errorManager = ErrorManager::getInstance();
-		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-    }
-
     return static_cast<Type>(std::max<int>(static_cast<int>(lType), static_cast<int>(rType)));
+}
+
+bool BinaryLogicOperation::checkNonVoidType(SymbolTableStack& stack)
+{
+    std::cerr << "PERCEVAL" << std::endl;
+    if(lExpression == nullptr)
+        std::cerr << "PERCEVAL2" << std::endl;
+    return lExpression->checkNonVoidType(stack) && rExpression->checkNonVoidType(stack);
 }

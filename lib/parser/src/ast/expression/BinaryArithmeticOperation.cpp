@@ -52,18 +52,11 @@ void BinaryArithmeticOperation::fillSymbolTable(SymbolTableStack& stack)
 Type BinaryArithmeticOperation::getType(SymbolTableStack& stack)
 {
     Type lType = lExpression->getType(stack);
-    if(lType == Type::VOID_T)
-    {
-        ErrorManager& errorManager = ErrorManager::getInstance();
-		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-    }
-
     Type rType = rExpression->getType(stack);
-    if(rType == Type::VOID_T)
-    {
-        ErrorManager& errorManager = ErrorManager::getInstance();
-		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-    }
-
     return static_cast<Type>(std::max<int>(static_cast<int>(lType), static_cast<int>(rType)));
 }
+
+bool BinaryArithmeticOperation::checkNonVoidType(SymbolTableStack& stack) {
+    return lExpression->checkNonVoidType(stack) && rExpression->checkNonVoidType(stack);
+}
+

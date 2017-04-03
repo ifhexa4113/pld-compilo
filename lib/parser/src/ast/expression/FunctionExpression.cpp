@@ -53,7 +53,7 @@ Type FunctionExpression::getType(SymbolTableStack& stack)
 {
     if (stack.checkSymbol(name))
         return (stack.getSymbol(name))->getType();
-    return Type::NULL_T;
+    return Type::VOID_T; // TODO ????????
 }
 
 void FunctionExpression::fillSymbolTable(SymbolTableStack& stack)
@@ -76,4 +76,16 @@ void FunctionExpression::fillSymbolTable(SymbolTableStack& stack)
 
     for(auto parameter : parameters)
         parameter->fillSymbolTable(stack);
+}
+
+bool FunctionExpression::checkNonVoidType(SymbolTableStack& stack)
+{
+    if (stack.checkSymbol(name))
+    {
+        return (stack.getSymbol(name))->checkNonVoidType(stack);
+    }
+    else
+    {
+        return true;
+    }
 }

@@ -35,11 +35,10 @@ void UnaryBinaryOperationOnExpression::fillSymbolTable(SymbolTableStack& stack)
 Type UnaryBinaryOperationOnExpression::getType(SymbolTableStack& stack)
 {
     Type type = expression->getType(stack);
-    if(type == Type::VOID_T)
-    {
-        ErrorManager& errorManager = ErrorManager::getInstance();
-		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-    }
-
     return type;
 }
+
+ bool UnaryBinaryOperationOnExpression::checkNonVoidType(SymbolTableStack& stack)
+ {
+     return expression->checkNonVoidType(stack);
+ }

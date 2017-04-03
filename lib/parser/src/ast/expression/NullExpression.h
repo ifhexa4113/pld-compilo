@@ -11,6 +11,7 @@ public:
     int walkTree();
 
     Type getType(SymbolTableStack&);
+    bool checkNonVoidType(SymbolTableStack& stack);
 };
 
 #endif //NULL_EXPRESSION_H

@@ -34,3 +34,7 @@ Type UnaryBinaryOperationOnVariable::getType(SymbolTableStack& stack)
     return variable->getType(stack);
 
 }
+
+bool UnaryBinaryOperationOnVariable::checkNonVoidType(SymbolTableStack& stack) {
+    return variable->checkNonVoidType(stack);
+}

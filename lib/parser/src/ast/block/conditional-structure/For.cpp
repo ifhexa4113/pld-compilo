@@ -61,29 +61,22 @@ void For::fillSymbolTable(SymbolTableStack& stack)
     stack.push(symbolTable);
     initialization->fillSymbolTable(stack);
     ConditionalStructure::fillSymbolTable(stack);
+    
     for(auto child : children)
         child->fillSymbolTable(stack);
-    if (FunctionExpression* functionExpression = dynamic_cast<FunctionExpression*>(initialization))
+
+    if (Expression* expression = dynamic_cast<Expression*>(initialization))
     {
-        Type functionExpressionType = functionExpression->getType(stack);
-        if (functionExpressionType == Type::VOID_T)
-        {
+        if (!expression->checkNonVoidType(stack))
+         {
             ErrorManager& errorManager = ErrorManager::getInstance();
 		    errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-        }
+         }
     }
-    else if (Expression* expression = dynamic_cast<Expression*>(initialization))
-        expression->getType(stack);
-    
-    if (FunctionExpression* functionExpression = dynamic_cast<FunctionExpression*>(increment))
+
+    if (!increment->checkNonVoidType(stack))
     {
-        Type functionExpressionType = functionExpression->getType(stack);
-        if (functionExpressionType == Type::VOID_T)
-        {
-            ErrorManager& errorManager = ErrorManager::getInstance();
-		    errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
-        }
+        ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
-    else if (Expression* expression = dynamic_cast<Expression*>(increment))
-        expression->getType(stack);
 }

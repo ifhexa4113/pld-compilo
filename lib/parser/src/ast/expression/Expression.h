@@ -14,6 +14,7 @@ public:
     virtual void fillSymbolTable(SymbolTableStack&){};
 
     virtual Type getType(SymbolTableStack& stack) = 0;
+    virtual bool checkNonVoidType(SymbolTableStack& stack) = 0;
 };
 
 #endif
