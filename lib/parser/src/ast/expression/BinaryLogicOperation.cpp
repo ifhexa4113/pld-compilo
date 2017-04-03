@@ -95,8 +95,5 @@ Type BinaryLogicOperation::getType(SymbolTableStack& stack)
 
 bool BinaryLogicOperation::checkNonVoidType(SymbolTableStack& stack)
 {
-    std::cerr << "PERCEVAL" << std::endl;
-    if(lExpression == nullptr)
-        std::cerr << "PERCEVAL2" << std::endl;
     return lExpression->checkNonVoidType(stack) && rExpression->checkNonVoidType(stack);
 }

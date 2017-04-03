@@ -45,7 +45,6 @@ void Block::addChildren(AstNode *child)
 
 void Block::fillSymbolTable(SymbolTableStack& stack)
 {
-    std::cerr << "nfeibfue" << std::endl;
     stack.push(symbolTable);
     for(auto child : children)
         child->fillSymbolTable(stack);

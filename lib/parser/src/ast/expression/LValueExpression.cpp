@@ -29,7 +29,6 @@ std::string LValueExpression::getName()
 
 Type LValueExpression::getType(SymbolTableStack& stack)
 {
-    std::cerr << "SOY AQUI" << std::endl;
     return (stack.getSymbol(name))->getType();
 }
 
@@ -44,7 +43,6 @@ void LValueExpression::fillSymbolTable(SymbolTableStack& stack)
 
 bool LValueExpression::checkNonVoidType(SymbolTableStack& stack)
 {
-    std::cerr << "BONJOUR" << std::endl;
     if (stack.checkSymbol(name))
     {
         return (stack.getSymbol(name))->checkNonVoidType(stack);

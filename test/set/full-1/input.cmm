@@ -1,0 +1,17 @@
+char foo(uint32_t a) {
+    uint64_t b = 0;
+    if (a > 0)
+    {
+        for (int i = 0; i < 10; i++)
+            b++;
+    }
+    b += c;
+    return 'a';
+}
+
+void main() {
+    uint32_t nb = 4;
+    char a = foo(nb);
+    char b = fct();
+    char c = foo(nb, nb);
+}
