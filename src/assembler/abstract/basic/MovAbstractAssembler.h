@@ -6,14 +6,14 @@
 #define PLD_COMPILO_MovABSTRACTTRANSLATOR_H
 
 
-#include "assembler/IRAbtractAssembler.h"
+#include "assembler/abstract/IRAbtractAssembler.h"
 #include "cfg/ir/basic/MovInstruction.h"
 
 class MovAbstractAssembler : public IRAbtractAssembler {
 public:
     MovAbstractAssembler (MovInstruction * instruction);
 
-    ~MovAbstractAssembler() override;
+    virtual ~MovAbstractAssembler() override;
 
     virtual std::string translate() const = 0;
 

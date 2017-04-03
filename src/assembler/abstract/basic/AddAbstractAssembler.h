@@ -6,14 +6,14 @@
 #define PLD_COMPILO_ADDABSTRACTTRANSLATOR_H
 
 
-#include "assembler/IRAbtractAssembler.h"
+#include "assembler/abstract/IRAbtractAssembler.h"
 #include "cfg/ir/basic/AddInstruction.h"
 
 class AddAbstractAssembler : public IRAbtractAssembler {
 public:
-    AddAbstractAssembler (AddInstruction * instruction);
+    AddAbstractAssembler(AddInstruction *instruction, AbstractBasicBlockAssembler *parent_block);
 
-    ~AddAbstractAssembler() override;
+    virtual ~AddAbstractAssembler() override;
 
     virtual std::string translate() const = 0;
 

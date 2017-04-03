@@ -4,6 +4,10 @@
 
 #include "IRAbtractAssembler.h"
 
-IRAbtractAssembler::IRAbtractAssembler() {
+IRAbtractAssembler::~IRAbtractAssembler() {
+
+}
+
+IRAbtractAssembler::IRAbtractAssembler(AbstractBasicBlockAssembler *parent_block) : parent_block(parent_block){
 
 }

@@ -8,6 +8,7 @@ AddAbstractAssembler::~AddAbstractAssembler() {
 
 }
 
-AddAbstractAssembler::AddAbstractAssembler(AddInstruction *instruction) : IRAbtractAssembler(), instruction(instruction){
+AddAbstractAssembler::AddAbstractAssembler(AddInstruction *instruction, AbstractBasicBlockAssembler *parent_block)
+        : IRAbtractAssembler(parent_block), instruction(instruction){
 
 }

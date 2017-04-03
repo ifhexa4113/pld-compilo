@@ -6,7 +6,7 @@
 #define PLD_COMPILO_ModABSTRACTTRANSLATOR_H
 
 
-#include "assembler/IRAbtractAssembler.h"
+#include "assembler/abstract/IRAbtractAssembler.h"
 #include "cfg/ir/basic/ModInstruction.h"
 
 class ModAbstractAssembler : public IRAbtractAssembler {

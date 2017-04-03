@@ -6,16 +6,20 @@
 #define PLD_COMPILO_IRABTRACTTRANSLATOR_H
 
 #include <string>
+#include "AbstractBasicBlockAssembler.h"
 
 /**
  * Base class for all Assembler instructions
  */
 class IRAbtractAssembler {
 public:
-    IRAbtractAssembler();
-    virtual ~IRAbtractAssembler() = 0;
+    IRAbtractAssembler(AbstractBasicBlockAssembler * parent_block);
+    virtual ~IRAbtractAssembler();
 
     virtual std::string translate() const = 0;
+
+protected:
+    AbstractBasicBlockAssembler * parent_block;
 };
 
 

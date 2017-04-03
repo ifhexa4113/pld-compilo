@@ -6,7 +6,7 @@
 #define PLD_COMPILO_DivABSTRACTTRANSLATOR_H
 
 
-#include "assembler/IRAbtractAssembler.h"
+#include "assembler/abstract/IRAbtractAssembler.h"
 #include "cfg/ir/basic/DivInstruction.h"
 
 class DivAbstractAssembler : public IRAbtractAssembler {
