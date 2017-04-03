@@ -52,7 +52,7 @@ Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
     if(declaration == nullptr)
     {
         std::stringstream ss;
-        ss << associatedVar << Table::tempCounter++;
+        ss << Table::TEMP_VAR << Table::tempCounter++;
         associatedVar = ss.str();
         type = Type::INT64_T;
     } else {
@@ -93,8 +93,10 @@ std::map<Register *, RegisterInfo> & Table::getAllRegisters()
 
 void Table::print(std::ostream &stream)
 {
+    stream << "var\treg\toffset" << std::endl;
+    stream << "-------------------------" << std::endl;
     for(auto it = varToReg.cbegin(); it != varToReg.cend(); it++)
     {
-        stream << it->first << "\t" << it->second << "\t" << regToInfo[it->second].getOffset() << std::endl;
+        stream << it->first << "\t" << it->second->getName() << "\t" << regToInfo[it->second].getOffset() << std::endl;
     }
 }
