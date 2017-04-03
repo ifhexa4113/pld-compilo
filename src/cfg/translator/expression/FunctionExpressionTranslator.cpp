@@ -33,10 +33,10 @@ SubGraph * FunctionExpressionTranslator::translate(Table* table)
     std::vector<Expression*> params = functionExpression->getParameters();
 
     for (auto param: params){
-      Translator* translator = getFactory().getTranslator( param, cfg);
+      Translator* translator = getFactory().getTranslator(param, cfg);
       SubGraph* subGraph = translator->translate(table);
 
-      registers.push_back(dynamic_cast<RegisterInstruction*>(subGraph->getOutputs().back()->getInstructions().back())->getDestination());
+      registers.push_back(table->getLastDestination(subGraph->getOutputs().back()));
 
       delete translator;
       delete subGraph;
