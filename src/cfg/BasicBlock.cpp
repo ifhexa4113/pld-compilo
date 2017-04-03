@@ -95,6 +95,25 @@ void BasicBlock::merge(BasicBlock * otherBlock)
     {
         instructions.push_back(instruction);
     }
+
+    // L'exit TRUE et False du otherBlock deviennent ceux du Block courant
+    setExitTrue(otherBlock->getExitTrue());
+    otherBlock->setExitTrue(nullptr);
+    setExitFalse(otherBlock->getExitFalse());
+    otherBlock->setExitFalse(nullptr);
+
+    // detruire le otherBlock
+    delete otherBlock;
+
+}
+
+bool BasicBlock::isColored()
+{
+  return colored;
+}
+
+void BasicBlock::setColored(){
+  colored = true;
 }
 
 void BasicBlock::print(std::ostream &ost) const
@@ -107,12 +126,16 @@ void BasicBlock::print(std::ostream &ost) const
     {
         instruction->print(ost);
     }
-    if(exitTrue)
+    if(exitTrue && !(exitTrue->isColored()))
     {
+        ost << "Jump to " << exitTrue->getLabel() << std::endl;
+        exitTrue->setColored();
         exitTrue->print(ost);
     }
-    if(exitFalse)
+    if(exitFalse && !(exitFalse->isColored()))
     {
+        ost << "Jump to " << exitFalse->getLabel() << std::endl;
+        exitFalse->setColored();
         exitFalse->print(ost);
     }
 }
