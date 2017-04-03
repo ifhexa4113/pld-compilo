@@ -38,3 +38,26 @@ void Table::addRegister(Register * reg, std::string associatedVar, Type type)
     varToReg.insert(std::make_pair(associatedVar, reg));
     regToInfo.insert(std::make_pair(reg, RegisterInfo(type)));
 }
+
+Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
+{
+    std::string associatedVar;
+    if(declaration == nullptr)
+    {
+        std::stringstream ss;
+        ss << associatedVar << Table::tempCounter++;
+        associatedVar = ss.str();
+    } else {
+        associatedVar = declaration.getName();
+    }
+
+    if(getRegister(associatedVar))
+    {
+        return getRegister(associatedVar);
+    }
+
+    Register* reg = new Register();
+    varToReg.insert(std::make_pair(associatedVar, reg));
+    regToInfo.insert(std::make_pair(reg, RegisterInfo(declaration.getType())));
+    return reg;
+}

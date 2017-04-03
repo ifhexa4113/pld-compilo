@@ -6,6 +6,7 @@
 
 #include "RegisterInfo.h"
 #include "ir/operand/Register.h"
+#include "ast/declaration/LValueDeclaration.h"
 
 class Table
 {
@@ -39,8 +40,17 @@ public:
      */
     void addRegister(Register* reg, std::string associatedVar = Table::TEMP_VAR, Type type = Type::INT64_T);
 
-    // TODO, 'cause that's nice:
-    // Register* getOrCreateRegister(std::string associatedVar);
+    /**
+     * If a register already exists for the given variable,
+     * then returns it.
+     * Otherwise, it creates it and inserts it in the table.
+     * If no associatedVar is provided (default to nullptr),
+     * then a variable and a register marked as temporary is created
+     * with Table::TEMP_VAR and will have the following shape:
+     * "$tempX", where X is an unsigned int from 0 to max(unsigned int).
+     * @param declaration The variable to associate to a register.
+     */
+    Register* getOrCreateRegister(LValueDeclaration* declaration = nullptr);
 
 protected:
     std::map<std::string, Register*> varToReg;
