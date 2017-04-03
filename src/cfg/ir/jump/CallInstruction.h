@@ -7,18 +7,22 @@
 
 
 #include "cfg/ir/IRInstruction.h"
+#include "cfg/ir/operand/Register.h"
+#include <vector>
 
 class CallInstruction : public IRInstruction {
 public:
-    CallInstruction(std::string label);
+    CallInstruction(std::string label_, std::vector<Register*> registers_);
 
     ~CallInstruction() override;
+
+    std::vector<Register*>& getRegisters();
 
     void print(std::ostream &ost) const override;
 
 protected:
-
     std::string label;
+    std::vector<Register*> registers;
 public:
     const std::string &getLabel() const;
 };
