@@ -1,6 +1,9 @@
 #include "Table.h"
+#include "BasicBlock.h"
+#include "cfg/ir/RegisterInstruction.h"
 
 #include <sstream>
+#include <iostream>
 
 unsigned int Table::tempCounter = 0;
 const std::string Table::TEMP_VAR = "$temp";
@@ -66,6 +69,21 @@ Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
     varToReg.insert(std::make_pair(associatedVar, reg));
     regToInfo.insert(std::make_pair(reg, RegisterInfo(type)));
     return reg;
+}
+
+Register* Table::getLastDestination(BasicBlock *bb)
+{
+    if(RegisterInstruction* ri = dynamic_cast<RegisterInstruction*>(bb->getInstructions().back()))
+    {
+        if(regToInfo.count(ri->getDestination()) > 0)
+        {
+            return ri->getDestination();
+        }
+        std::cerr << "ERROR - HUGE: last register of the last instruction of the given BasicBlock is UNKNOWN by the Table." << std::endl;
+        return nullptr;
+    }
+    std::cerr << "ERROR: last instruction of the given BasicBlock is not a RegisterInstruction." << std::endl;
+    return nullptr;
 }
 
 std::map<Register *, RegisterInfo> & Table::getAllRegisters()
