@@ -7,21 +7,18 @@
 
 class RegisterInfo {
 public:
-    RegisterInfo(int offset_ = -1, std::string originalVar_ = "$temp", Type type_ = Type::VOID_T);
+    RegisterInfo(Type type_ = Type::VOID_T, int offset_ = -1);
     ~RegisterInfo();
 
     int getOffset() const;
-    std::string getOriginalVar() const;
     Type getType() const;
 
     void setOffset(int offset_);
-    void setOriginalVar(std::string originalVar_);
     void setType(Type type_);
 
 protected:
-    int offset;
-    std::string originalVar;
     Type type;
+    int offset;
 };
 
 
