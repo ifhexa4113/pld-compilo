@@ -5,7 +5,7 @@
 #ifndef PLD_COMPILO_ABSTRACTBASICBLOCKASSEMBLER_H
 #define PLD_COMPILO_ABSTRACTBASICBLOCKASSEMBLER_H
 
-#include "cfg/BasicBlock.h";
+#include "cfg/BasicBlock.h"
 
 /**
  * Transform a basic bloc into assembly
@@ -14,13 +14,18 @@ class AbstractBasicBlockAssembler {
 public:
     AbstractBasicBlockAssembler(BasicBlock *source);
 
-    std::string generateProlog();
-    std::string translateIR();
-    std::string generateEpilog();
+    virtual std::string generateProlog() = 0;
+    virtual std::string translateIR() = 0;
+    virtual std::string generateEpilog() = 0;
 
     std::string translate();
-private:
+protected:
     BasicBlock *source;
+
+    std::map<Register *, int> offset_list;
+    Table * table;
+    int variable_count;
+
 };
 
 

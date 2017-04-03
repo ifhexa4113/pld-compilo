@@ -39,10 +39,10 @@ std::string Addx86Assembler::translate() const {
     if (dest.getType() == Operandx86Assembler::operand_type::VIRTUAL_REGISTER && param2.getType() == Operandx86Assembler::operand_type::VIRTUAL_REGISTER)
     {
         // Mov param2 in a register
-        stm << Movx86Assembler::getString(param2, Operandx86Assembler::getWorkRegister(Operandx86Assembler::work_register::SOURCE));
+        //stm << Movx86Assembler::getString(param2, Operandx86Assembler::getWorkRegister(Operandx86Assembler::work_register::SOURCE));
 
         // Set param2 as the work register
-        param2 = Operandx86Assembler::getWorkRegister(Operandx86Assembler::work_register::SOURCE);
+        //param2 = Operandx86Assembler::getWorkRegister(Operandx86Assembler::work_register::SOURCE);
     }
 
     // Do the add Operation

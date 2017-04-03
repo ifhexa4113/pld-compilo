@@ -10,7 +10,7 @@ public:
     Register(Register const & other);
     ~Register();
     std::string getName() const;
-    int getValue() const;
+    //int getValue() const;
     std::string toString() const;
 
 protected:

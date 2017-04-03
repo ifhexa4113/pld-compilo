@@ -22,16 +22,16 @@ Operandx86Assembler::Operandx86Assembler(Operand *operand, AbstractBasicBlockAss
     {
         // plz kill me :(
 
-        int tmp_value = std::stoi(reg->getName().substr(4,2), nullptr, 0);
+        //int tmp_value = std::stoi(reg->getName().substr(4,2), nullptr, 0);
         // Check if we can map
         if (reg->getValue() <= physicalRegisterCount)
         {
-            value = reg->getValue();
+            //value = reg->getValue();
             type = operand_type::PHYSICAL_REGISTER;
         }
         else
         {
-            value = reg->getValue() - physicalRegisterCount;
+            //value = reg->getValue() - physicalRegisterCount;
             type = operand_type::VIRTUAL_REGISTER;
         }
     }
@@ -71,8 +71,8 @@ std::string Operandx86Assembler::toString() {
             }
         }
         case operand_type::VIRTUAL_REGISTER : {
-            stm << "[" << Operandx86Assembler::virtualRegisterMemoryOffset + (value - Operandx86Assembler::physicalRegisterCount) *
-                                                                                     sizeof(uint64_t) << "]";
+            /*stm << "[" << Operandx86Assembler::virtualRegisterMemoryOffset + (value - Operandx86Assembler::physicalRegisterCount) *
+                                                                                     sizeof(uint64_t) << "]";*/
         }
         default:
             break;
