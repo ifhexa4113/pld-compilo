@@ -101,7 +101,7 @@ STDLIB = -std=gnu++11
 INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib)) -I $(SRCPATH)
 
 CFLAGS = $(INCLUDES) -g
-CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
+CTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH) -g
 #---------------------------------------------------------------
 
 #Compilation conditionnelle-------------------------------------
@@ -168,7 +168,7 @@ endif
 
 #Variables pour les options d'edition des liens-----------------
 
-LDFLAGS = 
+LDFLAGS = -g
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
@@ -199,19 +199,19 @@ libs-tests:
 	$(foreach lib,$(LIBS),cd $(lib) && make OS=$(OS) DEBUG=$(DEBUG) tests $(SEVERAL_CMD) cd ../.. $(SEVERAL_CMD))
 
 $(EXE1): $(OBJ) $(OBJLIB)
-	$(CC) -g -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 $(EXE2): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(OBJTEST) $(OBJLIB) $(OBJLIBTEST)
-	$(CC) -g -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
-	$(CC) -g -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLAGS)
 $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
-	$(CC) -g -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLAGS)
 
 $(OBJPATH)/$(MAINSRCTESTFILE).$(TESTFILE).$(OFILE): $(TESTPATH)/$(MAINSRCTESTFILE).$(SRCTESTFILE) $(HEAD)
-	$(CC) -g -o $@ -c $< $(CTESTFLAGS)
+	$(CC) -o $@ -c $< $(CTESTFLAGS)
 $(OBJPATH)/%.$(TESTFILE).$(OFILE) : $(TESTPATH)/%.$(SRCTESTFILE) $(SRCPATH)/%.$(HEADFILE)
-	$(CC) -g -o $@ -c $< $(CTESTFLAGS)
+	$(CC) -o $@ -c $< $(CTESTFLAGS)
 
 #Tests
 tests: all libs-tests

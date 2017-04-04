@@ -6,10 +6,10 @@
 #define PLD_COMPILO_MovABSTRACTTRANSLATOR_H
 
 
-#include "assembler/abstract/IRAbtractAssembler.h"
+#include "assembler/abstract/IRAbstractAssembler.h"
 #include "cfg/ir/basic/MovInstruction.h"
 
-class MovAbstractAssembler : public IRAbtractAssembler {
+class MovAbstractAssembler : public IRAbstractAssembler {
 public:
     MovAbstractAssembler(MovInstruction *instruction, AbstractBasicBlockAssembler *parent_block);
 

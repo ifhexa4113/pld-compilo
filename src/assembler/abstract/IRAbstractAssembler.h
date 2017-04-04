@@ -8,13 +8,14 @@
 #include <string>
 #include "AbstractBasicBlockAssembler.h"
 
+
 /**
  * Base class for all Assembler instructions
  */
-class IRAbtractAssembler {
+class IRAbstractAssembler {
 public:
-    IRAbtractAssembler(AbstractBasicBlockAssembler * parent_block);
-    virtual ~IRAbtractAssembler();
+    IRAbstractAssembler(AbstractBasicBlockAssembler * parent_block);
+    virtual ~IRAbstractAssembler();
 
     virtual std::string translate() const = 0;
 

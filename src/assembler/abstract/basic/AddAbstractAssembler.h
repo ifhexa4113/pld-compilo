@@ -6,10 +6,10 @@
 #define PLD_COMPILO_ADDABSTRACTTRANSLATOR_H
 
 
-#include "assembler/abstract/IRAbtractAssembler.h"
+#include "assembler/abstract/IRAbstractAssembler.h"
 #include "cfg/ir/basic/AddInstruction.h"
 
-class AddAbstractAssembler : public IRAbtractAssembler {
+class AddAbstractAssembler : public IRAbstractAssembler {
 public:
     AddAbstractAssembler(AddInstruction *instruction, AbstractBasicBlockAssembler *parent_block);
 

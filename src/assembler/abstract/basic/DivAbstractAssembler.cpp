@@ -8,6 +8,6 @@ DivAbstractAssembler::~DivAbstractAssembler() {
 
 }
 
-DivAbstractAssembler::DivAbstractAssembler(DivInstruction *instruction) : IRAbtractAssembler(nullptr), instruction(instruction){
+DivAbstractAssembler::DivAbstractAssembler(DivInstruction *instruction) : IRAbstractAssembler(nullptr), instruction(instruction){
 
 }

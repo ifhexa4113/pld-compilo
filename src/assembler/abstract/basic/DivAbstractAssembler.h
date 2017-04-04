@@ -6,10 +6,10 @@
 #define PLD_COMPILO_DivABSTRACTTRANSLATOR_H
 
 
-#include "assembler/abstract/IRAbtractAssembler.h"
+#include "assembler/abstract/IRAbstractAssembler.h"
 #include "cfg/ir/basic/DivInstruction.h"
 
-class DivAbstractAssembler : public IRAbtractAssembler {
+class DivAbstractAssembler : public IRAbstractAssembler {
 public:
     DivAbstractAssembler (DivInstruction * instruction);
 

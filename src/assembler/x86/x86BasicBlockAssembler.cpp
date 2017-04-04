@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include <map>
+#include <assembler/x86/basic/Movx86Assembler.h>
 #include "x86BasicBlockAssembler.h"
 
 
@@ -40,9 +41,31 @@ std::string x86BasicBlockAssembler::generateProlog() {
 }
 
 std::string x86BasicBlockAssembler::translateIR() {
+    std::ostringstream stream;
+
+    std::vector<IRInstruction *> instructions = source->getInstructions();
+
+    for (int current_index = 0; current_index < instructions.size(); current_index ++)
+    {
+
+    }
+
     return "";
 }
 
 std::string x86BasicBlockAssembler::generateEpilog() {
     return "";
+}
+
+IRAbstractAssembler x86BasicBlockAssembler::translateInstruction(IRInstruction *instruction) {
+
+    MovInstruction * mov = nullptr;
+
+    if ((mov = dynamic_cast<MovInstruction *>(instruction)) != nullptr)
+    {
+        return Movx86Assembler(mov);
+    }
+
+
+    return IRAbstractAssembler(nullptr);
 }

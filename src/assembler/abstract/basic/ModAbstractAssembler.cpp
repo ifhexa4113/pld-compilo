@@ -8,6 +8,6 @@ ModAbstractAssembler::~ModAbstractAssembler() {
 
 }
 
-ModAbstractAssembler::ModAbstractAssembler(ModInstruction *instruction) : IRAbtractAssembler(nullptr), instruction(instruction){
+ModAbstractAssembler::ModAbstractAssembler(ModInstruction *instruction) : IRAbstractAssembler(nullptr), instruction(instruction){
 
 }

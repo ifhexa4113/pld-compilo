@@ -18,6 +18,8 @@ public:
     std::string generateProlog();
     std::string translateIR();
     std::string generateEpilog();
+
+    IRAbstractAssembler translateInstruction(IRInstruction * instruction);
 private:
     BasicBlock *source;
 };

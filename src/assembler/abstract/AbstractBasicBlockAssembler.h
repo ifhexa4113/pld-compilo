@@ -6,6 +6,7 @@
 #define PLD_COMPILO_ABSTRACTBASICBLOCKASSEMBLER_H
 
 #include "cfg/BasicBlock.h"
+#include "assembler/abstract/IRAbstractAssembler.h"
 
 /**
  * Transform a basic bloc into assembly
@@ -19,6 +20,7 @@ public:
     virtual std::string generateEpilog() = 0;
 
     std::string translate();
+
 protected:
     BasicBlock *source;
 
