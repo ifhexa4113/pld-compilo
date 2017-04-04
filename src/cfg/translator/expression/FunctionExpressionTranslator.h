@@ -10,7 +10,7 @@ class FunctionExpressionTranslator : public Translator
 public:
     FunctionExpressionTranslator(FunctionExpression* functionExpression, CFG* cfg);
     ~FunctionExpressionTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 #endif //PLD_COMPILO_FUNCTIONEXPRESSIONTRANSLATOR_H

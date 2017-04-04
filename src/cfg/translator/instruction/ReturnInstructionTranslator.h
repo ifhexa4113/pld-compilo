@@ -9,7 +9,7 @@ class ReturnInstructionTranslator : public Translator
 public:
     ReturnInstructionTranslator(ReturnInstruction* returnInstruction, CFG* cfg);
     ~ReturnInstructionTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 

@@ -1,4 +1,5 @@
 #include "FunctionDefinitionTranslator.h"
+#include "ast/SymbolTable.h"
 #include <iostream>
 
 FunctionDefinitionTranslator::FunctionDefinitionTranslator(FunctionDefinition* functionDef, CFG* cfg) : Translator(functionDef, cfg)
@@ -11,10 +12,16 @@ FunctionDefinitionTranslator::~FunctionDefinitionTranslator()
     // Nothing else to do
 }
 
-SubGraph * FunctionDefinitionTranslator::translate()
+SubGraph * FunctionDefinitionTranslator::translate(Table* table)
 {
     // TODO: what about the return ???
     // TODO: handle merging blocks here or after completing the whole cfg ?
+
+    // NOTE: The table MUST be a nullptr.
+    //       The BB that will contain de function's label will be the one who
+    //       create and destroy the table.
+    //       So here we go:
+    table = new Table();
 
     // First cast it in something we can manipulate as we want
     FunctionDefinition* fDef = dynamic_cast<FunctionDefinition*>(node);
@@ -24,12 +31,24 @@ SubGraph * FunctionDefinitionTranslator::translate()
         return nullptr;
     }
 
+    SymbolTable st = fDef->getSymbolTable();
+    for(auto it = st.begin(); it != st.end(); it++)
+    {
+        if(auto lvalDecl = dynamic_cast<LValueDeclaration*>(it->second))
+        {
+            table->getOrCreateRegister(lvalDecl);
+        }
+    }
+
     // Then create bases for the subgraph that we'll return
     BasicBlock* functionBlock = new BasicBlock(fDef->getName());    // The function block; input of the subgraph
+    functionBlock->setTable(table);
+    functionBlock->setPrologable(true);
+    // NOTE: the two previous lines are ESSENTIAL to avoid memory leaks
     std::vector<BasicBlock*> outputs;                               // The list of subgraph's outputs
 
     // Then create a variable to memorize the previous block
-    std::vector<BasicBlock*> previousBlocks(1, functionBlock);
+    std::vector<BasicBlock*> previousBlocks;
 
     // TODO: I think that in all cases, the first block could be merged in the functionBlock
     // TODO     (replace label of the first block by the one of the functionBlock)
@@ -39,7 +58,7 @@ SubGraph * FunctionDefinitionTranslator::translate()
     {
         if(Translator * t = getFactory().getTranslator(child, cfg))
         {
-            SubGraph* sb = t->translate();
+            SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
 
             for(BasicBlock* output: previousBlocks)
@@ -47,14 +66,20 @@ SubGraph * FunctionDefinitionTranslator::translate()
                 // NOTE: if we're at the first child, this should never be executed
                 output->setExitTrue(bb);
             }
+            if(previousBlocks.size() == 0)
+            {
+                // This is the first child
+                functionBlock->merge(bb);
+            }
             previousBlocks = sb->getOutputs();
+
             delete sb;
             delete t;
         }
     }
 
     outputs = previousBlocks;
-    // TODO: if there was a return; instruction somewhere else in the rest, we must add it to the outputs
+    // TODO: if there was a return; instruction somewhere else in the rest, we must add it to the outputs ?
 
     // Return a subgraph describing what we just created
     return new SubGraph(functionBlock, outputs);

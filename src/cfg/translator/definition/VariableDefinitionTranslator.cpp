@@ -15,7 +15,7 @@ VariableDefinitionTranslator::~VariableDefinitionTranslator()
     // Nothing else to do
 }
 
-SubGraph * VariableDefinitionTranslator::translate()
+SubGraph * VariableDefinitionTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     VariableDefinition* vDef = dynamic_cast<VariableDefinition*>(node);
@@ -26,7 +26,7 @@ SubGraph * VariableDefinitionTranslator::translate()
     }
 
     Translator* exprTranslator = getFactory().getTranslator(vDef->getRExpression(), cfg);
-    SubGraph* sb = exprTranslator->translate();
+    SubGraph* sb = exprTranslator->translate(table);
 
     // At this point, we are sure that sb only contains one basic block
     // This basic block contains the code needed to evaluate the expression
@@ -34,7 +34,10 @@ SubGraph * VariableDefinitionTranslator::translate()
     BasicBlock* expr = sb->getInput();
 
     // Add the instruction
-    expr->addInstruction(new MovInstruction(new Register(), new Register(*(dynamic_cast<RegisterInstruction*>(expr->getInstructions().back())->getDestination()))));
+    expr->addInstruction(new MovInstruction(
+        table->getOrCreateRegister(vDef->getDeclaration()),
+        table->getLastDestination(expr)
+    ));
 
     // Return a subgraph describing what we just created
     return new SubGraph(expr, std::vector<BasicBlock*>(1, expr));

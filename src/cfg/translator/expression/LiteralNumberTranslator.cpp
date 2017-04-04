@@ -14,7 +14,7 @@ LiteralNumberTranslator::~LiteralNumberTranslator()
     // Nothing else to do
 }
 
-SubGraph * LiteralNumberTranslator::translate()
+SubGraph * LiteralNumberTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     LiteralNumberExpression* litNumExpr = dynamic_cast<LiteralNumberExpression*>(node);
@@ -28,7 +28,7 @@ SubGraph * LiteralNumberTranslator::translate()
     BasicBlock* bb = new BasicBlock("");
     std::vector<BasicBlock*> outputs(1, bb);
 
-    bb->addInstruction(new MovInstruction(new Register(), new LiteralNumber(litNumExpr->getValue())));
+    bb->addInstruction(new MovInstruction(table->getOrCreateRegister(), new LiteralNumber(litNumExpr->getValue())));
 
     // Return a subgraph describing what we just created
     return new SubGraph(bb, outputs);

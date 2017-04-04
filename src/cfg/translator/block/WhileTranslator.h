@@ -9,7 +9,7 @@ class WhileTranslator : public Translator
 public:
     WhileTranslator(While* wh, CFG* cfg);
     ~WhileTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 

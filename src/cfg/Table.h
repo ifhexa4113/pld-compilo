@@ -3,10 +3,13 @@
 
 #include <map>
 #include <string>
+#include <ostream>
 
 #include "RegisterInfo.h"
 #include "ir/operand/Register.h"
 #include "ast/declaration/LValueDeclaration.h"
+
+class BasicBlock;
 
 class Table
 {
@@ -53,10 +56,24 @@ public:
     Register* getOrCreateRegister(LValueDeclaration* declaration = nullptr);
 
     /**
+     * Returns the last destination register of the given basic block,
+     * or a nullptr if the last destination wasn't a register or even worst was
+     * not known by the table (which would be a HUGE issue).
+     * @param bb The basic block from which extract the destination register.
+     */
+    Register* getLastDestination(BasicBlock* bb);
+
+    /**
      * Returns all the registers and their associated information,
      * in the shape of a map.
      */
     std::map<Register*, RegisterInfo>& getAllRegisters();
+
+    /**
+     * Prints the table in the given stream.
+     * @param stream The stream where to print the table.
+     */
+    void print(std::ostream& stream);
 
 protected:
     std::map<std::string, Register*> varToReg;

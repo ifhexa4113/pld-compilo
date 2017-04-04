@@ -9,7 +9,10 @@ NotInstruction::NotInstruction(Register *destination, Operand *source) : Registe
 }
 
 NotInstruction::~NotInstruction() {
-    delete source;
+    if(!dynamic_cast<Register*>(source))
+    {
+        delete source;
+    }
 }
 
 void NotInstruction::print(std::ostream &ost) const {

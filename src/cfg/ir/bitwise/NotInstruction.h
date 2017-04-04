@@ -20,7 +20,7 @@ public:
     Operand *getSource() const;
 
 protected:
-    Operand  *source;
+    Operand *source;
 };
 
 

@@ -39,6 +39,11 @@ BasicBlock::~BasicBlock()
     {
         delete exitFalse;
     }
+    if(isPrologable() && table)
+    {
+        // Only the BB which will generate a prolog are able to destroy a Table
+        delete table;
+    }
 }
 
 // ---------------------------------------- Getters
@@ -140,10 +145,6 @@ void BasicBlock::merge(BasicBlock * otherBlock)
     otherBlock->setExitTrue(nullptr);
     setExitFalse(otherBlock->getExitFalse());
     otherBlock->setExitFalse(nullptr);
-
-    // detruire le otherBlock
-    delete otherBlock;
-
 }
 
 void BasicBlock::print(std::ostream &ost) const

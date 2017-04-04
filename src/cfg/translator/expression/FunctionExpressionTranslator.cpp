@@ -15,7 +15,7 @@ FunctionExpressionTranslator::~FunctionExpressionTranslator()
     // Nothing else to do
 }
 
-SubGraph * FunctionExpressionTranslator::translate()
+SubGraph * FunctionExpressionTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     FunctionExpression* functionExpression = dynamic_cast<FunctionExpression*>(node);
@@ -29,17 +29,30 @@ SubGraph * FunctionExpressionTranslator::translate()
     BasicBlock* bb = new BasicBlock("");
     std::vector<BasicBlock*> outputs(1, bb);
 
+    std::vector<BasicBlock*> lastOutputs;
     std::vector<Register*> registers;
     std::vector<Expression*> params = functionExpression->getParameters();
+    bool first = true;
 
     for (auto param: params){
-      Translator* translator = getFactory().getTranslator( param, cfg);
-      SubGraph* subGraph = translator->translate();
+        Translator* translator = getFactory().getTranslator(param, cfg);
+        SubGraph* subGraph = translator->translate(table);
 
-      registers.push_back(dynamic_cast<RegisterInstruction*>(subGraph->getOutputs().back()->getInstructions().back())->getDestination());
+        if(lastOutputs.size() == 0)
+        {
+            bb->merge(subGraph->getInput());
+            first = false;
+        }
+        for(auto output: lastOutputs)
+        {
+            output->setExitTrue(subGraph->getInput());
+        }
+        lastOutputs = subGraph->getOutputs();
 
-      delete translator;
-      delete subGraph;
+        registers.push_back(table->getLastDestination(subGraph->getOutputs().back()));
+
+        delete translator;
+        delete subGraph;
     }
 
     bb->addInstruction(new CallInstruction(functionExpression->getName(), registers));
