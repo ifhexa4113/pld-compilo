@@ -21,7 +21,7 @@ AndInstruction::~AndInstruction() {
 }
 
 void AndInstruction::print(std::ostream &ost) const {
-    ost << "AND\t" << destination << ", " << param1 << ", " << param2;
+    ost << "AND\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *AndInstruction::getParam1() const {
