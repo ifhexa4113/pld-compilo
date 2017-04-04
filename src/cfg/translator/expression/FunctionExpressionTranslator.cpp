@@ -32,22 +32,14 @@ SubGraph * FunctionExpressionTranslator::translate(Table* table)
     std::vector<BasicBlock*> lastOutputs;
     std::vector<Register*> registers;
     std::vector<Expression*> params = functionExpression->getParameters();
-    bool first = true;
+
+    std::cout << "FCALL: There are " << params.size() << " parameters" << std::endl;
 
     for (auto param: params){
         Translator* translator = getFactory().getTranslator(param, cfg);
         SubGraph* subGraph = translator->translate(table);
 
-        if(lastOutputs.size() == 0)
-        {
-            bb->merge(subGraph->getInput());
-            first = false;
-        }
-        for(auto output: lastOutputs)
-        {
-            output->setExitTrue(subGraph->getInput());
-        }
-        lastOutputs = subGraph->getOutputs();
+        bb->merge(subGraph->getInput());
 
         registers.push_back(table->getLastDestination(subGraph->getOutputs().back()));
 
