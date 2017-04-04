@@ -10,7 +10,7 @@ public:
     ~ArrayDefinition();
     int walkTree();
     void fillAstTrace(std::string& astTrace);
-    bool checkReturnType(Type type, SymbolTableStack& stack){return false;};
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
 
     // TODO missing an expression !
 };

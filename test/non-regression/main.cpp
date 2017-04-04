@@ -22,7 +22,7 @@ using namespace std;
 bool errorManagerTest(string expectedErrorsTrace) {
 	ErrorManager& errorManager = ErrorManager::getInstance();
 	string errorsTrace = errorManager.getErrorsTrace();
-	std::cerr << std::endl << errorsTrace << std::endl; // to remove
+	//std::cerr << std::endl << errorsTrace << std::endl; // to remove
 	return expectedErrorsTrace.compare(errorsTrace) == 0;
 }
 
@@ -66,11 +66,11 @@ int main(int argc, char *argv[]) {
 	}
 	if (symbolTableTest)
 	{
-		std::cerr << "Symbol table test : SUCCESS" << std::endl;
+		std::cerr << std::endl << "Symbol table test : SUCCESS" << std::endl;
 	}
 	else
 	{
-		std::cerr << "Symbol table test : FAIL" << std::endl;
+		std::cerr << std::endl << "Symbol table test : FAIL" << std::endl;
 	}
 
 	// Ast test
@@ -98,5 +98,5 @@ int main(int argc, char *argv[]) {
 		std::cerr << "AST test : FAIL" << std::endl;
 	}
 
-	return 0;
+	return !(symbolTableTest && astTestResult);
 }

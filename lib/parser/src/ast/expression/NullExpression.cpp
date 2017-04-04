@@ -20,7 +20,7 @@ Type NullExpression::getType(SymbolTableStack&)
     return Type::VOID_T;
 }
 
-bool NullExpression::checkNonVoidType(SymbolTableStack& stack)
+bool NullExpression::checkNonVoidType(SymbolTableStack&)
 {
     return true;
 }

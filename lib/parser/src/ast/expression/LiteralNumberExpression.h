@@ -13,9 +13,9 @@ public:
     int64_t getValue();
 
     Type getType(SymbolTableStack&);
-    bool checkNonVoidType(SymbolTableStack& stack);
+    bool checkNonVoidType(SymbolTableStack&);
     void fillAstTrace(std::string& astTrace);
-    bool checkReturnType(Type type, SymbolTableStack& stack){return false;};
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
 
 protected:
     int64_t value;

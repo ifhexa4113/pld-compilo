@@ -24,7 +24,7 @@ Type LiteralNumberExpression::getType(SymbolTableStack&)
     return Type::INT64_T;
 }
 
- bool LiteralNumberExpression::checkNonVoidType(SymbolTableStack& stack)
+ bool LiteralNumberExpression::checkNonVoidType(SymbolTableStack&)
  {
      return true;
  }

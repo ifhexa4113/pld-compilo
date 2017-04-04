@@ -42,7 +42,7 @@ void Declaration::fillSymbolTable(SymbolTableStack& stack)
     stack.addEntry(name, this);
 }
 
-bool Declaration::checkNonVoidType(SymbolTableStack& stack)
+bool Declaration::checkNonVoidType(SymbolTableStack&)
 {
     if (type == Type::VOID_T)
         return false;
