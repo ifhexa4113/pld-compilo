@@ -3,6 +3,9 @@
 #include <sstream>
 #include <cstdio>
 #include <vector>
+#include <algorithm>
+#include <string>
+#include <cctype>
 #include "module/module.h"
 #include "module1/module1.h"
 #include "module1/submodule1/module1.h"
@@ -23,10 +26,13 @@ bool errorManagerTest(string expectedErrorsTrace) {
 	return expectedErrorsTrace.compare(errorsTrace) == 0;
 }
 
-bool astTest(AstNode* astNode, string expectedAstTrace) {
-	string astTrace = "";
+bool astTest(AstNode* astNode, std::string expectedAstTrace) {
+	std::string astTrace = "";
 	astNode->fillAstTrace(astTrace);
 	std::cerr << std::endl << astTrace << std::endl; // to remove
+	expectedAstTrace.erase(std::remove(expectedAstTrace.begin(), expectedAstTrace.end(), '\n'), expectedAstTrace.end());
+	expectedAstTrace.erase(std::remove(expectedAstTrace.begin(), expectedAstTrace.end(), '\r'), expectedAstTrace.end());
+	astTrace.erase(std::remove(astTrace.begin(), astTrace.end(), '\n'), astTrace.end());
     return expectedAstTrace.compare(astTrace) == 0;
 }
 
