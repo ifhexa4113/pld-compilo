@@ -92,7 +92,7 @@ void BasicBlock::setExitTrue(BasicBlock *exitTrue_)
 {
     if(exitTrue != nullptr)
     {
-        delete exitTrue;
+        //delete exitTrue;
     }
     exitTrue = exitTrue_;
 }
@@ -101,7 +101,7 @@ void BasicBlock::setExitFalse(BasicBlock *exitFalse_)
 {
     if(exitFalse != nullptr)
     {
-        delete exitFalse;
+        //delete exitFalse;
     }
     exitFalse = exitFalse_;
 }
@@ -145,39 +145,39 @@ void BasicBlock::merge(BasicBlock * otherBlock)
     otherBlock->setExitFalse(nullptr);
 }
 
-void BasicBlock::print(std::ostream &ost)
-{
-    if(isColored())
-    {
-        return;
-    }
-    setColored();
-    if(label != "")
-    {
-        ost << label << ":" << std::endl;
-    }
-    for(IRInstruction* instruction: instructions)
-    {
-        instruction->print(ost);
-    }
-    if(exitTrue)
-    {
-        if(!(exitTrue->isColored()))
-        {
-            exitTrue->print(ost);
-        } else {
-            ost << "JMP\t " << exitTrue->getLabel() << std::endl;
-        }
-    }
-    if(exitFalse)
-    {
-        ost << "JMPNZ\t" << exitFalse->getLabel() << std::endl;
-        if(!(exitFalse->isColored()))
-        {
-            exitFalse->print(ost);
-        }
-    }
-}
+// void BasicBlock::print(std::ostream &ost)
+// {
+//     if(isColored())
+//     {
+//         return;
+//     }
+//     setColored();
+//     if(label != "")
+//     {
+//         ost << label << ":" << std::endl;
+//     }
+//     for(IRInstruction* instruction: instructions)
+//     {
+//         instruction->print(ost);
+//     }
+//     if(exitTrue)
+//     {
+//         if(!(exitTrue->isColored()))
+//         {
+//             exitTrue->print(ost);
+//         } else {
+//             ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+//         }
+//     }
+//     if(exitFalse)
+//     {
+//         ost << "JMPNZ\t" << exitFalse->getLabel() << std::endl;
+//         if(!(exitFalse->isColored()))
+//         {
+//             exitFalse->print(ost);
+//         }
+//     }
+// }
 
 void BasicBlock::giveLabel()
 {
@@ -187,4 +187,108 @@ void BasicBlock::giveLabel()
         ss << "%bb" << BasicBlock::labelCounter++;
         label = ss.str();
     }
+}
+
+void BasicBlock::print(std::ostream &ost)
+{
+    if(label != "")
+    {
+        ost << label << ":" << std::endl;
+    }
+    for(IRInstruction* instruction: instructions)
+    {
+        instruction->print(ost);
+    }
+
+    if(exitFalse != nullptr)
+    {
+        // On commence un graphe
+        std::cout << "JMPZ\t" << exitTrue->getLabel() <<  std::endl;
+
+        std::deque<BasicBlock*> stack;
+
+        // on sauvergarde la sortie true pour plus tard
+        exitTrue->setColored();
+        stack.push_front(exitTrue);
+
+        exitFalse->setColored();
+
+        // parcours des sorties false en profondeur
+        walkCfgPrint(exitFalse, stack, ost);
+
+
+        BasicBlock* next = stack[0]; 
+        stack.pop_front();
+        walkCfgPrint(next, stack, ost);
+
+        // le bloc de fin de graphe (l'endroit ou le bloc converge)
+        stack[0]->print(ost);
+    }
+    else
+    {
+        if(exitTrue)
+        {
+            ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+            exitTrue->print(ost);
+        }
+    }
+
+}
+
+void BasicBlock::walkCfgPrint(BasicBlock* block, std::deque<BasicBlock*> &stack, std::ostream &ost)
+{
+    if(block->getLabel() != "")
+    {
+        ost << block->getLabel()  << ":" << std::endl;
+    }
+    for(IRInstruction* instruction: block->getInstructions())
+    {
+        instruction->print(ost);
+    }
+
+    if(!block->getExitFalse())
+    {
+        // on est arrivé au bout de la branche sortie false
+        BasicBlock* potentialExit = block->getExitTrue();
+        ost << "JMP\t " << potentialExit->getLabel() << std::endl;
+
+        if(!potentialExit->isColored())
+        {
+            potentialExit->setColored();
+            stack.push_back(potentialExit);
+        }
+        return;
+    }
+    // Il existe tjr une sortie false donc on continue de la parcourir
+    ost << "JMPZ\t " << getExitTrue()->getLabel() << std::endl;
+
+    bool first = false, second = false;
+    if(!exitTrue->isColored())
+    {
+        exitTrue->setColored();
+        stack.push_front(exitTrue);
+        first = true;
+    }
+    if(!exitFalse->isColored())
+    {
+        exitFalse->setColored();
+        stack.push_front(exitFalse);
+        second = true;
+    }
+
+    // on prend la sortie false
+    BasicBlock* next;
+    if(first) {
+        next = stack[0];
+        stack.pop_front();
+        walkCfgPrint(next, stack, ost);
+    }
+
+    // on prend la sortie true qui est au top de la pile
+    if(second) {
+        next = stack[0];
+        stack.pop_front();
+        walkCfgPrint(next, stack, ost);
+    }
+
 }

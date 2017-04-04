@@ -5,6 +5,8 @@
 #include <string>
 #include <ostream>
 
+#include <deque>
+
 #include "Table.h"
 #include "ir/IRInstruction.h"
 
@@ -51,6 +53,9 @@ protected:
     Table* table;
     bool colored;
     bool prologable;
+
+private:
+    void walkCfgPrint(BasicBlock* block, std::deque<BasicBlock*> &stack, std::ostream &ost);
 };
 
 #endif //BASIC_BLOCK_H
