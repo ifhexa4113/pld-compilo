@@ -50,9 +50,6 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
     // Then create a variable to memorize the previous block
     std::vector<BasicBlock*> previousBlocks;
 
-    // TODO: I think that in all cases, the first block could be merged in the functionBlock
-    // TODO     (replace label of the first block by the one of the functionBlock)
-
     // For each child, link subgraphs
     for(AstNode* child: fDef->getChildren())
     {
@@ -69,7 +66,15 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
             if(previousBlocks.size() == 0)
             {
                 // This is the first child
-                functionBlock->merge(bb);
+                if(bb->getLabel() == "")
+                {
+                    // And it can be merged
+                    functionBlock->merge(bb);
+                }
+                else
+                {
+                    functionBlock->setExitTrue(bb);
+                }
             }
             previousBlocks = sb->getOutputs();
 
