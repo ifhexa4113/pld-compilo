@@ -19,7 +19,7 @@ public:
 
     // Getters
     std::string getLabel() const;
-    std::vector<IRInstruction*> getInstructions() const;
+    std::vector<IRInstruction*>& getInstructions();
     BasicBlock* getExitTrue();
     BasicBlock* getExitFalse();
     BasicBlock::JumpType getExitJumpType() const;

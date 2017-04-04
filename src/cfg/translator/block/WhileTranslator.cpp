@@ -39,19 +39,12 @@ SubGraph * WhileTranslator::translate(Table* table)
     // And be sure to link the condition's exitFalse to it
     for(auto output: conditionBlockOutputs)
     {
-        std::cout << "Setting outputs false to point to body..." << std::endl;
         // NOTE: only one in theory, but hey...
         output->setExitFalse(body);
     }
 
-    std::cout << "... Done." << std::endl;
-
-    body->setExitTrue(conditionBlockInput);
-
     // Then create a variable to memorize the previous block
     // std::vector<BasicBlock*> previousBlocks;
-
-    std::cout << "There are " << wh->getChildren().size() << " children." << std::endl;
 
     // Then gather the subgraph from children
     for(AstNode* child: wh->getChildren())
@@ -70,6 +63,8 @@ SubGraph * WhileTranslator::translate(Table* table)
             delete t;
         }
     }
+
+    body->setExitTrue(conditionBlockInput);
 
 //    std::cout << "Body:" << std::endl;
 //    body->print(std::cout);

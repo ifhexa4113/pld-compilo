@@ -51,7 +51,7 @@ std::string BasicBlock::getLabel() const
     return label;
 }
 
-std::vector<IRInstruction *> BasicBlock::getInstructions() const
+std::vector<IRInstruction *>& BasicBlock::getInstructions()
 {
     return instructions;
 }
