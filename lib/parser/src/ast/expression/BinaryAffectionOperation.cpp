@@ -89,3 +89,8 @@ bool BinaryAffectionOperation::checkNonVoidType(SymbolTableStack& stack)
 {
     return rExpression->checkNonVoidType(stack);
 }
+
+void BinaryAffectionOperation::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "BINARY AFFECT\n";
+}

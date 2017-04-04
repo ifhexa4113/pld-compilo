@@ -42,3 +42,8 @@ Type UnaryBinaryOperationOnExpression::getType(SymbolTableStack& stack)
  {
      return expression->checkNonVoidType(stack);
  }
+
+ void UnaryBinaryOperationOnExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "UNARY BINARY OP ON EXPR\n";
+}

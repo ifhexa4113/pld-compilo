@@ -1,5 +1,6 @@
 #include "VariableDeclaration.h"
 #include "ast/expression/NullExpression.h"
+#include <iostream>
 
 VariableDeclaration::VariableDeclaration(std::string name_, Type type_) : LValueDeclaration(name_, type_)
 {

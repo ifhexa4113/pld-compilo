@@ -1,0 +1,4 @@
+void foo() {
+    uint64_t a = 1, b = 2, c;
+	c = a + b;
+}

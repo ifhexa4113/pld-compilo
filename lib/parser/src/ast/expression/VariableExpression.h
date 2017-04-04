@@ -10,6 +10,7 @@ public:
     VariableExpression(std::string name_);
     ~VariableExpression();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
 };
 
 #endif

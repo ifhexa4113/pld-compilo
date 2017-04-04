@@ -24,3 +24,8 @@ bool NullExpression::checkNonVoidType(SymbolTableStack& stack)
 {
     return true;
 }
+
+void NullExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "NULL EXPR\n";
+}

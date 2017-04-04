@@ -14,6 +14,7 @@ public:
 
     Type getType(SymbolTableStack&);
     bool checkNonVoidType(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
 
 protected:
     int64_t value;

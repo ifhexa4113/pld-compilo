@@ -60,3 +60,7 @@ bool BinaryArithmeticOperation::checkNonVoidType(SymbolTableStack& stack) {
     return lExpression->checkNonVoidType(stack) && rExpression->checkNonVoidType(stack);
 }
 
+void BinaryArithmeticOperation::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "BINARY ARITHMETIC OP\n";
+}

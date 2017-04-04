@@ -34,3 +34,8 @@ Type ParenthesisExpression::getType(SymbolTableStack& stack)
 bool ParenthesisExpression::checkNonVoidType(SymbolTableStack& stack) {
     return expression->checkNonVoidType(stack);
 }
+
+void ParenthesisExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "PARENTHESIS EXPR\n";
+}

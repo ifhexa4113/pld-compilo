@@ -29,3 +29,8 @@ Type LiteralNumberExpression::getType(SymbolTableStack&)
      return true;
  }
 
+void LiteralNumberExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "LITERAL NUMBER EXPR\n";
+}
+

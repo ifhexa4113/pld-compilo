@@ -97,3 +97,8 @@ bool BinaryLogicOperation::checkNonVoidType(SymbolTableStack& stack)
 {
     return lExpression->checkNonVoidType(stack) && rExpression->checkNonVoidType(stack);
 }
+
+void BinaryLogicOperation::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "BINARY LOGIC OP\n";
+}

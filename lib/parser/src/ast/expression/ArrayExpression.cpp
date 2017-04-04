@@ -28,3 +28,8 @@ void ArrayExpression::fillSymbolTable(SymbolTableStack& stack)
     LValueExpression::fillSymbolTable(stack);
     index->fillSymbolTable(stack);
 }
+
+void ArrayExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "ARRAY EXPR\n";
+}

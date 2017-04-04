@@ -39,3 +39,8 @@ Type UnaryBinaryOperationOnVariable::getType(SymbolTableStack& stack)
 bool UnaryBinaryOperationOnVariable::checkNonVoidType(SymbolTableStack& stack) {
     return variable->checkNonVoidType(stack);
 }
+
+void UnaryBinaryOperationOnVariable::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "UNARY BINARY OP ON VAR\n";
+}

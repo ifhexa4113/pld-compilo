@@ -89,3 +89,8 @@ bool FunctionExpression::checkNonVoidType(SymbolTableStack& stack)
         return true;
     }
 }
+
+void FunctionExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "FUNCTION EXPR\n";
+}

@@ -12,6 +12,7 @@ public:
 
     Type getType(SymbolTableStack&);
     bool checkNonVoidType(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
 };
 
 #endif //NULL_EXPRESSION_H

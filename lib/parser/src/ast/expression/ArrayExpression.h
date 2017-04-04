@@ -11,6 +11,7 @@ public:
     int walkTree();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
 
 protected:
     Expression* index;

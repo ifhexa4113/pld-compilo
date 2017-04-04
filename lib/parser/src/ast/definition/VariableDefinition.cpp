@@ -2,6 +2,7 @@
 #include "ast/expression/NullExpression.h"
 #include "ast/expression/FunctionExpression.h"
 #include "ast/ErrorManager.h"
+#include <iostream>
 
 VariableDefinition::VariableDefinition(LValueDeclaration* declaration_, Expression* rExpression_) :
     Definition(declaration_),
