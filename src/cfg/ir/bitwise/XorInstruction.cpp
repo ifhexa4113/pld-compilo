@@ -21,7 +21,7 @@ XorInstruction::~XorInstruction() {
 }
 
 void XorInstruction::print(std::ostream &ost) const {
-    ost << "AND\t" << destination << ", " << param1 << ", " << param2;
+    ost << "XOR\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *XorInstruction::getParam1() const {

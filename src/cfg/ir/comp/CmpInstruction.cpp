@@ -26,7 +26,7 @@ CmpInstruction::~CmpInstruction()
 
 void CmpInstruction::print(std::ostream &ost) const 
 {
-    ost << "CMP\t" << param1 << ", " << param2;
+    ost << "CMP\t" << *param1 << ", " << *param2 << std::endl;
 }
 
 const Operand *CmpInstruction::getParam1() const

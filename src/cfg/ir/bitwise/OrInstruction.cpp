@@ -21,7 +21,7 @@ OrInstruction::~OrInstruction() {
 }
 
 void OrInstruction::print(std::ostream &ost) const {
-    ost << "AND\t" << destination << ", " << param1 << ", " << param2;
+    ost << "OR\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *OrInstruction::getParam1() const {
