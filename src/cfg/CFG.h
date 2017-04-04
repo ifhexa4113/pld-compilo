@@ -6,11 +6,13 @@
 #include "ast/Ast.h"
 #include "BasicBlock.h"
 
-class CFG {
+class CFG
+{
 public:
     CFG(Ast* ast_);
     ~CFG();
     void print(std::ostream& ost) const;
+    BasicBlock* getInput();
 
     /**
      * @deprecated

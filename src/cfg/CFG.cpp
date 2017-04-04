@@ -19,6 +19,11 @@ CFG::~CFG()
     }
 }
 
+BasicBlock* CFG::getInput()
+{
+    return input;
+}
+
 void CFG::addBasicBlock(BasicBlock *block)
 {
     blocks.push_back(block);
