@@ -27,23 +27,20 @@ BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* ex
 
 BasicBlock::~BasicBlock()
 {
+    // Delete each instruction
     for(IRInstruction* instruction: instructions)
     {
         delete instruction;
     }
-    if(exitTrue && exitTrue != this)
-    {
-        delete exitTrue;
-    }
-    if(exitFalse && exitFalse != this)
-    {
-        delete exitFalse;
-    }
+    // Delete table if needed
     if(isPrologable() && table)
     {
         // Only the BB which will generate a prolog are able to destroy a Table
         delete table;
     }
+
+    // NOTE: since basic blocks are organized as a graph,
+    //       it's the CFG that will destroy them.
 }
 
 // ---------------------------------------- Getters
