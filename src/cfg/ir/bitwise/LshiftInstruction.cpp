@@ -21,7 +21,7 @@ LshiftInstruction::~LshiftInstruction() {
 }
 
 void LshiftInstruction::print(std::ostream &ost) const {
-    ost << "AND\t" << destination << ", " << param1 << ", " << param2;
+    ost << "LSHIFT\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *LshiftInstruction::getParam1() const {

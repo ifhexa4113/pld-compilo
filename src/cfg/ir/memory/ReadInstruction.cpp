@@ -16,7 +16,7 @@ ReadInstruction::~ReadInstruction() {
 }
 
 void ReadInstruction::print(std::ostream &ost) const {
-    ost << "READ\t" << destination << ", " << address << std::endl;
+    ost << "READ\t" << *destination << ", " << *address << std::endl;
 }
 
 const Operand *ReadInstruction::getAddress() const {

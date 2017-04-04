@@ -21,7 +21,7 @@ SubInstruction::~SubInstruction() {
 }
 
 void SubInstruction::print(std::ostream &ost) const {
-    ost << "SUB\t" << destination << ", " << param1 << ", " << param2;
+    ost << "SUB\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *SubInstruction::getParam1() const {

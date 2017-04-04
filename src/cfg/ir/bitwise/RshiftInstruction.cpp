@@ -21,7 +21,7 @@ RshiftInstruction::~RshiftInstruction() {
 }
 
 void RshiftInstruction::print(std::ostream &ost) const {
-    ost << "AND\t" << destination << ", " << param1 << ", " << param2;
+    ost << "RSHIFT\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *RshiftInstruction::getParam1() const {
