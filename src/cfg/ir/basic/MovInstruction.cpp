@@ -8,8 +8,10 @@ MovInstruction::MovInstruction(Register* destination_, Operand* source_) :
 
 MovInstruction::~MovInstruction()
 {
-    delete destination;
-    delete source;
+    if(!dynamic_cast<Register*>(source))
+    {
+        delete source;
+    }
 }
 
 void MovInstruction::print(std::ostream& ost) const

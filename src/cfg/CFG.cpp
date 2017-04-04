@@ -13,12 +13,10 @@ CFG::CFG(Ast *ast_) : ast(ast_), input(nullptr)
 
 CFG::~CFG()
 {
-    // TODO: oops, it's kinda complicated to delete
-    //       But at the moment, there are memory leaks
-//    if(input)
-//    {
-//        delete input;
-//    }
+    if(input)
+    {
+        delete input;
+    }
 }
 
 BasicBlock* CFG::getInput()

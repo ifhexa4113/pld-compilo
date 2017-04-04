@@ -31,11 +31,11 @@ BasicBlock::~BasicBlock()
     {
         delete instruction;
     }
-    if(exitTrue != nullptr)
+    if(exitTrue && exitTrue != this)
     {
         delete exitTrue;
     }
-    if(exitFalse != nullptr)
+    if(exitFalse && exitFalse != this)
     {
         delete exitFalse;
     }
