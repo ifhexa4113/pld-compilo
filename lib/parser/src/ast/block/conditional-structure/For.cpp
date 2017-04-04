@@ -85,3 +85,10 @@ void For::fillSymbolTable(SymbolTableStack& stack)
 		errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
 }
+
+void For::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "FOR\n";
+    for (auto child : children)
+        child->fillAstTrace(astTrace);
+}

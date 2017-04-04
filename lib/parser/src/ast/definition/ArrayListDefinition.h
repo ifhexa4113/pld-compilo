@@ -16,6 +16,7 @@ public:
     std::vector<Expression*> getListExpression();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
 
 protected:
     std::vector<Expression*> listExpression;

@@ -15,6 +15,7 @@ public:
 
     virtual Type getType(SymbolTableStack& stack) = 0;
     virtual bool checkNonVoidType(SymbolTableStack& stack) = 0;
+    virtual void fillAstTrace(std::string& astTrace) {astTrace += "EXPRESSION\n";};
 };
 
 #endif

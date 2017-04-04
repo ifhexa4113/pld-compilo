@@ -26,3 +26,8 @@ ArrayDefinition * ArrayDeclaration::toEmptyDefinition()
 {
     return new ArrayDefinition(this);
 }
+
+void ArrayDeclaration::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "ARRAY DECL\n";
+}

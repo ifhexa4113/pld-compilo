@@ -31,3 +31,8 @@ void ReturnInstruction::fillSymbolTable(SymbolTableStack& stack)
 {
     value->fillSymbolTable(stack);
 }
+
+void ReturnInstruction::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "RETURN\n";
+}

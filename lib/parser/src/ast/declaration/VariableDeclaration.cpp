@@ -20,3 +20,8 @@ VariableDefinition * VariableDeclaration::toEmptyDefinition()
 {
     return new VariableDefinition(this, new NullExpression());
 }
+
+void VariableDeclaration::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "VAR DECL\n";
+}

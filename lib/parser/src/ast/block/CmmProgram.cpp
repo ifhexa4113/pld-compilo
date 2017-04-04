@@ -28,3 +28,10 @@ void CmmProgram::addFunction(FunctionDefinition* function)
 {
     children.push_back(function);
 }
+
+void CmmProgram::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "PROG\n";
+    for (auto child : children)
+        child->fillAstTrace(astTrace);
+}

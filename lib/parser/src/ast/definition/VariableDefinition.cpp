@@ -38,3 +38,8 @@ void VariableDefinition::fillSymbolTable(SymbolTableStack& stack)
         errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
     }
 }
+
+void VariableDefinition::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "VAR DEF\n";
+}

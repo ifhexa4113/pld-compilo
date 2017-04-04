@@ -8,6 +8,7 @@ class ContinueInstruction : public AstNode
 public:
     ContinueInstruction();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
 };
 
 #endif

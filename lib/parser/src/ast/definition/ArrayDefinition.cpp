@@ -15,3 +15,8 @@ int ArrayDefinition::walkTree()
 {
     return 0;
 }
+
+void ArrayDefinition::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "ARRAY DEF\n";
+}

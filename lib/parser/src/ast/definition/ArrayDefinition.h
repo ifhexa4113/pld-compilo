@@ -9,6 +9,7 @@ public:
     ArrayDefinition(LValueDeclaration* declaration_);
     ~ArrayDefinition();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
 
     // TODO missing an expression !
 };

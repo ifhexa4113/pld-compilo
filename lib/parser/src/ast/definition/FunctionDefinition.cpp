@@ -43,3 +43,10 @@ void FunctionDefinition::fillSymbolTable(SymbolTableStack& stack)
     }
     Block::fillSymbolTable(stack);
 }
+
+void FunctionDefinition::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "FUNC DEF\n";
+    for (auto child : children)
+        child->fillAstTrace(astTrace);
+}

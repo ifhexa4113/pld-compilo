@@ -13,6 +13,7 @@ public:
     Expression* getValue() const;
 
     void fillSymbolTable(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
 
 protected:
     Expression* value;

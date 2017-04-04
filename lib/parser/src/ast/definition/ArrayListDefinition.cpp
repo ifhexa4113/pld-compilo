@@ -40,3 +40,8 @@ void ArrayListDefinition::fillSymbolTable(SymbolTableStack& stack)
         }
     }    
 }
+
+void ArrayListDefinition::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "ARRAY LIST DEF\n";
+}

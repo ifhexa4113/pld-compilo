@@ -9,6 +9,7 @@ public:
     NullNode();
     ~NullNode();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
 };
 
 #endif //NULL_NODE_H

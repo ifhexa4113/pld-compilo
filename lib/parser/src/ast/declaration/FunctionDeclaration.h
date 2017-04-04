@@ -20,6 +20,8 @@ public:
 
     std::vector<LValueDeclaration*>& getArguments();
 
+    void fillAstTrace(std::string& astTrace);
+
 protected:
     std::vector<LValueDeclaration*> arguments;
 };

@@ -37,3 +37,8 @@ std::vector<LValueDeclaration*>& FunctionDeclaration::getArguments()
 {
     return arguments;
 }
+
+void FunctionDeclaration::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "FUNC DECL\n";
+}

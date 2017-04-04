@@ -16,6 +16,7 @@ public:
 
     int walkTree();
     void addFunction(FunctionDefinition* function);
+    void fillAstTrace(std::string& astTrace);
 };
 
 #endif

@@ -50,3 +50,10 @@ void Block::fillSymbolTable(SymbolTableStack& stack)
         child->fillSymbolTable(stack);
     stack.pop();
 }
+
+void Block::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "BLOCK\n";
+    for (auto child : children)
+        child->fillAstTrace(astTrace);
+}

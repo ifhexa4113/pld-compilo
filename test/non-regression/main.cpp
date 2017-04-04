@@ -23,9 +23,11 @@ bool errorManagerTest(string expectedErrorsTrace) {
 	return expectedErrorsTrace.compare(errorsTrace) == 0;
 }
 
-bool astTest(AstNode* astNode, vector<string>) {
-	// TODO
-    return true;
+bool astTest(AstNode* astNode, string expectedAstTrace) {
+	string astTrace = "";
+	astNode->fillAstTrace(astTrace);
+	std::cerr << std::endl << astTrace << std::endl; // to remove
+    return expectedAstTrace.compare(astTrace) == 0;
 }
 
 int main(int argc, char *argv[]) {
@@ -65,8 +67,30 @@ int main(int argc, char *argv[]) {
 		std::cerr << "Symbol table test : FAIL" << std::endl;
 	}
 
+	// Ast test
 
+	std::ifstream astInputStream;
+	astInputStream.open(argv[2]);
 
+	bool astTestResult;
+	if (astInputStream.is_open())
+	{
+		std::stringstream astStringStream;
+		astStringStream << astInputStream.rdbuf();
+		astTestResult = astTest(&program,astStringStream.str());
+	}
+	else
+	{
+		astTestResult = astTest(&program,"");
+	}
+	if (astTestResult)
+	{
+		std::cerr << "AST test : SUCCESS" << std::endl;
+	}
+	else
+	{
+		std::cerr << "AST test : FAIL" << std::endl;
+	}
 
 	return 0;
 }

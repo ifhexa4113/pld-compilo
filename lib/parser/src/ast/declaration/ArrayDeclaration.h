@@ -14,6 +14,7 @@ public:
     int getSize();
     int walkTree();
     ArrayDefinition* toEmptyDefinition();
+    void fillAstTrace(std::string& astTrace);
 
 protected:
     int size;

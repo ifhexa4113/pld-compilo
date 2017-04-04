@@ -14,6 +14,7 @@ public:
     Expression* getRExpression();
 
     void fillSymbolTable(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
 
 protected:
     Expression* rExpression;

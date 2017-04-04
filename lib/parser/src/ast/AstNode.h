@@ -30,6 +30,7 @@ public:
     
     virtual int walkTree() = 0;
     virtual void fillSymbolTable(SymbolTableStack&){};
+    virtual void fillAstTrace(std::string& astTrace) = 0;
 
 protected:
 #ifdef DEBUG

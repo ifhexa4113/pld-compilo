@@ -13,6 +13,7 @@ public:
     ~VariableDeclaration();
     int walkTree();
     VariableDefinition* toEmptyDefinition();
+    void fillAstTrace(std::string& astTrace);
 };
 
 #endif

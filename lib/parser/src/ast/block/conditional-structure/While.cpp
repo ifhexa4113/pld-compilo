@@ -21,3 +21,10 @@ int While::walkTree()
 {
     return 0;
 }
+
+void While::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "WHILE\n";
+    for (auto child : children)
+        child->fillAstTrace(astTrace);
+}

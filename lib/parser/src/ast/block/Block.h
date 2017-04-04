@@ -16,6 +16,7 @@ public:
     void addChildren(AstNode* child);
 
     virtual void fillSymbolTable(SymbolTableStack& stack);
+    virtual void fillAstTrace(std::string& astTrace);
 
 protected:
     SymbolTable symbolTable;

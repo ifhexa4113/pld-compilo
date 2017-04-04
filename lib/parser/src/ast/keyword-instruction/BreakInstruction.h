@@ -8,6 +8,7 @@ class BreakInstruction : public AstNode
 public:
     BreakInstruction();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
 };
 
 #endif

@@ -14,3 +14,8 @@ int NullNode::walkTree()
 {
     return 0;
 }
+
+void NullNode::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "NULL\n";
+}
