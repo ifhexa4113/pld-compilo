@@ -76,4 +76,5 @@ Operandx86Assembler Operandx86Assembler::getVirtualRegister(int offset) {
     Operandx86Assembler op(nullptr, nullptr);
     op.value = offset;
     op.type = operand_type::VIRTUAL_REGISTER;
+    return  op;
 }
