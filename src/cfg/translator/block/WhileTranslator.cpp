@@ -25,15 +25,33 @@ SubGraph * WhileTranslator::translate(Table* table)
     // Then translate the condition (note: it must be something, it can't be empty)
     Translator * ct = getFactory().getTranslator(wh->getCondition(), cfg);
     SubGraph* csb = ct->translate(table);
-    // At this point, we're sure that the input and the output are the same
-    BasicBlock* conditionBlock = csb->getInput();
+    // At this point, the condition's output must only have one BB
+    // If the last register contains 1 or more, the condition is true
+    BasicBlock* conditionBlockInput = csb->getInput();
+    conditionBlockInput->giveLabel();
+    std::vector<BasicBlock*> conditionBlockOutputs = csb->getOutputs();
+    // TODO: do something to actually compare it ?
     delete csb;
     delete ct;
 
-    // Then create a variable to memorize the previous block
-    std::vector<BasicBlock*> previousBlocks;
+    // Then create the block where to body will lie
+    BasicBlock* body = new BasicBlock();
+    // And be sure to link the condition's exitFalse to it
+    for(auto output: conditionBlockOutputs)
+    {
+        std::cout << "Setting outputs false to point to body..." << std::endl;
+        // NOTE: only one in theory, but hey...
+        output->setExitFalse(body);
+    }
 
-    std::cout << "There are " << wh->getChildren().size() << " children" << std::endl;
+    std::cout << "... Done." << std::endl;
+
+    body->setExitTrue(conditionBlockInput);
+
+    // Then create a variable to memorize the previous block
+    // std::vector<BasicBlock*> previousBlocks;
+
+    std::cout << "There are " << wh->getChildren().size() << " children." << std::endl;
 
     // Then gather the subgraph from children
     for(AstNode* child: wh->getChildren())
@@ -43,34 +61,21 @@ SubGraph * WhileTranslator::translate(Table* table)
             SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
 
-            if(previousBlocks.size() == 0)
-            {
-                // This is the first child
-                // We must link the condition's exitFalse to it
-                // TODO: how the hell do we chose which jump instruction to use ?
-                // TODO: does this depend of the last instruction of the block ?
-                conditionBlock->setExitFalse(bb);
-            }
+            // Just merge it for the moment
+            body->merge(bb);
 
-            for(BasicBlock* output: previousBlocks)
-            {
-                // NOTE: if we're at the first child, this should never be executed
-                output->setExitTrue(bb);
-                // TODO: handle a break instruction here ?
-            }
-            previousBlocks = sb->getOutputs();
+            // TODO: find something better than a merge
+
             delete sb;
             delete t;
         }
     }
 
-    // Then link the last outputs to the condition
-    // TODO: what if there was a break somewhere in the while ?
-    for(BasicBlock* output: previousBlocks)
-    {
-        output->setExitTrue(conditionBlock);
-    }
+//    std::cout << "Body:" << std::endl;
+//    body->print(std::cout);
+//    std::cout << "Condition:" << std::endl;
+//    conditionBlockInput->print(std::cout);
 
     // Eventually return a subgraph describing what we just created
-    return new SubGraph(conditionBlock, std::vector<BasicBlock*>(1, conditionBlock));
+    return new SubGraph(conditionBlockInput, conditionBlockOutputs);
 }
