@@ -13,13 +13,15 @@
  */
 class x86BasicBlockAssembler : public AbstractBasicBlockAssembler {
 public:
-    x86BasicBlockAssembler(BasicBlock *source);
+    x86BasicBlockAssembler(BasicBlock *source, bool generate_intro);
 
-    std::string generateProlog();
+    std::string generateProlog() override ;
     std::string translateIR();
-    std::string generateEpilog();
+    std::string generateEpilog() override ;
 
     std::string getLabel() override;
+
+    std::string getIntro() override;
 
     IRAbstractAssembler * translateInstruction(IRInstruction *instruction);
 };

@@ -5,12 +5,17 @@
 #include <sstream>
 #include <map>
 #include <cfg/ir/jump/CallInstruction.h>
-#include <assembler/x86/operand/Callx86Assembler.h>
+#include <assembler/x86/jump/Callx86Assembler.h>
 #include <iostream>
 #include "AbstractBasicBlockAssembler.h"
 
 std::string AbstractBasicBlockAssembler::translate() {
     std::ostringstream stream;
+
+    if (generate_intro)
+    {
+        stream << getIntro();
+    }
 
     stream << getLabel();
 
@@ -29,7 +34,8 @@ std::string AbstractBasicBlockAssembler::translate() {
     return stream.str();
 }
 
-AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : source(source), offset_list(){
+AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, bool generate_intro)
+        : source(source), generate_intro(generate_intro), offset_list(){
     Table* table = source->getTable();
     auto map = table->getAllRegisters();
     auto it = map->begin();

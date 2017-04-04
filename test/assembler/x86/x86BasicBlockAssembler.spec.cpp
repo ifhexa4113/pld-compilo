@@ -21,4 +21,6 @@ TEST_CASE("Addx86Assembler tests", "[x86]")
     std::string value = blockAssembler.translate();
     std::cout << "Block output : \n" << value << std::endl;
     REQUIRE(1 == 1);
+
+
 }

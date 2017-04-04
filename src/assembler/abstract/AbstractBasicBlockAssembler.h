@@ -16,12 +16,13 @@ class IRAbstractAssembler;
 
 class AbstractBasicBlockAssembler {
 public:
-    AbstractBasicBlockAssembler(BasicBlock *source);
+    AbstractBasicBlockAssembler(BasicBlock *source, bool generate_intro = false);
 
     virtual std::string generateProlog() = 0;
     virtual std::string translateIR() = 0;
     virtual std::string generateEpilog() = 0;
     virtual std::string getLabel() = 0;
+    virtual std::string getIntro() = 0;
 
     std::string translate();
 
@@ -34,6 +35,7 @@ protected:
     Table * table;
     int variable_count;
     int max_argument_count;
+    bool generate_intro;
 
 };
 

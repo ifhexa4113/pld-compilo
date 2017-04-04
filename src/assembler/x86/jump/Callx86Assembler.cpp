@@ -27,6 +27,6 @@ std::string Callx86Assembler::translate() const {
                 Operandx86Assembler::getVirtualRegister(param_index * 4));
     }
 
-    stream << "\tcall\t" << instruction->getLabel() << std::endl;
+    stream << "\tcall\t_" << instruction->getLabel() << std::endl;
     return stream.str();
 }
