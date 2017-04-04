@@ -15,6 +15,7 @@ public:
     int walkTree();
     ArrayDefinition* toEmptyDefinition();
     void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type type, SymbolTableStack& stack){return false;};
 
 protected:
     int size;

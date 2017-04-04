@@ -9,6 +9,7 @@ public:
     BreakInstruction();
     int walkTree();
     void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type type, SymbolTableStack& stack){return false;};
 };
 
 #endif

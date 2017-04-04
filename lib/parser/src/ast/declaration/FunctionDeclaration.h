@@ -21,6 +21,7 @@ public:
     std::vector<LValueDeclaration*>& getArguments();
 
     void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type type, SymbolTableStack& stack){return false;};
 
 protected:
     std::vector<LValueDeclaration*> arguments;

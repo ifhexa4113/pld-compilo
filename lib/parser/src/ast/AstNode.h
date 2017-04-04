@@ -6,6 +6,7 @@
 #endif
 
 #include "SymbolTableStack.h"
+#include "ast/declaration/Type.h"
 
 class AstNode {
 
@@ -31,6 +32,7 @@ public:
     virtual int walkTree() = 0;
     virtual void fillSymbolTable(SymbolTableStack&){};
     virtual void fillAstTrace(std::string& astTrace) = 0;
+    virtual bool checkReturnType(Type type, SymbolTableStack& stack) = 0;
 
 protected:
 #ifdef DEBUG

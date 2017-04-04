@@ -1,6 +1,7 @@
 #include "BinaryArithmeticOperation.h"
 #include "NullExpression.h"
 #include "ast/ErrorManager.h"
+#include <iostream>
 
 BinaryArithmeticOperation::BinaryArithmeticOperation(ArithmeticOperator op_, Expression* lExpression_, Expression* rExpression_) :
     op(op_),

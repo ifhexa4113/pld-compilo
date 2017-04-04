@@ -3,6 +3,7 @@
 #include "ast/declaration/FunctionDeclaration.h"
 #include "ast/declaration/LValueDeclaration.h"
 #include <typeinfo>
+#include "ast/ErrorManager.h"
 
 FunctionDefinition::FunctionDefinition(FunctionDeclaration* declaration_) :
     Definition(declaration_),
@@ -43,6 +44,12 @@ void FunctionDefinition::fillSymbolTable(SymbolTableStack& stack)
         }
     }
     Block::fillSymbolTable(stack);
+    bool checkReturn = Block::checkReturnType(getType(),stack);
+    if (getType()!=Type::VOID_T && !checkReturn)
+    {
+        ErrorManager& errorManager = ErrorManager::getInstance();
+        errorManager.addEncounteredError(ErrorManager::RETURN_MISSING, "");
+    }
 }
 
 void FunctionDefinition::fillAstTrace(std::string& astTrace)

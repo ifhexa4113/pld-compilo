@@ -17,6 +17,7 @@ public:
 
     void fillSymbolTable(SymbolTableStack& stack);
     void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type type, SymbolTableStack& stack){return false;};
 
 };
 

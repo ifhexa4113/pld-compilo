@@ -1,4 +1,4 @@
-char foo(uint32_t a) {
+uint64_t foo(uint32_t a) {
     uint64_t b = 0;
     if (a > 0)
     {
@@ -6,12 +6,12 @@ char foo(uint32_t a) {
             b++;
     }
     b += c;
-    return 'a';
+    return b;
 }
 
 void main() {
     uint32_t nb = 4;
-    char a = foo(nb);
+    uint64_t a = foo(nb);
     char b = fct();
     char c = foo(nb, nb);
 }

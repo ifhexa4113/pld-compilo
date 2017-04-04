@@ -57,3 +57,14 @@ void Block::fillAstTrace(std::string& astTrace)
     for (auto child : children)
         child->fillAstTrace(astTrace);
 }
+
+bool Block::checkReturnType(Type type, SymbolTableStack& stack)
+{
+    bool checkReturn = false;
+    for (auto child : children)
+    {
+        if (child->checkReturnType(type, stack) == true)
+        checkReturn = true;
+    }
+    return checkReturn;
+}

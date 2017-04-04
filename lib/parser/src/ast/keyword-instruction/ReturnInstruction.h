@@ -14,6 +14,7 @@ public:
 
     void fillSymbolTable(SymbolTableStack& stack);
     void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type type, SymbolTableStack& stack);
 
 protected:
     Expression* value;

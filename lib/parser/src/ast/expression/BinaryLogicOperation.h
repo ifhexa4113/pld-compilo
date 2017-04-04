@@ -29,6 +29,7 @@ public:
     Type getType(SymbolTableStack& stack);
     bool checkNonVoidType(SymbolTableStack& stack);
     void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type type, SymbolTableStack& stack){return false;};
 
 protected:
     LogicOperator op;

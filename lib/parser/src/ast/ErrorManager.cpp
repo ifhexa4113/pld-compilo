@@ -11,7 +11,8 @@ ErrorManager::ErrorManager() :
     errorsMessage.insert(std::make_pair(SYMBOL_REDECLARATION, "Error : redeclaration of symbol "));
     errorsMessage.insert(std::make_pair(INAPPROPRIATE_ARGUMENTS_NUMBER, "Error : inappropriate number of arguments for function call "));
 	errorsMessage.insert(std::make_pair(INAPPROPRIATE_VOID_TYPE, "Error : inappropriate type used (void)"));
-	errorsMessage.insert(std::make_pair(INAPPROPRIATE_RETURN_TYPE, "Error : inappropriate return type "));
+	errorsMessage.insert(std::make_pair(INAPPROPRIATE_RETURN_TYPE, "Error : inappropriate return type"));
+	errorsMessage.insert(std::make_pair(RETURN_MISSING, "Error : return missing"));
 }
 
 ErrorManager::~ErrorManager()
