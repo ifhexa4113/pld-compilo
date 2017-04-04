@@ -63,6 +63,8 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
                 // NOTE: if we're at the first child, this should never be executed
                 output->setExitTrue(bb);
             }
+
+            bool updatePrevious = false;
             if(previousBlocks.size() == 0)
             {
                 // This is the first child
@@ -70,13 +72,20 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
                 {
                     // And it can be merged
                     functionBlock->merge(bb);
+                    if(functionBlock->getExitTrue() == nullptr)
+                    {
+                        previousBlocks.clear();
+                        previousBlocks.push_back(functionBlock);
+                        updatePrevious = true;
+                    }
                 }
                 else
                 {
                     functionBlock->setExitTrue(bb);
                 }
             }
-            previousBlocks = sb->getOutputs();
+            if(!updatePrevious)
+                previousBlocks = sb->getOutputs();
 
             delete sb;
             delete t;
