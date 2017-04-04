@@ -29,7 +29,7 @@ bool errorManagerTest(string expectedErrorsTrace) {
 bool astTest(AstNode* astNode, std::string expectedAstTrace) {
 	std::string astTrace = "";
 	astNode->fillAstTrace(astTrace);
-	std::cerr << std::endl << astTrace << std::endl; // to remove
+	//std::cerr << std::endl << astTrace << std::endl; // to remove
 	expectedAstTrace.erase(std::remove(expectedAstTrace.begin(), expectedAstTrace.end(), '\n'), expectedAstTrace.end());
 	expectedAstTrace.erase(std::remove(expectedAstTrace.begin(), expectedAstTrace.end(), '\r'), expectedAstTrace.end());
 	astTrace.erase(std::remove(astTrace.begin(), astTrace.end(), '\n'), astTrace.end());

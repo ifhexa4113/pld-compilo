@@ -1,9 +1,9 @@
 void foo()
 {
-  int a = 1;
+  uint64_t a = 1;
 }
 
-int main()
+uint64_t main()
 {
- int b = 1 + foo();
+  uint64_t b = 1 + foo();
 }
