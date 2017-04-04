@@ -9,7 +9,7 @@ class BinaryBinaryOperationTranslator : public Translator
 public:
     BinaryBinaryOperationTranslator(BinaryBinaryOperation* binaryBinaryOperation, CFG* cfg);
     ~BinaryBinaryOperationTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 #endif // BINARY_BINARY_OPERATION_TRANSLATOR_H

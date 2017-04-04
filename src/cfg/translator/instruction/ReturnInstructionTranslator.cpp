@@ -12,7 +12,7 @@ ReturnInstructionTranslator::~ReturnInstructionTranslator()
     // Nothing else to do
 }
 
-SubGraph * ReturnInstructionTranslator::translate()
+SubGraph * ReturnInstructionTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     ReturnInstruction* retInstr = dynamic_cast<ReturnInstruction*>(node);
@@ -26,17 +26,21 @@ SubGraph * ReturnInstructionTranslator::translate()
     BasicBlock* retBlock = new BasicBlock();
 
     Translator* t = getFactory().getTranslator(retInstr->getValue(), cfg);
-    SubGraph* sb = t->translate();
+    SubGraph* sb = t->translate(table);
 
     BasicBlock* expr = sb->getInput();
     expr->setExitTrue(retBlock);
 
-    //TODO: ABI (where should we store Expr's intermediates results and ret value) + MovInstr with 2 registers + No value for register ??????
-    retBlock->addInstruction(new MovInstruction(new Register(), new Register(*(dynamic_cast<RegisterInstruction*>(expr->getInstructions().back())->getDestination()))));
+    // TODO: ABI (where should we store Expr's intermediates results and ret value) + MovInstr with 2 registers + No value for register ??????
+    retBlock->addInstruction(new MovInstruction(
+        table->getOrCreateRegister(),
+        table->getLastDestination(expr)
+    ));
 
     delete sb;
     delete t;
 
     // Return a subgraph describing what we just created
+    // TODO: the outputs should not be empty ?
     return new SubGraph(expr, std::vector<BasicBlock*>());
 }

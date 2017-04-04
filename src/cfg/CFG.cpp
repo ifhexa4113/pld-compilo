@@ -2,7 +2,7 @@
 #include "translator/Translator.h"
 #include "translator/TranslatorFactory.h"
 
-CFG::CFG(Ast *ast_) : ast(ast_), input(nullptr), blocks()
+CFG::CFG(Ast *ast_) : ast(ast_), input(nullptr)
 {
     Translator* t = TranslatorFactory::getFactory().getTranslator(&(ast->getProgram()), this);
     SubGraph* sb = t->translate();
@@ -13,15 +13,15 @@ CFG::CFG(Ast *ast_) : ast(ast_), input(nullptr), blocks()
 
 CFG::~CFG()
 {
-    for(BasicBlock* bb: blocks)
+    if(input)
     {
-        delete bb;
+        delete input;
     }
 }
 
-void CFG::addBasicBlock(BasicBlock *block)
+BasicBlock* CFG::getInput()
 {
-    blocks.push_back(block);
+    return input;
 }
 
 void CFG::print(std::ostream &ost) const

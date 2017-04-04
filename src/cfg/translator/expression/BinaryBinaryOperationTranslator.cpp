@@ -19,7 +19,7 @@ BinaryBinaryOperationTranslator::~BinaryBinaryOperationTranslator()
     // Nothing else to do
 }
 
-SubGraph* BinaryBinaryOperationTranslator::translate()
+SubGraph* BinaryBinaryOperationTranslator::translate(Table* table)
 {
     // Cast the node to its original ast node (cf constructor)
     BinaryBinaryOperation* binBinOp = dynamic_cast<BinaryBinaryOperation*>(node);
@@ -34,37 +34,53 @@ SubGraph* BinaryBinaryOperationTranslator::translate()
     std::vector<BasicBlock*> outputs(1, bb);
 
     Translator* leftT = getFactory().getTranslator(binBinOp->getLExpression(), cfg);
-    SubGraph* leftSb = leftT->translate();
+    SubGraph* leftSb = leftT->translate(table);
     Translator* rightT = getFactory().getTranslator(binBinOp->getRExpression(), cfg);
-    SubGraph* rightSb = rightT->translate();
+    SubGraph* rightSb = rightT->translate(table);
+
+    // Merge block of the two expressions
+    bb->merge(leftSb->getInput());
+    bb->merge(rightSb->getInput());
 
     switch(binBinOp->getOperator())
     {
     case BinaryBinaryOperator::XOR:
-        bb->addInstruction(new XorInstruction(new Register(),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+        bb->addInstruction(new XorInstruction(
+            table->getOrCreateRegister(),
+            table->getLastDestination(leftSb->getOutputs().back()),
+            table->getLastDestination(rightSb->getOutputs().back())
+        ));
+        break;
 
-        break;
     case BinaryBinaryOperator::OR:
-        bb->addInstruction(new OrInstruction(new Register(),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+        bb->addInstruction(new OrInstruction(
+            table->getOrCreateRegister(),
+            table->getLastDestination(leftSb->getOutputs().back()),
+            table->getLastDestination(rightSb->getOutputs().back())
+        ));
         break;
+
     case BinaryBinaryOperator::AND:
-        bb->addInstruction(new AndInstruction(new Register(),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+        bb->addInstruction(new AndInstruction(
+            table->getOrCreateRegister(),
+            table->getLastDestination(leftSb->getOutputs().back()),
+            table->getLastDestination(rightSb->getOutputs().back())
+        ));
         break;
+
     case BinaryBinaryOperator::LEFT_SHIFT:
-        bb->addInstruction(new LshiftInstruction(new Register(),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+        bb->addInstruction(new LshiftInstruction(
+            table->getOrCreateRegister(),
+            table->getLastDestination(leftSb->getOutputs().back()),
+            table->getLastDestination(rightSb->getOutputs().back())
+        ));
         break;
     case BinaryBinaryOperator::RIGHT_SHIFT:
-        bb->addInstruction(new RshiftInstruction(new Register(),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                              new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+        bb->addInstruction(new RshiftInstruction(
+            table->getOrCreateRegister(),
+            table->getLastDestination(leftSb->getOutputs().back()),
+            table->getLastDestination(rightSb->getOutputs().back())
+        ));
         break;
     }
     delete leftT;

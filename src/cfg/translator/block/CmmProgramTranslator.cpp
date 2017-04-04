@@ -12,8 +12,13 @@ CmmProgramTranslator::~CmmProgramTranslator()
     // Nothing else to do
 }
 
-SubGraph * CmmProgramTranslator::translate()
+SubGraph * CmmProgramTranslator::translate(Table* table)
 {
+    // NOTE: We don't need the table at this level.
+    //       Therefore, we won't pass any parameter to each child translator:
+    //       The child will have to create it by itself.
+    table = nullptr;    // Avoid warning
+
     // First cast it in something we can manipulate as we want
     CmmProgram* cmmProgram = dynamic_cast<CmmProgram*>(node);
     if(cmmProgram == nullptr)
@@ -33,7 +38,7 @@ SubGraph * CmmProgramTranslator::translate()
     {
         if(Translator * t = getFactory().getTranslator(child, cfg))
         {
-            SubGraph* sb = t->translate();
+            SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
 
             if(!firstBlock)

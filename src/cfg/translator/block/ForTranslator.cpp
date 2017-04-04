@@ -14,7 +14,7 @@ ForTranslator::~ForTranslator()
     // Nothing else to do
 }
 
-SubGraph * ForTranslator::translate()
+SubGraph * ForTranslator::translate(Table* table)
 {
     // First cast it in something we can manipulate as we want
     For* f = dynamic_cast<For*>(node);
@@ -36,7 +36,7 @@ SubGraph * ForTranslator::translate()
     if(dynamic_cast<NullExpression*>(e) == nullptr)
     {
         Translator * ct = getFactory().getTranslator(e, cfg);
-        SubGraph* csb = ct->translate();
+        SubGraph* csb = ct->translate(table);
         // At this point, we're sure that the input and the output are the same
         conditionBlock = csb->getInput();
         delete csb;
@@ -51,7 +51,7 @@ SubGraph * ForTranslator::translate()
     if(dynamic_cast<NullExpression*>(an) == nullptr)
     {
         Translator * it = getFactory().getTranslator(an, cfg);
-        SubGraph* isb = it->translate();
+        SubGraph* isb = it->translate(table);
         // At this point, we're sure that the input and the output are the same
         // TODO: are we really ?
         initBlock = isb->getInput();
@@ -69,7 +69,7 @@ SubGraph * ForTranslator::translate()
     if(dynamic_cast<NullExpression*>(e) == nullptr)
     {
         Translator * it = getFactory().getTranslator(e, cfg);
-        SubGraph* isb = it->translate();
+        SubGraph* isb = it->translate(table);
         // At this point, we're sure that the input and the output are the same
         incrementBlock = isb->getInput();
         delete isb;
@@ -84,7 +84,7 @@ SubGraph * ForTranslator::translate()
     {
         if(Translator * t = getFactory().getTranslator(child, cfg))
         {
-            SubGraph* sb = t->translate();
+            SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
 
             if(previousBlocks.size() == 0)

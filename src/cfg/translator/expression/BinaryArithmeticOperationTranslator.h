@@ -10,7 +10,7 @@ class BinaryArithmeticOperationTranslator : public Translator
 public:
     BinaryArithmeticOperationTranslator(BinaryArithmeticOperation* binaryArithmeticOperation, CFG* cfg);
     ~BinaryArithmeticOperationTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 #endif //PLD_COMPILO_BINARYARITHMETICOPERATIONTRANSLATOR_H

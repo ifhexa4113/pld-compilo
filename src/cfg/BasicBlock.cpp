@@ -3,6 +3,8 @@
 
 int BasicBlock::labelCounter = 0;
 
+// ---------------------------------------- Constructors / Destructors
+
 BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* exitFalse_, BasicBlock::JumpType exitJumpType_) :
     label(([&label_]() {
         if(label_ == "$$unnamed$$") {
@@ -15,7 +17,10 @@ BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* ex
     instructions(),
     exitTrue(exitTrue_),
     exitFalse(exitFalse_),
-    exitJumpType(exitJumpType_)
+    exitJumpType(exitJumpType_),
+    table(nullptr),
+    colored(false),
+    prologable(false)
 {
     // Nothing else to do
 }
@@ -26,15 +31,22 @@ BasicBlock::~BasicBlock()
     {
         delete instruction;
     }
-    if(exitTrue != nullptr)
+    if(exitTrue && exitTrue != this)
     {
         delete exitTrue;
     }
-    if(exitFalse != nullptr)
+    if(exitFalse && exitFalse != this)
     {
         delete exitFalse;
     }
+    if(isPrologable() && table)
+    {
+        // Only the BB which will generate a prolog are able to destroy a Table
+        delete table;
+    }
 }
+
+// ---------------------------------------- Getters
 
 std::string BasicBlock::getLabel() const
 {
@@ -61,6 +73,23 @@ BasicBlock::JumpType BasicBlock::getExitJumpType() const
     return exitJumpType;
 }
 
+Table* BasicBlock::getTable()
+{
+    return table;
+}
+
+bool BasicBlock::isColored()
+{
+    return colored;
+}
+
+bool BasicBlock::isPrologable()
+{
+    return prologable;
+}
+
+// ---------------------------------------- Setters
+
 void BasicBlock::setExitTrue(BasicBlock *exitTrue_)
 {
     if(exitTrue != nullptr)
@@ -84,6 +113,21 @@ void BasicBlock::setExitJumpType(BasicBlock::JumpType j)
     exitJumpType = j;
 }
 
+void BasicBlock::setTable(Table * t)
+{
+    table = t;
+}
+
+void BasicBlock::setColored(bool colored_){
+    colored = colored_;
+}
+
+void BasicBlock::setPrologable(bool prologable_){
+    prologable = prologable_;
+}
+
+// ---------------------------------------- Others
+
 void BasicBlock::addInstruction(IRInstruction * instruction)
 {
     instructions.push_back(instruction);
@@ -95,6 +139,12 @@ void BasicBlock::merge(BasicBlock * otherBlock)
     {
         instructions.push_back(instruction);
     }
+
+    // L'exit TRUE et False du otherBlock deviennent ceux du Block courant
+    setExitTrue(otherBlock->getExitTrue());
+    otherBlock->setExitTrue(nullptr);
+    setExitFalse(otherBlock->getExitFalse());
+    otherBlock->setExitFalse(nullptr);
 }
 
 void BasicBlock::print(std::ostream &ost) const
@@ -107,12 +157,16 @@ void BasicBlock::print(std::ostream &ost) const
     {
         instruction->print(ost);
     }
-    if(exitTrue)
+    if(exitTrue && !(exitTrue->isColored()))
     {
+        ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+        exitTrue->setColored();
         exitTrue->print(ost);
     }
-    if(exitFalse)
+    if(exitFalse && !(exitFalse->isColored()))
     {
+        ost << "JMP\t" << exitFalse->getLabel() << std::endl;
+        exitFalse->setColored();
         exitFalse->print(ost);
     }
 }

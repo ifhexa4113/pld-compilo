@@ -10,12 +10,18 @@ DivInstruction::DivInstruction(Register *destination, Operand *param1, Operand *
 }
 
 DivInstruction::~DivInstruction() {
-    delete param1;
-    delete param2;
+    if(!dynamic_cast<Register*>(param1))
+    {
+        delete param1;
+    }
+    if(!dynamic_cast<Register*>(param2))
+    {
+        delete param2;
+    }
 }
 
 void DivInstruction::print(std::ostream &ost) const {
-    ost << "MUL\t" << destination << ", " << param1 << ", " << param2;
+    ost << "MUL\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *DivInstruction::getParam1() const {

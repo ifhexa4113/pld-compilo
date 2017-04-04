@@ -1,6 +1,7 @@
 %code requires {
     #include <vector>
     #include <string>
+    #include <iostream>
 
     #include "ast/AstNode.h"
     #include "ast/block/CmmProgram.h"
@@ -344,7 +345,14 @@ for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON exp
 
 while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement {
                 std::vector<AstNode*> v;
-                v.push_back($5);
+                Block* b = dynamic_cast<Block*>($5);
+                if(b != nullptr && dynamic_cast<ConditionalStructure*>($5) == nullptr) {
+                    for(AstNode* child: b->getChildren()) {
+                        v.push_back(child);
+                    }
+                } else {
+                    v.push_back($5);
+                }
                 $$ = new While($3, v); }
             ;
 
