@@ -11,6 +11,9 @@
 /**
  * Transform a basic bloc into assembly
  */
+
+class IRAbstractAssembler;
+
 class AbstractBasicBlockAssembler {
 public:
     AbstractBasicBlockAssembler(BasicBlock *source);

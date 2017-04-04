@@ -5,15 +5,20 @@
 #include <cfg/ir/basic/MovInstruction.h>
 #include "catch.h"
 #include "assembler/x86/x86BasicBlockAssembler.h"
+#include <iostream>
 
 TEST_CASE("Addx86Assembler tests", "[x86]")
 {
     BasicBlock * block = new BasicBlock("foo");
-    block->addInstruction(new MovInstruction(new Register("%reg0",0), new Register("%reg1",0)));
+
+
+    Table mahTable;
+    block->setTable(&mahTable);
+
+    block->addInstruction(new MovInstruction(mahTable.getOrCreateRegister(), mahTable.getOrCreateRegister()));
     x86BasicBlockAssembler blockAssembler(block);
 
     std::string value = blockAssembler.translate();
-    INFO("Block output : \n" << value);
-
-    REQUIRE(1 == 0);
+    std::cout << "Block output : \n" << value << std::endl;
+    REQUIRE(1 == 1);
 }

@@ -7,6 +7,7 @@
 #include <assembler/x86/basic/Movx86Assembler.h>
 #include <cfg/ir/jump/CallInstruction.h>
 #include <assembler/x86/operand/Callx86Assembler.h>
+#include <iostream>
 #include "x86BasicBlockAssembler.h"
 
 
@@ -41,11 +42,12 @@ std::string x86BasicBlockAssembler::translateIR() {
 
         if (translated_instruction != nullptr)
         {
+            //std::cout << "Translated mov instruction" << std::endl;
             stream << translated_instruction->translate();
         }
     }
 
-    return "";
+    return stream.str();
 }
 
 std::string x86BasicBlockAssembler::generateEpilog() {
@@ -59,6 +61,7 @@ IRAbstractAssembler * x86BasicBlockAssembler::translateInstruction(IRInstruction
 
     if ((mov = dynamic_cast<MovInstruction *>(instruction)) != nullptr)
     {
+
         return new Movx86Assembler(mov, this);
     }
     else if ((call = dynamic_cast<CallInstruction *>(instruction)) != nullptr)
@@ -71,7 +74,6 @@ IRAbstractAssembler * x86BasicBlockAssembler::translateInstruction(IRInstruction
 
 std::string x86BasicBlockAssembler::getLabel() {
     std::ostringstream stream;
-
     stream << source->getLabel() << ":" << std::endl;
 
     return stream.str();

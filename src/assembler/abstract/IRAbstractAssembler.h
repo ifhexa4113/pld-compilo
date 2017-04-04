@@ -12,6 +12,8 @@
 /**
  * Base class for all Assembler instructions
  */
+class AbstractBasicBlockAssembler;
+
 class IRAbstractAssembler {
 public:
     IRAbstractAssembler(AbstractBasicBlockAssembler * parent_block);

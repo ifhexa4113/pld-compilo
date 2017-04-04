@@ -6,6 +6,7 @@
 #include <map>
 #include <cfg/ir/jump/CallInstruction.h>
 #include <assembler/x86/operand/Callx86Assembler.h>
+#include <iostream>
 #include "AbstractBasicBlockAssembler.h"
 
 std::string AbstractBasicBlockAssembler::translate() {
@@ -30,9 +31,8 @@ std::string AbstractBasicBlockAssembler::translate() {
 
 AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : source(source), offset_list(){
     Table* table = source->getTable();
-    std::map<Register *, RegisterInfo> & map = table->getAllRegisters();
-
-    std::map<Register *, RegisterInfo>::iterator it = map.begin();
+    auto map = table->getAllRegisters();
+    auto it = map->begin();
     int variable_index = 1;
     max_argument_count = 0;
 
@@ -51,7 +51,7 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : s
     }
     variable_index += max_argument_count;
 
-    while (it != map.end())
+    while (it != map->end())
     {
         it->second.setOffset(variable_index * 4);
         variable_index ++;

@@ -21,7 +21,7 @@ std::string Movx86Assembler::translate() const {
 std::string Movx86Assembler::getString(Operandx86Assembler source, Operandx86Assembler dest) {
     std::ostringstream stm;
 
-    stm << "mov" << source.toString() << ", " << dest.toString() << std::endl;
+    stm << "mov\t" << source.toString() << ", " << dest.toString() << std::endl;
 
     return stm.str();
 }

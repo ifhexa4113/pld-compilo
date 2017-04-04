@@ -67,7 +67,7 @@ public:
      * Returns all the registers and their associated information,
      * in the shape of a map.
      */
-    std::map<Register*, RegisterInfo>& getAllRegisters();
+    std::map<Register *, RegisterInfo> * getAllRegisters();
 
     /**
      * Prints the table in the given stream.

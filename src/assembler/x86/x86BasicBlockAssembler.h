@@ -6,7 +6,7 @@
 #define PLD_COMPILO_X86BASICBLOCKASSEMBLER_H
 
 #include <assembler/abstract/AbstractBasicBlockAssembler.h>
-#include "cfg/BasicBlock.h";
+#include "cfg/BasicBlock.h"
 
 /**
  * Transform a basic bloc into assembly
@@ -22,8 +22,6 @@ public:
     std::string getLabel() override;
 
     IRAbstractAssembler * translateInstruction(IRInstruction *instruction);
-private:
-    BasicBlock *source;
 };
 
 
