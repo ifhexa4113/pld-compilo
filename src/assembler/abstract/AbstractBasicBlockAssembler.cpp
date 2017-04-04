@@ -57,9 +57,10 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : s
         variable_index ++;
         it ++;
     }
+    variable_count = variable_index;
 }
 
 int AbstractBasicBlockAssembler::getOffset(Register *reg) {
-    return offset_list[reg];
+    return source->getTable()->getRegisterInfo(reg).getOffset();
 }
 

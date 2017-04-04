@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <assembler/abstract/AbstractBasicBlockAssembler.h>
+#include <iostream>
 
 Operandx86Assembler::Operandx86Assembler(Operand *operand, AbstractBasicBlockAssembler *parent_block) {
     LiteralNumber *lit = nullptr;
@@ -37,7 +38,7 @@ std::string Operandx86Assembler::toString() {
             break;
         }
         case operand_type::VIRTUAL_REGISTER : {
-            stm << "$" << value << "(%esp)";
+            stm << -value << "(%esp)";
         }
         default:
             break;

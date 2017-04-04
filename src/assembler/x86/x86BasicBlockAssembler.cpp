@@ -24,9 +24,9 @@ std::string x86BasicBlockAssembler::generateProlog() {
     // subl $variable_count * 4, %esp
 
     // PAS LE TEMPS DE NIAISER
-    stream << "pushl %epb" << std::endl;
-    stream << "movl %esp, %epb" << std::endl;
-    stream << "subl " << variable_count * 4 << ", %esp" << std::endl;
+    stream << "\tpushl\t%epb" << std::endl;
+    stream << "\tmovl\t%esp, %epb" << std::endl;
+    stream << "\tsubl\t" << variable_count * 4 << ", %esp" << std::endl;
     
     return stream.str();
 }
