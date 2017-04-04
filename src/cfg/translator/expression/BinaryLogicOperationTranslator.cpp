@@ -19,7 +19,7 @@ BinaryLogicOperationTranslator::~BinaryLogicOperationTranslator()
     // Nothing else to do
 }
 
-SubGraph* BinaryLogicOperationTranslator::translate()
+SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
 {
     // Cast the node to its original ast node (cf constructor)
     BinaryLogicOperation* binLogOp = dynamic_cast<BinaryLogicOperation*>(node);
@@ -32,7 +32,7 @@ SubGraph* BinaryLogicOperationTranslator::translate()
     // Construct blocks for the return subgraph
     BasicBlock* inputBlock = new BasicBlock("");
     // TODO EXPRESSION need a label ?
-    BasicBlock* outputBlock = new BasicBlock("");
+    BasicBlock* outputBlock = new BasicBlock();
     std::vector<BasicBlock*> outputs(1, outputBlock);
 
     Translator* leftT = getFactory().getTranslator(binLogOp->getLExpression(), cfg);
@@ -40,19 +40,23 @@ SubGraph* BinaryLogicOperationTranslator::translate()
     Translator* rightT = getFactory().getTranslator(binLogOp->getRExpression(), cfg);
     SubGraph* rightSb = rightT->translate();
 
+    inputBlock->merge(leftSb->getInput());
+    inputBlock->merge(rightSb->getInput());
+
+    Register* commonRegister = table->getOrCreateRegister();
     switch(binLogOp->getOperator())
     {
         case LogicOperator::EQUAL:
         {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* trueBlock = new BasicBlock("");
-            BasicBlock* falseBlock = new BasicBlock("");
-            Register* commonRegister = new Register();
+            BasicBlock* trueBlock = new BasicBlock();
+            BasicBlock* falseBlock = new BasicBlock();
 
             // Add their instructtion to each block
-            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                table->getLastDestination(rightSb->getOutputs().back())));
             
             trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
             falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
@@ -74,13 +78,13 @@ SubGraph* BinaryLogicOperationTranslator::translate()
         {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* trueBlock = new BasicBlock("");
-            BasicBlock* falseBlock = new BasicBlock("");
-            Register* commonRegister = new Register();
+            BasicBlock* trueBlock = new BasicBlock();
+            BasicBlock* falseBlock = new BasicBlock();
 
             // Add their instructtion to each block
-            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                table->getLastDestination(rightSb->getOutputs().back())));
             
             trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
             falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
@@ -103,13 +107,13 @@ SubGraph* BinaryLogicOperationTranslator::translate()
         {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* trueBlock = new BasicBlock("");
-            BasicBlock* falseBlock = new BasicBlock("");
-            Register* commonRegister = new Register();
+            BasicBlock* trueBlock = new BasicBlock();
+            BasicBlock* falseBlock = new BasicBlock();
 
             // Add their instructtion to each block
-            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                table->getLastDestination(rightSb->getOutputs().back())));
             
             trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
             falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
@@ -132,13 +136,13 @@ SubGraph* BinaryLogicOperationTranslator::translate()
         {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* trueBlock = new BasicBlock("");
-            BasicBlock* falseBlock = new BasicBlock("");
-            Register* commonRegister = new Register();
+            BasicBlock* trueBlock = new BasicBlock();
+            BasicBlock* falseBlock = new BasicBlock();
 
             // Add their instructtion to each block
-            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                table->getLastDestination(rightSb->getOutputs().back())));
             
             trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
             falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
@@ -161,13 +165,13 @@ SubGraph* BinaryLogicOperationTranslator::translate()
         {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* trueBlock = new BasicBlock("");
-            BasicBlock* falseBlock = new BasicBlock("");
-            Register* commonRegister = new Register();
+            BasicBlock* trueBlock = new BasicBlock();
+            BasicBlock* falseBlock = new BasicBlock();
 
             // Add their instructtion to each block
-            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                table->getLastDestination(rightSb->getOutputs().back())));
             
             trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
             falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
@@ -189,13 +193,13 @@ SubGraph* BinaryLogicOperationTranslator::translate()
                 {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* trueBlock = new BasicBlock("");
-            BasicBlock* falseBlock = new BasicBlock("");
-            Register* commonRegister = new Register();
+            BasicBlock* trueBlock = new BasicBlock();
+            BasicBlock* falseBlock = new BasicBlock();
 
             // Add their instructtion to each block
-            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                          new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ) ));
+            inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                table->getLastDestination(rightSb->getOutputs().back())));
             
             trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
             falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
@@ -217,17 +221,18 @@ SubGraph* BinaryLogicOperationTranslator::translate()
         {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* firstLevelFalseBlock = new BasicBlock("");
-            BasicBlock* secondLevelFalseBlock = new BasicBlock("");
-            BasicBlock* trueBlock = new BasicBlock("");
-            Register* commonRegister = new Register();
+            BasicBlock* firstLevelFalseBlock = new BasicBlock();
+            BasicBlock* secondLevelFalseBlock = new BasicBlock();
+            BasicBlock* trueBlock = new BasicBlock();
 
             // Add their instruction to each block
-            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                          new LiteralNumber(0) ));
+            inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                new LiteralNumber(0) ));
 
-            firstLevelFalseBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                                    new LiteralNumber(0) ));
+            firstLevelFalseBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(rightSb->getOutputs().back()),
+                new LiteralNumber(0) ));
 
             secondLevelFalseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
             trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
@@ -251,17 +256,18 @@ SubGraph* BinaryLogicOperationTranslator::translate()
         {
             // Create specific object
             // TODO EXPRESSION need a label ?
-            BasicBlock* firstLevelTrueBlock = new BasicBlock("");
-            BasicBlock* secondLevelTrueBlock = new BasicBlock("");
-            BasicBlock* falseBlock = new BasicBlock("");
-            Register* commonRegister = new Register();
+            BasicBlock* firstLevelTrueBlock = new BasicBlock();
+            BasicBlock* secondLevelTrueBlock = new BasicBlock();
+            BasicBlock* falseBlock = new BasicBlock();
 
             // Add their instruction to each block
-            inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                          new LiteralNumber(0) ));
+            inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                new LiteralNumber(0) ));
 
-            firstLevelTrueBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-                                                                   new LiteralNumber(0) ));
+            firstLevelTrueBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(rightSb->getOutputs().back()),
+                new LiteralNumber(0) ));
 
             secondLevelTrueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
             falseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));

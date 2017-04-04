@@ -12,6 +12,7 @@
 #include "expression/BinaryArithmeticOperationTranslator.h"
 #include "expression/BinaryBinaryOperationTranslator.h"
 #include "expression/FunctionExpressionTranslator.h"
+#include "expression/BinaryLogicOperationTranslator.h"
 
 #include "ast/expression/Expression.h"
 #include "ast/expression/LiteralNumberExpression.h"
@@ -19,6 +20,7 @@
 #include "ast/expression/BinaryArithmeticOperation.h"
 #include "ast/expression/ParenthesisExpression.h"
 #include "ast/expression/FunctionExpression.h"
+#include "ast/expression/BinaryLogicOperation.h"
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
@@ -99,6 +101,11 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
         {
             cout << "It's a FunctionExpression - returning the right translator." << endl;
             return new FunctionExpressionTranslator(fe, cfg);
+        }
+        else if(BinaryLogicOperation* binLogOp = dynamic_cast<BinaryLogicOperation*>(node))
+        {
+            cout << "It's a BinaryLogicOperation - returning the right translator." << endl;
+            return new BinaryLogicOperationTranslator(binLogOp, cfg);
         }
     } else if(dynamic_cast<Definition*>(node))
     {

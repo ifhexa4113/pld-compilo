@@ -67,7 +67,7 @@ class BinaryLogicOperationTranslator : public Translator
 public:
     BinaryLogicOperationTranslator(BinaryLogicOperation* binaryLogicOperation, CFG* cfg);
     ~BinaryLogicOperationTranslator();
-    SubGraph* translate();
+    SubGraph* translate(Table* table = nullptr);
 };
 
 #endif // BINARY_LOGIC_OPERATION_TRANSLATOR_H
