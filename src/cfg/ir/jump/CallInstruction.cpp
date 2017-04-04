@@ -16,7 +16,12 @@ CallInstruction::~CallInstruction() {
 }
 
 void CallInstruction::print(std::ostream &ost) const {
-    ost << "CALL\t" << label << std::endl;
+    ost << "CALL\t" << label;
+    for(auto param: registers)
+    {
+        ost << "\t" << *param;
+    }
+    ost <<std::endl;
 }
 
 const std::string &CallInstruction::getLabel() const {
