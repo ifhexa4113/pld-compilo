@@ -19,13 +19,13 @@ int main()
     int result = yyparse(program);
     cout << "AST done" << endl;
 
-    cout << "Creating CFG..." << endl;
-    CFG cfg(&ast);
-    cout << "CFG done:" << endl;
-    cfg.print(cout);
-
-    x86BasicBlockAssembler assembler(cfg.getInput());
-    cout << assembler.translate();
+//    cout << "Creating CFG..." << endl;
+//    CFG cfg(&ast);
+//    cout << "CFG done:" << endl;
+//    cfg.print(cout);
+//
+//    x86BasicBlockAssembler assembler(cfg.getInput());
+//    cout << assembler.translate();
 
     return result;
 }
