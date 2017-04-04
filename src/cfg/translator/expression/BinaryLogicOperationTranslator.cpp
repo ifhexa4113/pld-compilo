@@ -36,9 +36,9 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
     std::vector<BasicBlock*> outputs(1, outputBlock);
 
     Translator* leftT = getFactory().getTranslator(binLogOp->getLExpression(), cfg);
-    SubGraph* leftSb = leftT->translate();
+    SubGraph* leftSb = leftT->translate(table);
     Translator* rightT = getFactory().getTranslator(binLogOp->getRExpression(), cfg);
-    SubGraph* rightSb = rightT->translate();
+    SubGraph* rightSb = rightT->translate(table);
 
     inputBlock->merge(leftSb->getInput());
     inputBlock->merge(rightSb->getInput());
