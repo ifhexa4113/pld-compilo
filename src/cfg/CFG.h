@@ -14,16 +14,9 @@ public:
     void print(std::ostream& ost) const;
     BasicBlock* getInput();
 
-    /**
-     * @deprecated
-     * @param block
-     */
-    void addBasicBlock(BasicBlock* block);
-
 protected:
     Ast* ast;
     BasicBlock* input;
-    std::vector<BasicBlock*> blocks;
 };
 
 #endif //CFG_H
