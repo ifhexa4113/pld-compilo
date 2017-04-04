@@ -18,8 +18,11 @@ public:
     virtual std::string generateProlog() = 0;
     virtual std::string translateIR() = 0;
     virtual std::string generateEpilog() = 0;
+    virtual std::string getLabel() = 0;
 
     std::string translate();
+
+    int getOffset(Register * reg);
 
 protected:
     BasicBlock *source;
@@ -27,6 +30,7 @@ protected:
     std::map<Register *, int> offset_list;
     Table * table;
     int variable_count;
+    int max_argument_count;
 
 };
 

@@ -9,6 +9,7 @@
 #include <assembler/abstract/jump/CallAbstractAssembler.h>
 
 class Callx86Assembler : CallAbstractAssembler {
+public:
     Callx86Assembler(CallInstruction *instruction, AbstractBasicBlockAssembler *parent_block);
 
     ~Callx86Assembler() override;

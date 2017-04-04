@@ -16,3 +16,7 @@ void MovInstruction::print(std::ostream& ost) const
 {
     ost << "MOV\t" << *destination << ", " << *source << std::endl;
 }
+
+Operand *MovInstruction::getSource() const {
+    return source;
+}

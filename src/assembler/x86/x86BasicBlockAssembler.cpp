@@ -5,23 +5,13 @@
 #include <sstream>
 #include <map>
 #include <assembler/x86/basic/Movx86Assembler.h>
+#include <cfg/ir/jump/CallInstruction.h>
+#include <assembler/x86/operand/Callx86Assembler.h>
 #include "x86BasicBlockAssembler.h"
 
 
 x86BasicBlockAssembler::x86BasicBlockAssembler(BasicBlock *source) : AbstractBasicBlockAssembler(source){
-    std::ostringstream stream;
 
-    if (source->isPrologable())
-    {
-        stream << generateProlog();
-    }
-
-    stream << translateIR();
-
-    if (source->isPrologable())
-    {
-        stream << generateEpilog();
-    }
 }
 
 std::string x86BasicBlockAssembler::generateProlog() {
@@ -47,7 +37,12 @@ std::string x86BasicBlockAssembler::translateIR() {
 
     for (int current_index = 0; current_index < instructions.size(); current_index ++)
     {
+        IRAbstractAssembler * translated_instruction = translateInstruction(instructions[current_index]);
 
+        if (translated_instruction != nullptr)
+        {
+            stream << translated_instruction->translate();
+        }
     }
 
     return "";
@@ -57,15 +52,27 @@ std::string x86BasicBlockAssembler::generateEpilog() {
     return "";
 }
 
-IRAbstractAssembler x86BasicBlockAssembler::translateInstruction(IRInstruction *instruction) {
+IRAbstractAssembler * x86BasicBlockAssembler::translateInstruction(IRInstruction *instruction) {
 
     MovInstruction * mov = nullptr;
+    CallInstruction * call = nullptr;
 
     if ((mov = dynamic_cast<MovInstruction *>(instruction)) != nullptr)
     {
-        return Movx86Assembler(mov);
+        return new Movx86Assembler(mov, this);
+    }
+    else if ((call = dynamic_cast<CallInstruction *>(instruction)) != nullptr)
+    {
+        return new Callx86Assembler(call, this);
     }
 
+    return nullptr;
+}
 
-    return IRAbstractAssembler(nullptr);
+std::string x86BasicBlockAssembler::getLabel() {
+    std::ostringstream stream;
+
+    stream << source->getLabel() << ":" << std::endl;
+
+    return stream.str();
 }

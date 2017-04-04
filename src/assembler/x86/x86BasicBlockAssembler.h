@@ -19,7 +19,9 @@ public:
     std::string translateIR();
     std::string generateEpilog();
 
-    IRAbstractAssembler translateInstruction(IRInstruction * instruction);
+    std::string getLabel() override;
+
+    IRAbstractAssembler * translateInstruction(IRInstruction *instruction);
 private:
     BasicBlock *source;
 };

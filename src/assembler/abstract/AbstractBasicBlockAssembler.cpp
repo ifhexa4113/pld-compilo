@@ -11,6 +11,8 @@
 std::string AbstractBasicBlockAssembler::translate() {
     std::ostringstream stream;
 
+    stream << getLabel();
+
     if (source->isPrologable())
     {
         stream << generateProlog();
@@ -31,13 +33,8 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : s
     std::map<Register *, RegisterInfo> & map = table->getAllRegisters();
 
     std::map<Register *, RegisterInfo>::iterator it = map.begin();
-    int variable_index = 0;
-    int max_argument_count = 0;
-
-    // find all call calls
-    while (it != map.end())
-    {
-    }
+    int variable_index = 1;
+    max_argument_count = 0;
 
     for(IRInstruction * intr : source->getInstructions())
     {
@@ -52,7 +49,7 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : s
             }
         }
     }
-
+    variable_index += max_argument_count;
 
     while (it != map.end())
     {
@@ -60,5 +57,9 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source) : s
         variable_index ++;
         it ++;
     }
+}
+
+int AbstractBasicBlockAssembler::getOffset(Register *reg) {
+    return offset_list[reg];
 }
 

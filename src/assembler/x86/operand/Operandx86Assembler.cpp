@@ -20,20 +20,8 @@ Operandx86Assembler::Operandx86Assembler(Operand *operand, AbstractBasicBlockAss
     }
     else if ((reg = dynamic_cast<Register*>(operand)) != nullptr)
     {
-        // plz kill me :(
-
-        //int tmp_value = std::stoi(reg->getName().substr(4,2), nullptr, 0);
-        // Check if we can map
-        if (reg->getValue() <= physicalRegisterCount)
-        {
-            //value = reg->getValue();
-            type = operand_type::PHYSICAL_REGISTER;
-        }
-        else
-        {
-            //value = reg->getValue() - physicalRegisterCount;
-            type = operand_type::VIRTUAL_REGISTER;
-        }
+        value = parent_block->getOffset((Register*) operand);
+        type = operand_type::VIRTUAL_REGISTER;
     }
 }
 
@@ -46,33 +34,10 @@ std::string Operandx86Assembler::toString() {
             break;
         }
         case operand_type::PHYSICAL_REGISTER : {
-            switch (value) {
-                case 1:
-                    stm << "eax";
-                    break;
-                case 2:
-                    stm << "ecx";
-                    break;
-                case 3:
-                    stm << "edx";
-                    break;
-                case 4:
-                    stm << "ebx";
-                    break;
-                /*case 5:
-                    stm << "esi";
-                    break;
-                case 6:
-                    stm << "edi";
-                    break;*/
-                default:
-                    break;
-
-            }
+            break;
         }
         case operand_type::VIRTUAL_REGISTER : {
-            /*stm << "[" << Operandx86Assembler::virtualRegisterMemoryOffset + (value - Operandx86Assembler::physicalRegisterCount) *
-                                                                                     sizeof(uint64_t) << "]";*/
+            stm << "$" << value << "(%esp)";
         }
         default:
             break;
@@ -104,4 +69,10 @@ void Operandx86Assembler::setValue(int value) {
 
 Operandx86Assembler::Operandx86Assembler(const Operandx86Assembler::operand_type type, const int value) : type(type), value(value) {
 
+}
+
+Operandx86Assembler Operandx86Assembler::getVirtualRegister(int offset) {
+    Operandx86Assembler op(nullptr, nullptr);
+    op.value = offset;
+    op.type = operand_type::VIRTUAL_REGISTER;
 }

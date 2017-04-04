@@ -26,7 +26,7 @@ public:
     };
 
     //static Operandx86Assembler getWorkRegister(work_register id);
-
+    static Operandx86Assembler getVirtualRegister(int offset);
     operand_type getType() const;
 
     int getValue() const;

@@ -14,6 +14,8 @@ public:
 
 protected:
     Operand* source;
+public:
+    Operand *getSource() const;
 };
 
 

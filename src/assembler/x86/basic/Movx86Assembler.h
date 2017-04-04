@@ -11,7 +11,7 @@
 
 class Movx86Assembler : public MovAbstractAssembler {
 public:
-    Movx86Assembler(MovInstruction *instruction);
+    Movx86Assembler(MovInstruction *instruction, AbstractBasicBlockAssembler *parent_block);
 
     ~Movx86Assembler() override;
 
