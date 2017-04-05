@@ -206,13 +206,17 @@ void BasicBlock::print(std::ostream &ost)
         std::cout << "JMPZ\t" << exitTrue->getLabel() <<  std::endl;
 
         setColored();
+
+        // sauvegarde du bloc de sortie du graphe non linéaire
+        // TODO SEGFAULT replace
         //BasicBlock* endBlock = nullptr;
         BasicBlock* endBlock = exitTrue;
 
-        // parcours des sorties false en profondeur
+        // parcours du graphe non linéaire
         walkCfgPrint(std::cout, exitFalse, &endBlock);
 
         // le bloc de fin de graphe (l'endroit ou le bloc converge)
+        // on revient à une partie linéaire
         endBlock->print(ost);
     }
     else
@@ -239,11 +243,15 @@ void BasicBlock::walkCfgPrint(std::ostream &ost, BasicBlock* block, BasicBlock**
 
     if(block->getExitFalse())
     {
+        // On continue sur la branche false tant qu'elle existe
         ost << "JMPZ\t " << block->getExitTrue()->getLabel() << std::endl;
         walkCfgPrint(ost, block->getExitFalse(), endBlock);
     }
     else
     {
+        // On est arrivé au bout d'une branche false, on check si le block true 
+        // est le bloc de fin (ne l'est pas dans une boucle cf while)
+        // TODO SEGFAULT
         // BasicBlock* endBlockParent = block->getExitTrue();
         // if(endBlockParent != nullptr)
         // {
@@ -255,6 +263,8 @@ void BasicBlock::walkCfgPrint(std::ostream &ost, BasicBlock* block, BasicBlock**
         // }
     }
 
+    // On recommence à cherche les blocks false en profondeur à partir
+    // du block true du dessus.
     BasicBlock* myExitTrue = block->getExitTrue();
     if(*endBlock != myExitTrue && myExitTrue != nullptr)
     {
