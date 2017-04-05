@@ -36,9 +36,9 @@ SubGraph * WhileTranslator::translate(Table* table)
     BasicBlock* conditionBlockOutput = csb->getOutputs().back();
     conditionBlockOutput->addInstruction(new CmpInstruction(
         table->getLastDestination(conditionBlockOutput),
-        new LiteralNumber(0)));
+        table->getOrCreateNumberOperand(0)));
+    conditionBlockOutput->setExitJumpType(BasicBlock::JumpType::Z);
 
-    // TODO: do something to actually compare it ?
     delete csb;
     delete ct;
 
@@ -73,7 +73,7 @@ SubGraph * WhileTranslator::translate(Table* table)
     BasicBlock* emptyOutput = new BasicBlock();
     emptyOutput->addInstruction(new MovInstruction(
         table->getOrCreateRegister(),
-        new LiteralNumber(20)));
+        table->getOrCreateNumberOperand(20)));
     conditionBlockOutput->setExitTrue(emptyOutput);
 
 //    std::cout << "Body:" << std::endl;
