@@ -90,9 +90,10 @@ bool BasicBlock::isPrologable()
 
 void BasicBlock::setExitTrue(BasicBlock *exitTrue_)
 {
-    if(exitTrue != nullptr)
+    if(exitTrue != nullptr) 
     {
-        delete exitTrue;
+        // TODO BUG with the delete
+        //delete exitTrue;
     }
     exitTrue = exitTrue_;
 }
@@ -101,7 +102,8 @@ void BasicBlock::setExitFalse(BasicBlock *exitFalse_)
 {
     if(exitFalse != nullptr)
     {
-        delete exitFalse;
+        // TODO BUG with the delete
+        //delete exitFalse;
     }
     exitFalse = exitFalse_;
 }
