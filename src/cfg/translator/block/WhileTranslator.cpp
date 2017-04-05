@@ -77,7 +77,7 @@ SubGraph * WhileTranslator::translate(Table* table)
             delete t;
         }
 
-        for(int i = 1; i < children.size(); i++)
+        for(unsigned int i = 1; i < children.size(); i++)
         {
             if(Translator * t = getFactory().getTranslator(children[i], cfg))
             {
