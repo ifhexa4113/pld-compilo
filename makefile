@@ -309,7 +309,6 @@ run-utests: $(EXE2)
 	$(EXE2)
 
 run-nrtests: $(EXE3) $(NRTESTS)
-	@echo [92mALL NR TESTS PASSED[0m
 
 #Construct folders tree
 test-tree: libs-test-tree $(UTESTDIRTOCREATE)

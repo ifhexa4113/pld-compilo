@@ -91,11 +91,11 @@ int main(int argc, char *argv[]) {
 	}
 	if (astTestResult)
 	{
-		std::cerr << "AST test : SUCCESS" << std::endl;
+		std::cerr << "AST test          : SUCCESS" << std::endl;
 	}
 	else
 	{
-		std::cerr << "AST test : FAIL" << std::endl;
+		std::cerr << "AST test          : FAIL" << std::endl;
 	}
 
 	return !(symbolTableTest && astTestResult);
