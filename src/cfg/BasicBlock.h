@@ -51,6 +51,9 @@ protected:
     Table* table;
     bool colored;
     bool prologable;
+
+private:
+    void printJump(std::ostream &ost, JumpType jump);
 };
 
 #endif //BASIC_BLOCK_H

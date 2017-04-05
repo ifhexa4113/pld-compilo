@@ -165,7 +165,8 @@ void BasicBlock::print(std::ostream &ost)
     // parcours les sorties fausses en profondeur
     if(exitFalse != nullptr)
     {
-        ost << "JMPZ\t" << exitFalse->getLabel() << std::endl;
+        printJump(ost, exitFalse->getExitJumpType());
+        ost << exitFalse->getLabel() << std::endl;
         if(exitTrue != nullptr)
         {
             ost << "JMP\t " << exitTrue->getLabel() << std::endl;
@@ -190,6 +191,22 @@ void BasicBlock::print(std::ostream &ost)
         {
             exitTrue->print(ost);
         }
+    }
+}
+
+void BasicBlock::printJump(std::ostream &ost, JumpType jump)
+{
+    switch(jump)
+    {
+    case JumpType::Z:
+        ost << "JMPZ\t ";
+        break;
+    case JumpType::N:
+        ost << "JMPN\t ";
+        break;
+    case JumpType::NZ:
+        ost << "JMPNZ\t ";
+        break;
     }
 }
 
