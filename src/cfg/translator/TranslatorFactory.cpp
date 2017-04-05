@@ -4,6 +4,7 @@
 #include "block/CmmProgramTranslator.h"
 #include "block/WhileTranslator.h"
 #include "block/ForTranslator.h"
+#include "block/IfTranslator.h"
 #include "definition/VariableDefinitionTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
 #include "instruction/ReturnInstructionTranslator.h"
@@ -19,7 +20,6 @@
 
 #include "expression/FunctionExpressionTranslator.h"
 #include "expression/BinaryAffectionOperationTranslator.h"
-
 #include "ast/expression/Expression.h"
 #include "ast/expression/LiteralNumberExpression.h"
 #include "ast/expression/BinaryBinaryOperation.h"
@@ -30,11 +30,13 @@
 #include "ast/expression/UnaryBinaryOperation.h"
 #include "ast/expression/BinaryAffectionOperation.h"
 #include "ast/expression/BinaryLogicOperation.h"
+ 
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
 #include "ast/block/conditional-structure/While.h"
 #include "ast/block/conditional-structure/For.h"
+#include "ast/block/conditional-structure/If.h"
 #include "ast/definition/Definition.h"
 #include "ast/definition/FunctionDefinition.h"
 #include "ast/definition/VariableDefinition.h"
@@ -80,6 +82,11 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
         {
             cout << "It's a For - returning the right translator." << endl;
             return new ForTranslator(f, cfg);
+        }
+        else if(If* ifBlock = dynamic_cast<If*>(node))
+        {
+            cout << "It's an If - returning the right translator." << endl;
+            return new IfTranslator(ifBlock, cfg);
         }
     }
     else if(dynamic_cast<Expression*>(node))

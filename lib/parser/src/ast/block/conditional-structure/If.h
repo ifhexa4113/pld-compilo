@@ -13,6 +13,9 @@ public:
     ~If();
     int walkTree();
 
+	Block* getIfBlock() { return ifBlock; };
+	Block* getElseBlock() {return elseBlock; };
+
 protected:
 	Block* ifBlock;
 	Block* elseBlock;
