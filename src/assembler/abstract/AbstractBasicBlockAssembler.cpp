@@ -69,10 +69,8 @@ std::string AbstractBasicBlockAssembler::translate() {
     }
 
 
-    if (exit_true != nullptr)
-    {
-        if (!exit_true->isColored())
-        {
+    if (exit_true != nullptr) {
+        if (!exit_true->isColored()) {
             //std::cout << "Generating exit_true" << std::endl;
 
             /*if (exit_true->getTable() == nullptr)
@@ -80,34 +78,39 @@ std::string AbstractBasicBlockAssembler::translate() {
                 std::cout << "No table detected, assigning current table" << std::endl;
                 exit_true->setTable(table);
             }*/
-            AbstractBasicBlockAssembler * abba_true = constructMe(exit_true);
-            stream << "# GENERATING TRUE OUTPUT for " << getLabel() << "\n\n";
-            stream << abba_true->translate();
             exit_true->setColored(true);
 
+            AbstractBasicBlockAssembler *abba_true = constructMe(exit_true);
+            stream << "# GENERATING TRUE OUTPUT for " << getLabel() << "\n\n";
+            stream << abba_true->translate();
+
             delete abba_true;
+        } else {
+            std::cout << exit_true->getLabel() << " is colored, skipping ..." << std::endl;
         }
+    }
 
-
-
-        if (exit_false != nullptr)
+    if (exit_false != nullptr)
+    {
+        if (!exit_false->isColored())
         {
-            if (!exit_false->isColored())
+            std::cout << "Generating exit_false" << std::endl;
+            /*if (exit_false->getTable() == nullptr)
             {
-                std::cout << "Generating exit_false" << std::endl;
-                /*if (exit_false->getTable() == nullptr)
-                {
-                    exit_false->setTable(table);
-                }*/
+                exit_false->setTable(table);
+            }*/
+            exit_false->setColored(true);
 
-                AbstractBasicBlockAssembler * abba_false = constructMe(exit_false);
-                stream << "# GENERATING FALSE OUTPUT for " << getLabel() << "\n\n";
-                stream << abba_false->translate();
-                exit_false->setColored(true);
-                delete abba_false;
-            }
-
+            AbstractBasicBlockAssembler * abba_false = constructMe(exit_false);
+            stream << "# GENERATING FALSE OUTPUT for " << getLabel() << "\n\n";
+            stream << abba_false->translate();
+            delete abba_false;
         }
+        else
+        {
+            std::cout << exit_false->getLabel() << " is colored, skipping ..." << std::endl;
+        }
+
     }
 
     return stream.str();

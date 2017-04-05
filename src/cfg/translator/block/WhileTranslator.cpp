@@ -66,11 +66,11 @@ SubGraph * WhileTranslator::translate(Table* table)
             }
             conditionBlockOutput->setExitFalse(body);
 
-            std::cout << body->getLabel() << std::endl;
-            for(auto& instr : body->getInstructions())
-            {
-                instr->print(std::cout);
-            }
+//            std::cout << body->getLabel() << std::endl;
+//            for(auto& instr : body->getInstructions())
+//            {
+//                instr->print(std::cout);
+//            }
 
             previousOutputs = sb->getOutputs();
             delete sb;
