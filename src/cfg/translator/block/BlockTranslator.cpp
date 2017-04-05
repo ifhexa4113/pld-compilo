@@ -24,27 +24,46 @@ SubGraph * BlockTranslator::translate(Table* table)
         return nullptr;
     }
 
-    // Then create the block where to body will lie
-    BasicBlock* body = new BasicBlock();
-
-    // Then gather the subgraph from children
-    for(AstNode* child: block->getChildren())
+    std::vector<AstNode*> children = block->getChildren();
+    if(children.empty())
     {
-        if(Translator * t = getFactory().getTranslator(child, cfg))
+        BasicBlock* emptyBlock = new BasicBlock("");
+        return new SubGraph(emptyBlock, std::vector<BasicBlock*>(1, emptyBlock));
+    }
+
+    BasicBlock* input;
+    std::vector<BasicBlock*> previousOutputs;
+    if(Translator * t = getFactory().getTranslator(children.front(), cfg))
+    {
+        SubGraph* sb = t->translate(table);
+        input = sb->getInput();
+        previousOutputs = sb->getOutputs();
+        delete sb;
+        delete t;
+    }
+
+    for(int i = 1; i < children.size(); i++)
+    {
+        if(Translator * t = getFactory().getTranslator(children[i], cfg))
         {
             SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
+            if(bb->getLabel() == "")
+            {
+                // TODO merge instead of giving a label ?
+                bb->giveLabel();
+            }
+            for(BasicBlock* currentOutput : previousOutputs)
+            {
+                currentOutput->setExitTrue(bb);
+            }
 
-            // Just merge it for the moment
-            body->merge(bb);
-
-            // TODO: find something better than a merge
-
+            previousOutputs = sb->getOutputs();
             delete sb;
             delete t;
         }
     }
 
     // Eventually return a subgraph describing what we just created
-    return new SubGraph(body, std::vector<BasicBlock*>(1, body));
+    return new SubGraph(input, previousOutputs);
 }
