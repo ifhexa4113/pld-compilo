@@ -184,7 +184,7 @@ void BasicBlock::giveLabel()
     if(label == "")
     {
         std::stringstream ss;
-        ss << "%bb" << BasicBlock::labelCounter++;
+        ss << "_bb" << BasicBlock::labelCounter++;
         label = ss.str();
     }
 }
