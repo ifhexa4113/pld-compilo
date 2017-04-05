@@ -33,6 +33,11 @@ int FunctionDefinition::walkTree()
 
 void FunctionDefinition::fillSymbolTable(SymbolTableStack& stack)
 {
+    if(stack.checkSymbol(declaration->getName()))
+    {
+		ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::SYMBOL_REDECLARATION, declaration->getName());
+    }
     Definition::fillSymbolTable(stack);
     stack.push(symbolTable);
     if(FunctionDeclaration* functionDeclaration = dynamic_cast<FunctionDeclaration*>(declaration))

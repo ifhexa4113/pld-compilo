@@ -31,11 +31,6 @@ Expression * VariableDefinition::getRExpression()
 
 void VariableDefinition::fillSymbolTable(SymbolTableStack& stack)
 {
-    if(stack.checkSymbolImmediate(declaration->getName()))
-    {
-		ErrorManager& errorManager = ErrorManager::getInstance();
-		errorManager.addEncounteredError(ErrorManager::SYMBOL_REDECLARATION, declaration->getName());
-    }
     Definition::fillSymbolTable(stack);
     rExpression->fillSymbolTable(stack);
     if (!rExpression->checkNonVoidType(stack))
