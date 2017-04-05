@@ -1,0 +1,1 @@
+It should parse a redeclaration of a char variable inside a function.

@@ -1,0 +1,11 @@
+#include <stdint.h>
+
+uint32_t function(uint32_t a) {
+   return a+1;
+}
+   
+void main() {
+   uint32_t a;
+   a = 1;
+   a = function(a);
+}

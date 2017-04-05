@@ -42,7 +42,7 @@ bool ReturnInstruction::checkReturnType(Type type, SymbolTableStack& stack)
 {
     Type returnType = value->getType(stack);
     bool checkReturn = false;
-    if (returnType != type)
+    if ((returnType == Type::VOID_T && type != Type::VOID_T) || (returnType != Type::VOID_T && type == Type::VOID_T))
     {
         ErrorManager& errorManager = ErrorManager::getInstance();
         errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_RETURN_TYPE, "");
