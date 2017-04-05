@@ -10,7 +10,7 @@ BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* ex
     label(([&label_]() {
         if(label_ == "%%unnamed%%") {
             std::stringstream ss;
-            ss << "%bb" << BasicBlock::labelCounter++;
+            ss << "_bb" << BasicBlock::labelCounter++;
             return ss.str();
         }
         return label_;
@@ -167,8 +167,11 @@ void BasicBlock::print(std::ostream &ost)
     // parcours les sorties fausses en profondeur
     if(exitFalse != nullptr)
     {
-        printJump(ost, exitFalse->getExitJumpType());
-        ost << exitFalse->getLabel() << std::endl;
+        if(exitFalse->getLabel() != "")
+        {
+            printJump(ost, exitFalse->getExitJumpType());
+            ost << exitFalse->getLabel() << std::endl;
+        }
         if(exitTrue != nullptr)
         {
             ost << "JMP\t " << exitTrue->getLabel() << std::endl;
@@ -217,7 +220,7 @@ void BasicBlock::giveLabel()
     if(label == "")
     {
         std::stringstream ss;
-        ss << "%bb" << BasicBlock::labelCounter++;
+        ss << "_bb" << BasicBlock::labelCounter++;
         label = ss.str();
     }
 }

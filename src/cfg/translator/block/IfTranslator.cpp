@@ -46,6 +46,7 @@ SubGraph * IfTranslator::translate(Table* table)
 
     // Then create the block where to body will lie
     BasicBlock* ifBody = new BasicBlock();
+    ifBody->setTable(table);
     // And be sure to link the condition's exitFalse to it
     conditionBlockOutput->setExitFalse(ifBody);
 
@@ -76,6 +77,7 @@ SubGraph * IfTranslator::translate(Table* table)
     {
         // Then create the block where to body will lie
         BasicBlock* elseBody = new BasicBlock();
+        elseBody->setTable(table);
         conditionBlockOutput->setExitTrue(elseBody);
         if(AstNode* child = f->getElseBlock()->getChildren().front())
         {

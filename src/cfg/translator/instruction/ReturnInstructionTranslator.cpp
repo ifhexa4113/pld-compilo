@@ -24,6 +24,7 @@ SubGraph * ReturnInstructionTranslator::translate(Table* table)
 
     // Then create bases for the subgraph that we'll return
     BasicBlock* retBlock = new BasicBlock();
+    retBlock->setTable(table);
 
     Translator* t = getFactory().getTranslator(retInstr->getValue(), cfg);
     SubGraph* sb = t->translate(table);
