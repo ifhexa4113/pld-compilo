@@ -26,7 +26,9 @@ SubGraph * ForTranslator::translate(Table* table)
 
     // Then create the basic blocks of the for
     BasicBlock* forBlock = new BasicBlock("");
+    forBlock->setTable(table);
     BasicBlock* forBodyBlock = new BasicBlock();
+    forBodyBlock->setTable(table);
     BasicBlock* conditionBlock;
     BasicBlock* initBlock;
     BasicBlock* incrementBlock;
@@ -43,6 +45,7 @@ SubGraph * ForTranslator::translate(Table* table)
         delete ct;
     } else {
         conditionBlock = new BasicBlock();
+        conditionBlock->setTable(table);
     }
     conditionBlock->setExitFalse(forBodyBlock);
 

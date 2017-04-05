@@ -31,8 +31,10 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
 
     // Construct blocks for the return subgraph
     BasicBlock* inputBlock = new BasicBlock("");
+    inputBlock->setTable(table);
     // TODO EXPRESSION need a label ?
     BasicBlock* outputBlock = new BasicBlock();
+    outputBlock->setTable(table);
     std::vector<BasicBlock*> outputs(1, outputBlock);
 
     Translator* leftT = getFactory().getTranslator(binLogOp->getLExpression(), cfg);
@@ -49,7 +51,9 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
         {
             // Create specific object
             BasicBlock* trueBlock = new BasicBlock();
+            trueBlock->setTable(table);
             BasicBlock* falseBlock = new BasicBlock();
+            falseBlock->setTable(table);
             Register* commonRegister = table->getOrCreateRegister();
 
             // Add their instructtion to each block
@@ -80,7 +84,9 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
         {
             // Create specific object
             BasicBlock* trueBlock = new BasicBlock();
+            trueBlock->setTable(table);
             BasicBlock* falseBlock = new BasicBlock();
+            falseBlock->setTable(table);
             Register* commonRegister = table->getOrCreateRegister();
 
             // Add their instructtion to each block

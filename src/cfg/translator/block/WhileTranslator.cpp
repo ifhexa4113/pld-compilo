@@ -44,6 +44,7 @@ SubGraph * WhileTranslator::translate(Table* table)
 
     // Then create the block where to body will lie
     BasicBlock* body = new BasicBlock("");
+    body->setTable(table);
     // And be sure to link the condition's exitFalse to it
 
 
