@@ -16,9 +16,8 @@ Movx86Assembler::~Movx86Assembler() {
 }
 
 std::string Movx86Assembler::translate() const {
-    std::cout << "Tranlating mov instruction " << parent_block << " instr " << instruction << std::endl;
+    //std::cout << "Tranlating mov instruction " << parent_block << " instr " << instruction << std::endl;
     instruction->getSource();
-    std::cout << "Get source is clean";
 
     return getString(
             Operandx86Assembler(instruction->getSource(),parent_block),
@@ -32,7 +31,7 @@ std::string Movx86Assembler::getString(Operandx86Assembler source, Operandx86Ass
     #elif _WIN32
         std::string op_suffix = "l";
     #endif
-    std::cout << "Day 247, still putting std::cout in my code to find where the fuck the code crashes ..." << std::endl;
+    //std::cout << "Day 247, still putting std::cout in my code to find where the fuck the code crashes ..." << std::endl;
     if (source.getType() == Operandx86Assembler::operand_type::VIRTUAL_REGISTER && dest.getType() == Operandx86Assembler::operand_type::VIRTUAL_REGISTER)
     {
         Operandx86Assembler temp_register = Operandx86Assembler::getPhysicalRegister(Operandx86Assembler::register_type::A);

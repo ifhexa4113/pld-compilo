@@ -37,12 +37,12 @@ std::string AbstractBasicBlockAssembler::translate() {
 
     stream << translateIR();
 
-    std::cout << "IR done" << std::endl;
+    //std::cout << "IR done" << std::endl;
 
     BasicBlock * exit_true = source->getExitTrue();
     BasicBlock * exit_false = source->getExitFalse();
 
-    std::cout << "Before jumps" << std::endl;;
+    //std::cout << "Before jumps" << std::endl;;
     if ((exit_true) != nullptr)
     {
         if ((exit_false) != nullptr)
@@ -55,9 +55,17 @@ std::string AbstractBasicBlockAssembler::translate() {
             stream << getJump(exit_true->getLabel(), BasicBlock::JumpType::NUL);
         }
     }
-    else
+    else if ((exit_false) == nullptr)
     {
         stream << generateEpilog();
+    }
+    else
+    {
+        // Edge case : while without bloc
+        stream << getJump(exit_false->getLabel(), exit_false->getExitJumpType());
+        stream << generateEpilog();
+
+        //std::cout << "###### ERROR : A BASIC BLOCK HAS A FALSE OUTPUT BUT NOT A TRUE ONE #######" << std::endl;
     }
 
 
@@ -65,15 +73,15 @@ std::string AbstractBasicBlockAssembler::translate() {
     {
         if (!exit_true->isColored())
         {
-            std::cout << "Generating exit_true" << std::endl;
+            //std::cout << "Generating exit_true" << std::endl;
 
-            if (exit_true->getTable() == nullptr)
+            /*if (exit_true->getTable() == nullptr)
             {
                 std::cout << "No table detected, assigning current table" << std::endl;
                 exit_true->setTable(table);
-            }
+            }*/
             AbstractBasicBlockAssembler * abba_true = constructMe(exit_true);
-            std::cout << "# GENERATING TRUE OUTPUT \n\n";
+            stream << "# GENERATING TRUE OUTPUT for " << getLabel() << "\n\n";
             stream << abba_true->translate();
             exit_true->setColored(true);
 
@@ -87,13 +95,13 @@ std::string AbstractBasicBlockAssembler::translate() {
             if (!exit_false->isColored())
             {
                 std::cout << "Generating exit_false" << std::endl;
-                if (exit_false->getTable() == nullptr)
+                /*if (exit_false->getTable() == nullptr)
                 {
                     exit_false->setTable(table);
-                }
+                }*/
 
                 AbstractBasicBlockAssembler * abba_false = constructMe(exit_false);
-                stream << "# GENERATING FALSE OUTPUT \n\n";
+                stream << "# GENERATING FALSE OUTPUT for " << getLabel() << "\n\n";
                 stream << abba_false->translate();
                 exit_false->setColored(true);
                 delete abba_false;
@@ -107,7 +115,7 @@ std::string AbstractBasicBlockAssembler::translate() {
 
 AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, bool generate_intro)
         : source(source), generate_intro(generate_intro), variable_count(-1){
-    std::cout << "Constructor ABBA for " << source->getLabel() << std::endl;
+    //std::cout << "Constructor ABBA for " << source->getLabel() << std::endl;
 
     Table* table = source->getTable();
 
@@ -118,7 +126,7 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, boo
 
 
 
-        std::cout << "Getting instruction" << std::endl;
+        //std::cout << "Getting instruction" << std::endl;
 
         for(IRInstruction * intr : source->getInstructions())
         {
@@ -134,23 +142,23 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, boo
             }
         }
         variable_index += max_argument_count;
-        std::cout << "Got instructions" << std::endl;
+        //std::cout << "Got instructions" << std::endl;
         auto map = table->getAllRegisters();
         std::map<Register *, RegisterInfo >::iterator it = map->begin();
         while (map != nullptr && it != map->end()) {
-            std::cout << "..." << std::endl;
+            //std::cout << "..." << std::endl;
             it->second.setOffset(variable_index * 4);
             variable_index++;
             it++;
         }
         variable_count = variable_index;
-        std::cout << variable_count << std::endl;
+        //std::cout << variable_count << std::endl;
     } else
     {
-        std::cout << "Skiping table generation" << std::endl;
+        //std::cout << "Skiping table generation" << std::endl;
     }
 
-    std::cout << "Quiting constructor" << std::endl;
+    //std::cout << "Quiting constructor" << std::endl;
 }
 
 int AbstractBasicBlockAssembler::getOffset(Register *reg) {

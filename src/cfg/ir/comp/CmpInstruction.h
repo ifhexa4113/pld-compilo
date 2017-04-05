@@ -20,9 +20,9 @@ public:
 
     void print(std::ostream &ost) const override;
 
-    const Operand *getParam1() const;
+    Operand * getParam1() const;
 
-    const Operand *getParam2() const;
+    Operand * getParam2() const;
 
 protected:
     Operand *param1;

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <cfg/ir/basic/AddInstruction.h>
 #include <assembler/x86/basic/Addx86Assembler.h>
+#include <assembler/x86/cmp/Cmpx86Assembler.h>
 #include "x86BasicBlockAssembler.h"
 
 
@@ -44,27 +45,27 @@ std::string x86BasicBlockAssembler::generateProlog() {
 }
 
 std::string x86BasicBlockAssembler::translateIR() {
-    std::cout << "translateIR() for " << getLabel() << std::endl;
+    //std::cout << "translateIR() for " << getLabel() << std::endl;
     std::ostringstream stream;
 
     std::vector<IRInstruction *> instructions = source->getInstructions();
 
-    std::cout << "Tranlating ir instruction :" << std::endl;
+    //std::cout << "Tranlating ir instruction :" << std::endl;
     for (int current_index = 0; current_index < instructions.size(); current_index ++)
     {
-        std::cout << "Trying to translate another instruction" << std::endl;
+        //std::cout << "Trying to translate another instruction" << std::endl;
         IRAbstractAssembler * translated_instruction = translateInstruction(instructions[current_index]);
-        std::cout << "Translation success" << std::endl;
+        //std::cout << "Translation success" << std::endl;
         if (translated_instruction != nullptr)
         {
             //std::cout << "Translated mov instruction" << std::endl;
             stream << translated_instruction->translate();
-            std::cout << "Generated asm fon current instruction" << std::endl;
+            //std::cout << "Generated asm fon current instruction" << std::endl;
         }
     }
 
 
-    std::cout << "finished tranlating if" << std::endl;
+    //std::cout << "finished tranlating if" << std::endl;
     return stream.str();
 
 }
@@ -84,23 +85,30 @@ IRAbstractAssembler * x86BasicBlockAssembler::translateInstruction(IRInstruction
 
     if (dynamic_cast<MovInstruction *>(instruction) != nullptr)
     {
-        std::cout << "casting to mov" << std::endl;
+        //std::cout << "casting to mov" << std::endl;
         return new Movx86Assembler((MovInstruction*)instruction, this);
     }
     else if (dynamic_cast<CallInstruction *>(instruction) != nullptr)
     {
-        std::cout << "casting to call" << std::endl;
+        //std::cout << "casting to call" << std::endl;
 
         return new Callx86Assembler((CallInstruction*) instruction, this);
     }
     else if (dynamic_cast<AddInstruction *>(instruction) != nullptr)
     {
-        std::cout << "casting to add" << std::endl;
+        //std::cout << "casting to add" << std::endl;
 
         return new Addx86Assembler((AddInstruction*) instruction, this);
     }
+    else if (dynamic_cast<CmpInstruction *>(instruction) != nullptr)
+    {
+        return new Cmpx86Assembler((CmpInstruction*) instruction, this);
 
-    std::cout << "casting failed" << std::endl;
+    }
+
+    std::cout << "#### WARNING INSTRUCTION NOT IMPLEMENTED : \n";
+    instruction->print(std::cout);
+    std::cout << std::endl;
 
     return nullptr;
 }
@@ -123,7 +131,7 @@ std::string x86BasicBlockAssembler::getIntro() {
 std::string x86BasicBlockAssembler::getJump(std::string label, BasicBlock::JumpType jumpType) {
     std::ostringstream stream;
 
-    std::cout << "Entering jump generation " << std::endl;
+    //std::cout << "Entering jump generation " << std::endl;
     stream << "\t";
 
     switch (jumpType) {
@@ -150,7 +158,7 @@ std::string x86BasicBlockAssembler::getJump(std::string label, BasicBlock::JumpT
 
     stream << "_" << label << std::endl;
 
-    std::cout << "Exiting jump generation " << std::endl;
+    //std::cout << "Exiting jump generation " << std::endl;
 
     return stream.str();
 }
