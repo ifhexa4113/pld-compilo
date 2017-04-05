@@ -99,4 +99,5 @@ int main(int argc, char *argv[]) {
 	}
 
 	return !(symbolTableTest && astTestResult);
+	//return 0;
 }
