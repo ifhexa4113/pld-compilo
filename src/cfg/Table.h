@@ -7,6 +7,7 @@
 
 #include "RegisterInfo.h"
 #include "ir/operand/Register.h"
+#include "ir/operand/LiteralNumber.h"
 #include "ast/declaration/LValueDeclaration.h"
 
 class BasicBlock;
@@ -56,6 +57,14 @@ public:
     Register* getOrCreateRegister(LValueDeclaration* declaration = nullptr);
 
     /**
+     * If there is already a literal number operand for the given
+     * value, returns it.
+     * Otherwise creates and returns it.
+     * @param value The value from which create the Operand.
+     */
+    LiteralNumber* getOrCreateNumberOperand(int value);
+
+    /**
      * Returns the last destination register of the given basic block,
      * or a nullptr if the last destination wasn't a register or even worst was
      * not known by the table (which would be a HUGE issue).
@@ -78,6 +87,7 @@ public:
 protected:
     std::map<std::string, Register*> varToReg;
     std::map<Register*, RegisterInfo> regToInfo;
+    std::map<int, LiteralNumber*> numbers;
 
     static unsigned int tempCounter;
     static const std::string TEMP_VAR;

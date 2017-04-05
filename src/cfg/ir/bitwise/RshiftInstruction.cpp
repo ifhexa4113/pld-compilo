@@ -9,15 +9,9 @@ RshiftInstruction::RshiftInstruction(Register *destination, Operand *param1, Ope
 
 }
 
-RshiftInstruction::~RshiftInstruction() {
-    if(!dynamic_cast<Register*>(param1))
-    {
-        delete param1;
-    }
-    if(!dynamic_cast<Register*>(param2))
-    {
-        delete param2;
-    }
+RshiftInstruction::~RshiftInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void RshiftInstruction::print(std::ostream &ost) const {

@@ -9,15 +9,9 @@ LshiftInstruction::LshiftInstruction(Register *destination, Operand *param1, Ope
 
 }
 
-LshiftInstruction::~LshiftInstruction() {
-    if(!dynamic_cast<Register*>(param1))
-    {
-        delete param1;
-    }
-    if(!dynamic_cast<Register*>(param2))
-    {
-        delete param2;
-    }
+LshiftInstruction::~LshiftInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void LshiftInstruction::print(std::ostream &ost) const {

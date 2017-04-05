@@ -9,15 +9,9 @@ XorInstruction::XorInstruction(Register *destination, Operand *param1, Operand *
 
 }
 
-XorInstruction::~XorInstruction() {
-    if(!dynamic_cast<Register*>(param1))
-    {
-        delete param1;
-    }
-    if(!dynamic_cast<Register*>(param2))
-    {
-        delete param2;
-    }
+XorInstruction::~XorInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void XorInstruction::print(std::ostream &ost) const {

@@ -9,15 +9,9 @@ AddInstruction::AddInstruction(Register *destination, Operand *param1, Operand *
 
 }
 
-AddInstruction::~AddInstruction() {
-    if(!dynamic_cast<Register*>(param1))
-    {
-        delete param1;
-    }
-    if(!dynamic_cast<Register*>(param2))
-    {
-        delete param2;
-    }
+AddInstruction::~AddInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void AddInstruction::print(std::ostream &ost) const {

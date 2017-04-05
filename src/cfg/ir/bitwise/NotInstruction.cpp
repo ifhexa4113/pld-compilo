@@ -8,11 +8,9 @@ NotInstruction::NotInstruction(Register *destination, Operand *source) : Registe
 
 }
 
-NotInstruction::~NotInstruction() {
-    if(!dynamic_cast<Register*>(source))
-    {
-        delete source;
-    }
+NotInstruction::~NotInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void NotInstruction::print(std::ostream &ost) const {

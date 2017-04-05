@@ -8,15 +8,9 @@ WriteInstruction::WriteInstruction(Operand *address, Operand *value) : IRInstruc
 
 }
 
-WriteInstruction::~WriteInstruction() {
-    if(!dynamic_cast<Register*>(address))
-    {
-        delete address;
-    }
-    if(!dynamic_cast<Register*>(value))
-    {
-        delete value;
-    }
+WriteInstruction::~WriteInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void WriteInstruction::print(std::ostream &ost) const {
