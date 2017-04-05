@@ -58,11 +58,25 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
             SubGraph* sb = t->translate(table);
             BasicBlock* bb = sb->getInput();
 
-            for(BasicBlock* output: previousBlocks)
+            // for(BasicBlock* output: previousBlocks)
+            // {
+            //     // NOTE: if we're at the first child, this should never be executed
+            //     output->setExitTrue(bb);
+            // }
+
+            if(!previousBlocks.empty()) 
             {
-                // NOTE: if we're at the first child, this should never be executed
-                output->setExitTrue(bb);
+                BasicBlock* endBlock = previousBlocks.back();
+                if(bb->getLabel() == "")
+                {
+                    endBlock->merge(bb);
+                }
+                else
+                {
+                    endBlock->setExitTrue(bb);
+                }
             }
+
 
             bool updatePrevious = false;
             if(previousBlocks.size() == 0)

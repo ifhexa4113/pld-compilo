@@ -51,6 +51,10 @@ protected:
     Table* table;
     bool colored;
     bool prologable;
+
+private:
+    void walkCfgPrint(std::ostream &ost, BasicBlock* block, BasicBlock** endBlock);
+
 };
 
 #endif //BASIC_BLOCK_H
