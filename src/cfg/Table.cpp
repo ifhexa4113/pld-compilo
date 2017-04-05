@@ -8,15 +8,20 @@
 unsigned int Table::tempCounter = 0;
 const std::string Table::TEMP_VAR = "$temp";
 
-Table::Table() : varToReg(), regToInfo()
+Table::Table() : varToReg(), regToInfo(), numbers()
 {
     // Nothing else to do
 }
 
 Table::~Table()
 {
-    // Nothing else to do
+    // Delete all registers
     for(auto it = varToReg.begin(); it != varToReg.end(); it++)
+    {
+        delete it->second;
+    }
+    // Delete all other operands
+    for(auto it = numbers.begin(); it != numbers.end(); it++)
     {
         delete it->second;
     }
@@ -69,6 +74,21 @@ Register* Table::getOrCreateRegister(LValueDeclaration* declaration)
     varToReg.insert(std::make_pair(associatedVar, reg));
     regToInfo.insert(std::make_pair(reg, RegisterInfo(type)));
     return reg;
+}
+
+LiteralNumber* Table::getOrCreateNumberOperand(int value)
+{
+    if(numbers.count(value) == 0)
+    {
+        // No operand exists.
+        // Let's create it, insert it and return it
+        LiteralNumber* ln = new LiteralNumber(value);
+        numbers.insert(std::make_pair(value, ln));
+        return ln;
+    }
+    // We're sure that it exists.
+    // Let's return it
+    return numbers[value];
 }
 
 Register* Table::getLastDestination(BasicBlock *bb)
