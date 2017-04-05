@@ -87,8 +87,9 @@ IRAbstractAssembler * x86BasicBlockAssembler::translateInstruction(IRInstruction
 
 std::string x86BasicBlockAssembler::getLabel() {
     std::ostringstream stream;
+    std::cout << "Label !" << std::endl;
     stream <<"_" << source->getLabel() << ":" << std::endl;
-
+    std::cout << ":)" << std::endl;
     return stream.str();
 }
 
@@ -99,4 +100,43 @@ std::string x86BasicBlockAssembler::getIntro() {
     stream << "\t.globl\t_main" << std::endl;
 
     return stream.str();
+}
+
+std::string x86BasicBlockAssembler::getJump(std::string label, BasicBlock::JumpType jumpType) {
+    std::ostringstream stream;
+
+    std::cout << "Entering jump generation " << std::endl;
+    stream << "\t";
+
+    switch (jumpType) {
+        case BasicBlock::JumpType::NUL : {
+            stream << "jmp ";
+            break;
+        }
+        case BasicBlock::JumpType::Z : {
+            stream << "je ";
+            break;
+        }
+        case BasicBlock::JumpType::NZ : {
+            stream << "jne ";
+            break;
+        }
+        case BasicBlock::JumpType::N : {
+            stream << "jl ";
+        }
+        default :
+        {
+
+        }
+    }
+
+    stream << "_" << label << std::endl;
+
+    std::cout << "Exiting jump generation " << std::endl;
+
+    return stream.str();
+}
+
+AbstractBasicBlockAssembler * x86BasicBlockAssembler::constructMe(BasicBlock *source) {
+    return new x86BasicBlockAssembler(source, false);
 }

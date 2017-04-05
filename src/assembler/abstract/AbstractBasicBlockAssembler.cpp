@@ -12,23 +12,79 @@
 std::string AbstractBasicBlockAssembler::translate() {
     std::ostringstream stream;
     std::cout << "Generating asm " << variable_count << std::endl;
+
+    stream << "# TRANSLATING << " << source->getLabel() <<  "\n\n";
+
+    std::cout << "INTRO" << std::endl;
+
     if (generate_intro)
     {
         stream << getIntro();
     }
+    std::cout << "LABEL" << std::endl;
 
     stream << getLabel();
+
+    std::cout << "PROLOG" << std::endl;
+
 
     if (source->isPrologable())
     {
         stream << generateProlog();
     }
 
+    std::cout << "IR" << std::endl;
+
     stream << translateIR();
 
-    if (source->isPrologable())
+    BasicBlock * exit_true = source->getExitTrue();
+    BasicBlock * exit_false = source->getExitFalse();
+
+    std::cout << "Before jumps" << std::endl;;
+    if ((exit_true) != nullptr)
+    {
+        if ((exit_false) != nullptr)
+        {
+            stream << getJump(exit_true->getLabel(), exit_true->getExitJumpType());
+            stream << getJump(exit_false->getLabel(), BasicBlock::JumpType::NUL);
+        }
+        else
+        {
+            stream << getJump(exit_true->getLabel(), BasicBlock::JumpType::NUL);
+        }
+    }
+    else
     {
         stream << generateEpilog();
+    }
+
+    if (exit_true != nullptr)
+    {
+        if (!exit_true->isColored())
+        {
+            AbstractBasicBlockAssembler * abba_true = constructMe(exit_true);
+            std::cout << "# GENERATING TRUE OUTPUT \n\n";
+            stream << abba_true->translate();
+            exit_true->setColored(true);
+
+            delete abba_true;
+        }
+
+
+
+
+        if (exit_false != nullptr)
+        {
+            if (!exit_false->isColored())
+            {
+                AbstractBasicBlockAssembler * abba_false = constructMe(exit_false);
+                stream << "# GENERATING FALSE OUTPUT \n\n";
+                stream << abba_false->translate();
+                exit_false->setColored(true);
+                delete abba_false;
+            }
+
+        }
     }
 
     return stream.str();
@@ -36,6 +92,8 @@ std::string AbstractBasicBlockAssembler::translate() {
 
 AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, bool generate_intro)
         : source(source), generate_intro(generate_intro), variable_count(-1){
+    std::cout << "Prout " << source->getLabel();
+
     Table* table = source->getTable();
     auto map = table->getAllRegisters();
     auto it = map->begin();
@@ -68,5 +126,9 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, boo
 
 int AbstractBasicBlockAssembler::getOffset(Register *reg) {
     return source->getTable()->getRegisterInfo(reg).getOffset();
+}
+
+AbstractBasicBlockAssembler::~AbstractBasicBlockAssembler() {
+
 }
 

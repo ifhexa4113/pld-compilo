@@ -23,6 +23,10 @@ public:
 
     std::string getIntro() override;
 
+    std::string getJump(std::string label, BasicBlock::JumpType jumpType) override;
+
+    AbstractBasicBlockAssembler * constructMe(BasicBlock *source) override;
+
     IRAbstractAssembler * translateInstruction(IRInstruction *instruction);
 };
 

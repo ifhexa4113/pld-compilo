@@ -11,7 +11,7 @@
 class BasicBlock {
 public:
     enum class JumpType {
-        Z, N, NZ
+        Z, N, NZ, NUL
     };
 
     BasicBlock(std::string label_ = std::string("%%unnamed%%"), BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr, BasicBlock::JumpType exitJumpType_ = BasicBlock::JumpType::Z);
