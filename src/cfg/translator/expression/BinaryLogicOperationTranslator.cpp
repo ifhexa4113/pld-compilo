@@ -42,9 +42,6 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
     Translator* rightT = getFactory().getTranslator(binLogOp->getRExpression(), cfg);
     SubGraph* rightSb = rightT->translate(table);
 
-    inputBlock->merge(leftSb->getInput());
-    inputBlock->merge(rightSb->getInput());
-
     // Factorise switch code
     BasicBlock* trueBlock = new BasicBlock();
     trueBlock->setTable(table);
@@ -52,15 +49,24 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
     falseBlock->setTable(table);
     Register* commonRegister = table->getOrCreateRegister();
 
-    // Add instructions to input and output blocks
-    inputBlock->addInstruction(new CmpInstruction(
-            table->getLastDestination(leftSb->getOutputs().back()),
-            table->getLastDestination(rightSb->getOutputs().back()) ));
+    if(binLogOp->getOperator() != LogicOperator::AND && binLogOp->getOperator() != LogicOperator::OR)
+    {
+        inputBlock->merge(leftSb->getInput());
+        inputBlock->merge(rightSb->getInput());
+
+        // Add instructions to input and output blocks
+        inputBlock->addInstruction(new CmpInstruction(
+                table->getLastDestination(leftSb->getOutputs().back()),
+                table->getLastDestination(rightSb->getOutputs().back()) ));
+    }
     outputBlock->addInstruction(new MovInstruction(commonRegister, commonRegister));
 
     // Set transition between basic block
-    inputBlock->setExitTrue(trueBlock);
-    inputBlock->setExitFalse(falseBlock);
+    if(binLogOp->getOperator() != LogicOperator::AND && binLogOp->getOperator() != LogicOperator::OR)
+    {
+        inputBlock->setExitTrue(trueBlock);
+        inputBlock->setExitFalse(falseBlock);
+    }
     trueBlock->setExitTrue(outputBlock);
     falseBlock->setExitTrue(outputBlock);
 
@@ -133,40 +139,45 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
              inputBlock->setExitJumpType(BasicBlock::JumpType::NZ);
              break;
          }
-//         case LogicOperator::AND:
-//         {
-//             // Create specific object
-//             // TODO EXPRESSION need a label ?
-//             BasicBlock* firstLevelFalseBlock = new BasicBlock("");
-//             BasicBlock* secondLevelFalseBlock = new BasicBlock("");
-//             BasicBlock* trueBlock = new BasicBlock("");
-//             Register* commonRegister = new Register();
-//
-//             // Add their instruction to each block
-//             inputBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(leftSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-//                                                           new LiteralNumber(0) ));
-//
-//             firstLevelFalseBlock->addInstruction(new CmpInstruction(new Register( *(dynamic_cast<RegisterInstruction*>(rightSb->getOutputs().back()->getInstructions().back())->getDestination() ) ),
-//                                                                     new LiteralNumber(0) ));
-//
-//             secondLevelFalseBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(1)));
-//             trueBlock->addInstruction(new MovInstruction(commonRegister, new LiteralNumber(0)));
-//
-//             outputBlock->addInstruction(new MovInstruction(commonRegister, commonRegister));
-//
-//             // Set transition between basic block
-//             inputBlock->setExitTrue(trueBlock);
-//             inputBlock->setExitFalse(firstLevelFalseBlock);
-//             inputBlock->setExitJumpType(BasicBlock::JumpType::Z);
-//
-//             firstLevelFalseBlock->setExitTrue(trueBlock);
-//             firstLevelFalseBlock->setExitFalse(secondLevelFalseBlock);
-//
-//             secondLevelFalseBlock->setExitTrue(outputBlock);
-//             trueBlock->setExitTrue(outputBlock);
-//
-//             break;
-//         }
+         case LogicOperator::AND:
+         {
+             // Init graph
+             BasicBlock* lRes = leftSb->getOutputs().back();
+             BasicBlock* rRes = rightSb->getOutputs().back();
+
+             // Check if left operand is truthy
+             lRes->addInstruction(new CmpInstruction(
+                 table->getLastDestination(lRes),
+                 table->getOrCreateNumberOperand(0)
+             ));
+             lRes->setExitJumpType(BasicBlock::JumpType::Z);
+
+             lRes->setExitFalse(falseBlock);
+             rightSb->getInput()->giveLabel();  // No label by default
+             lRes->setExitTrue(rightSb->getInput());
+
+             // Merge last in case input == output
+             inputBlock->merge(leftSb->getInput());
+
+             // Check if right operand is truthy
+             rRes->addInstruction(new CmpInstruction(
+                 table->getLastDestination(rRes),
+                 table->getOrCreateNumberOperand(0)
+             ));
+             rRes->setExitJumpType(BasicBlock::JumpType::Z);
+
+             // Init true and false block
+             trueBlock->addInstruction(new MovInstruction(
+                 commonRegister,
+                 table->getOrCreateNumberOperand(1)));
+             falseBlock->addInstruction(new MovInstruction(
+                 commonRegister,
+                 table->getOrCreateNumberOperand(0)));
+
+             rRes->setExitFalse(falseBlock);
+             rRes->setExitTrue(trueBlock);
+             break;
+         }
 //         case LogicOperator::OR:
 //         {
 //             // Create specific object
