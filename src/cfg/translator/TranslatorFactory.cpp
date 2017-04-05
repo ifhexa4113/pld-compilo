@@ -15,6 +15,7 @@
 #include "expression/VariableExpressionTranslator.h"
 #include "expression/UnaryBinaryOperationOnVariableTranslator.h"
 #include "expression/UnaryBinaryOperationOnExpressionTranslator.h"
+#include "expression/BinaryLogicOperationTranslator.h"
 
 #include "expression/FunctionExpressionTranslator.h"
 #include "expression/BinaryAffectionOperationTranslator.h"
@@ -28,6 +29,7 @@
 #include "ast/expression/VariableExpression.h"
 #include "ast/expression/UnaryBinaryOperation.h"
 #include "ast/expression/BinaryAffectionOperation.h"
+#include "ast/expression/BinaryLogicOperation.h"
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
@@ -137,6 +139,11 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
         {
             cout << "It's a BinaryAffectionOperation - returning the right translator." << endl;
             return new BinaryAffectionOperationTranslator(binAffExpr, cfg);
+        }
+        else if(BinaryLogicOperation* binLogOp = dynamic_cast<BinaryLogicOperation*>(node))
+        {
+            cout << "It's a BinaryLogicOperation - returning the right translator." << endl;
+            return new BinaryLogicOperationTranslator(binLogOp, cfg);
         }
     }
     else if(dynamic_cast<Definition*>(node))

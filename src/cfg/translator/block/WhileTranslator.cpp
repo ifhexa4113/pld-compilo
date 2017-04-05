@@ -68,8 +68,8 @@ SubGraph * WhileTranslator::translate(Table* table)
         }
     }
 
-    body->setExitTrue(conditionBlockInput);
+    body->setExitTrue(conditionBlockOutput);
 
     // Eventually return a subgraph describing what we just created
-    return new SubGraph(conditionBlockInput, std::vector<BasicBlock*>(1, conditionBlockInput));
+    return new SubGraph(conditionBlockInput, std::vector<BasicBlock*>(1, conditionBlockOutput));
 }
