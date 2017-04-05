@@ -6,7 +6,7 @@
 
 class Operand {
 public:
-    Operand(int value_);
+    Operand(int value_ = 0);
     virtual  ~Operand();
 
     int getValue();

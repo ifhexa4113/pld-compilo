@@ -16,7 +16,7 @@ LiteralNumber::LiteralNumber(LiteralNumber const &other) : Operand(other.value)
     // Nothing else to do
 }
 
-LiteralNumber::LiteralNumber(LiteralNumber &&other)
+LiteralNumber::LiteralNumber(LiteralNumber &&other) : Operand()
 {
     swap(*this, other);
 }
