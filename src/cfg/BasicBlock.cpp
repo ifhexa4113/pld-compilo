@@ -165,8 +165,11 @@ void BasicBlock::print(std::ostream &ost)
     // parcours les sorties fausses en profondeur
     if(exitFalse != nullptr)
     {
-        ost << "JMPNZ\t" << exitFalse->getLabel() << std::endl;
-        ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+        ost << "JMPZ\t" << exitFalse->getLabel() << std::endl;
+        if(exitTrue != nullptr)
+        {
+            ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+        }
 
         if(!exitFalse->isColored())
         {
