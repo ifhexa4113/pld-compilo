@@ -147,6 +147,7 @@ void BasicBlock::merge(BasicBlock * otherBlock)
 
 void BasicBlock::print(std::ostream &ost)
 {
+    // TODO FIX print
     if(isColored())
     {
         return;
