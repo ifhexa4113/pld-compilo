@@ -10,7 +10,7 @@ BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* ex
     label(([&label_]() {
         if(label_ == "%%unnamed%%") {
             std::stringstream ss;
-            ss << "%bb" << BasicBlock::labelCounter++;
+            ss << "_bb" << BasicBlock::labelCounter++;
             return ss.str();
         }
         return label_;
@@ -217,7 +217,7 @@ void BasicBlock::giveLabel()
     if(label == "")
     {
         std::stringstream ss;
-        ss << "%bb" << BasicBlock::labelCounter++;
+        ss << "_bb" << BasicBlock::labelCounter++;
         label = ss.str();
     }
 }
