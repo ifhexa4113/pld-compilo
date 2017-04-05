@@ -9,15 +9,9 @@ OrInstruction::OrInstruction(Register *destination, Operand *param1, Operand *pa
 
 }
 
-OrInstruction::~OrInstruction() {
-    if(!dynamic_cast<Register*>(param1))
-    {
-        delete param1;
-    }
-    if(!dynamic_cast<Register*>(param2))
-    {
-        delete param2;
-    }
+OrInstruction::~OrInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void OrInstruction::print(std::ostream &ost) const {

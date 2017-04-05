@@ -9,7 +9,7 @@ class Register: public Operand
 {
 
     /**
-     * The Table acts like a Registers' Priestess:
+     * The Table acts like an Operands' Priestess:
      * She's the only one able to create Registers
      * and manipulate them.
      */

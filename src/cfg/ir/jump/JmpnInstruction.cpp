@@ -8,8 +8,9 @@ JmpnInstruction::JmpnInstruction(std::string label) : IRInstruction(), label(lab
 
 }
 
-JmpnInstruction::~JmpnInstruction() {
-
+JmpnInstruction::~JmpnInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void JmpnInstruction::print(std::ostream &ost) const {

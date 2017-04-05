@@ -9,10 +9,7 @@ ReadInstruction::ReadInstruction(Register *destination, Operand *address) : Regi
 }
 
 ReadInstruction::~ReadInstruction() {
-    if(!dynamic_cast<Register*>(address))
-    {
-        delete address;
-    }
+    // Nothing else to do (the Table handles it)
 }
 
 void ReadInstruction::print(std::ostream &ost) const {

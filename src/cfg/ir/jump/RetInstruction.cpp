@@ -8,8 +8,9 @@ RetInstruction::RetInstruction() : IRInstruction() {
 
 }
 
-RetInstruction::~RetInstruction() {
-
+RetInstruction::~RetInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void RetInstruction::print(std::ostream &ost) const {
