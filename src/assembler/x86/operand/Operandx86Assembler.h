@@ -25,8 +25,13 @@ public:
         SOURCE
     };
 
+    enum register_type {
+        ADD
+    };
+
     //static Operandx86Assembler getWorkRegister(work_register id);
     static Operandx86Assembler getVirtualRegister(int offset);
+    static Operandx86Assembler getPhysicalRegister(register_type id);
     operand_type getType() const;
 
     int getValue() const;

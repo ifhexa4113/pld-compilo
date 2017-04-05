@@ -35,6 +35,19 @@ std::string Operandx86Assembler::toString() {
             break;
         }
         case operand_type::PHYSICAL_REGISTER : {
+            switch (value)
+                {
+                    case register_type::ADD :
+                    {
+                        stm << "%eax";
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                }
+
             break;
         }
         case operand_type::VIRTUAL_REGISTER : {
@@ -76,5 +89,12 @@ Operandx86Assembler Operandx86Assembler::getVirtualRegister(int offset) {
     Operandx86Assembler op(nullptr, nullptr);
     op.value = offset;
     op.type = operand_type::VIRTUAL_REGISTER;
+    return  op;
+}
+
+Operandx86Assembler Operandx86Assembler::getPhysicalRegister(Operandx86Assembler::register_type id) {
+    Operandx86Assembler op(nullptr, nullptr);
+    op.value = id;
+    op.type = operand_type::PHYSICAL_REGISTER;
     return  op;
 }

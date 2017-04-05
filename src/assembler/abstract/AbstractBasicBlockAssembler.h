@@ -30,12 +30,11 @@ public:
 
 protected:
     BasicBlock *source;
-
-    std::map<Register *, int> offset_list;
+    bool generate_intro;
     Table * table;
     int variable_count;
     int max_argument_count;
-    bool generate_intro;
+
 
 };
 

@@ -8,9 +8,9 @@
 
 #include <assembler/abstract/basic/AddAbstractAssembler.h>
 
-class Addx86Assembler : AddAbstractAssembler {
+class Addx86Assembler : public AddAbstractAssembler {
 public:
-    Addx86Assembler(AddInstruction *instruction);
+    Addx86Assembler(AddInstruction *instruction, AbstractBasicBlockAssembler *parent_block);
 
     std::string translate() const override;
 private:

@@ -24,7 +24,7 @@ int main()
     //cout << "Creating CFG..." << endl;
     CFG cfg(&ast);
     //cout << "CFG done:" << endl;
-    //cfg.print(cout);
+    cfg.print(cout);
 
     x86BasicBlockAssembler assembler(cfg.getInput(), true);
 

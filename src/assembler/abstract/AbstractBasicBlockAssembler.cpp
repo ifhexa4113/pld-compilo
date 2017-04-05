@@ -11,7 +11,7 @@
 
 std::string AbstractBasicBlockAssembler::translate() {
     std::ostringstream stream;
-
+    std::cout << "Generating asm " << variable_count << std::endl;
     if (generate_intro)
     {
         stream << getIntro();
@@ -35,7 +35,7 @@ std::string AbstractBasicBlockAssembler::translate() {
 }
 
 AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, bool generate_intro)
-        : source(source), generate_intro(generate_intro), offset_list(){
+        : source(source), generate_intro(generate_intro), variable_count(-1){
     Table* table = source->getTable();
     auto map = table->getAllRegisters();
     auto it = map->begin();
@@ -57,13 +57,13 @@ AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, boo
     }
     variable_index += max_argument_count;
 
-    while (it != map->end())
-    {
+    while (it != map->end()) {
         it->second.setOffset(variable_index * 4);
-        variable_index ++;
-        it ++;
+        variable_index++;
+        it++;
     }
     variable_count = variable_index;
+    std::cout << variable_count << std::endl;
 }
 
 int AbstractBasicBlockAssembler::getOffset(Register *reg) {

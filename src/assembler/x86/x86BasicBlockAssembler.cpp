@@ -8,6 +8,8 @@
 #include <cfg/ir/jump/CallInstruction.h>
 #include <assembler/x86/jump/Callx86Assembler.h>
 #include <iostream>
+#include <cfg/ir/basic/AddInstruction.h>
+#include <assembler/x86/basic/Addx86Assembler.h>
 #include "x86BasicBlockAssembler.h"
 
 
@@ -19,6 +21,7 @@ x86BasicBlockAssembler::x86BasicBlockAssembler(BasicBlock *source, bool generate
 std::string x86BasicBlockAssembler::generateProlog() {
 
     std::ostringstream stream;
+    //std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
 
     // pushl %epb
     // movl %esp, %epb
@@ -28,7 +31,8 @@ std::string x86BasicBlockAssembler::generateProlog() {
     stream << "\tpushl\t%ebp" << std::endl;
     stream << "\tmovl\t%esp, %ebp" << std::endl;
     stream << "\tsubl\t$" << variable_count * 4 << ", %esp" << std::endl;
-    
+    //std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
+
     return stream.str();
 }
 
@@ -63,17 +67,19 @@ std::string x86BasicBlockAssembler::generateEpilog() {
 
 IRAbstractAssembler * x86BasicBlockAssembler::translateInstruction(IRInstruction *instruction) {
 
-    MovInstruction * mov = nullptr;
-    CallInstruction * call = nullptr;
 
-    if ((mov = dynamic_cast<MovInstruction *>(instruction)) != nullptr)
+    if (dynamic_cast<MovInstruction *>(instruction) != nullptr)
     {
 
-        return new Movx86Assembler(mov, this);
+        return new Movx86Assembler((MovInstruction*)instruction, this);
     }
-    else if ((call = dynamic_cast<CallInstruction *>(instruction)) != nullptr)
+    else if (dynamic_cast<CallInstruction *>(instruction) != nullptr)
     {
-        return new Callx86Assembler(call, this);
+        return new Callx86Assembler((CallInstruction*) instruction, this);
+    }
+    else if (dynamic_cast<AddInstruction *>(instruction) != nullptr)
+    {
+        return new Addx86Assembler((AddInstruction*) instruction, this);
     }
 
     return nullptr;
