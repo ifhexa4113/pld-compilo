@@ -167,8 +167,11 @@ void BasicBlock::print(std::ostream &ost)
     // parcours les sorties fausses en profondeur
     if(exitFalse != nullptr)
     {
-        printJump(ost, exitFalse->getExitJumpType());
-        ost << exitFalse->getLabel() << std::endl;
+        if(exitFalse->getLabel() != "")
+        {
+            printJump(ost, exitFalse->getExitJumpType());
+            ost << exitFalse->getLabel() << std::endl;
+        }
         if(exitTrue != nullptr)
         {
             ost << "JMP\t " << exitTrue->getLabel() << std::endl;
