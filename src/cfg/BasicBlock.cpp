@@ -161,21 +161,31 @@ void BasicBlock::print(std::ostream &ost)
     {
         instruction->print(ost);
     }
-    if(exitTrue)
-    {
-        if(!(exitTrue->isColored()))
-        {
-            exitTrue->print(ost);
-        } else {
-            ost << "JMP\t " << exitTrue->getLabel() << std::endl;
-        }
-    }
-    if(exitFalse)
+
+    // parcours les sorties fausses en profondeur
+    if(exitFalse != nullptr)
     {
         ost << "JMPNZ\t" << exitFalse->getLabel() << std::endl;
-        if(!(exitFalse->isColored()))
+        ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+
+        if(!exitFalse->isColored())
         {
             exitFalse->print(ost);
+        }
+    }
+
+    // si on n'est pas à la fin du programme
+    if(exitTrue != nullptr)
+    {
+        // le bloc n'a pas d'exit false donc on jump
+        if(exitFalse == nullptr)
+        {
+            ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+        }
+
+        if(!exitTrue->isColored())
+        {
+            exitTrue->print(ost);
         }
     }
 }
