@@ -53,7 +53,7 @@ std::string Addx86Assembler::translate() const {
     }*/
 
     // Do the add Operation
-    stm << "\tadd\t" << add_register.toString() << ", " << param2.toString() << std::endl;
+    stm << "\tadd\t" << param2.toString() << ", " << add_register.toString() << std::endl;
 
     stm << Movx86Assembler::getString(add_register, dest);
 
