@@ -1,5 +1,7 @@
 #include "UnaryBinaryOperationOnExpressionTranslator.h"
 #include <iostream>
+#include "cfg/ir/basic/SubInstruction.h"
+#include "cfg/ir/bitwise/NotInstruction.h"
 
 UnaryBinaryOperationOnExpressionTranslator::UnaryBinaryOperationOnExpressionTranslator(UnaryBinaryOperationOnExpression* unBinOpE, CFG* cfg) :
         Translator(unBinOpE, cfg)
@@ -37,9 +39,9 @@ SubGraph* UnaryBinaryOperationOnExpressionTranslator::translate(Table* table)
 
         case UnaryBinaryOperator::MINUS:
             bb->addInstruction(new SubInstruction(
-                    table->getLastDestination(lValExprSb->getOutputs().back()),
+                    table->getLastDestination(exprSb->getOutputs().back()),
                     table->getOrCreateNumberOperand(0),
-                    table->getLastDestination(lValExprSb->getOutputs().back())
+                    table->getLastDestination(exprSb->getOutputs().back())
             ));
             break;
 
