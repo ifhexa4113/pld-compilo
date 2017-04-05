@@ -61,6 +61,11 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
             for(BasicBlock* output: previousBlocks)
             {
                 // NOTE: if we're at the first child, this should never be executed
+                if(bb->getLabel() == "")
+                {
+                    // If the next block has no label, then give him one to allow jump
+                    bb->giveLabel();
+                }
                 output->setExitTrue(bb);
             }
 

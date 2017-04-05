@@ -147,6 +147,7 @@ void BasicBlock::merge(BasicBlock * otherBlock)
 
 void BasicBlock::print(std::ostream &ost)
 {
+    // TODO FIX print
     if(isColored())
     {
         return;
@@ -160,22 +161,52 @@ void BasicBlock::print(std::ostream &ost)
     {
         instruction->print(ost);
     }
-    if(exitTrue)
+
+    // parcours les sorties fausses en profondeur
+    if(exitFalse != nullptr)
     {
-        if(!(exitTrue->isColored()))
+        printJump(ost, exitFalse->getExitJumpType());
+        ost << exitFalse->getLabel() << std::endl;
+        if(exitTrue != nullptr)
         {
-            exitTrue->print(ost);
-        } else {
             ost << "JMP\t " << exitTrue->getLabel() << std::endl;
         }
-    }
-    if(exitFalse)
-    {
-        ost << "JMPNZ\t" << exitFalse->getLabel() << std::endl;
-        if(!(exitFalse->isColored()))
+
+        if(!exitFalse->isColored())
         {
             exitFalse->print(ost);
         }
+    }
+
+    // si on n'est pas à la fin du programme
+    if(exitTrue != nullptr)
+    {
+        // le bloc n'a pas d'exit false donc on jump
+        if(exitFalse == nullptr)
+        {
+            ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+        }
+
+        if(!exitTrue->isColored())
+        {
+            exitTrue->print(ost);
+        }
+    }
+}
+
+void BasicBlock::printJump(std::ostream &ost, JumpType jump)
+{
+    switch(jump)
+    {
+    case JumpType::Z:
+        ost << "JMPZ\t ";
+        break;
+    case JumpType::N:
+        ost << "JMPN\t ";
+        break;
+    case JumpType::NZ:
+        ost << "JMPNZ\t ";
+        break;
     }
 }
 

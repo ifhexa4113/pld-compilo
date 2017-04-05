@@ -13,6 +13,12 @@
 #include "expression/BinaryBinaryOperationTranslator.h"
 #include "expression/FunctionExpressionTranslator.h"
 #include "expression/VariableExpressionTranslator.h"
+#include "expression/UnaryBinaryOperationOnVariableTranslator.h"
+#include "expression/UnaryBinaryOperationOnExpressionTranslator.h"
+#include "expression/BinaryLogicOperationTranslator.h"
+
+#include "expression/FunctionExpressionTranslator.h"
+#include "expression/BinaryAffectionOperationTranslator.h"
 
 #include "ast/expression/Expression.h"
 #include "ast/expression/LiteralNumberExpression.h"
@@ -21,6 +27,9 @@
 #include "ast/expression/ParenthesisExpression.h"
 #include "ast/expression/FunctionExpression.h"
 #include "ast/expression/VariableExpression.h"
+#include "ast/expression/UnaryBinaryOperation.h"
+#include "ast/expression/BinaryAffectionOperation.h"
+#include "ast/expression/BinaryLogicOperation.h"
 
 #include "ast/block/Block.h"
 #include "ast/block/CmmProgram.h"
@@ -72,7 +81,8 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
             cout << "It's a For - returning the right translator." << endl;
             return new ForTranslator(f, cfg);
         }
-    } else if(dynamic_cast<Expression*>(node))
+    }
+    else if(dynamic_cast<Expression*>(node))
     {
         cout << "It's an expression..." << endl;
         // check what type of expression it is
@@ -102,12 +112,41 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
             cout << "It's a FunctionExpression - returning the right translator." << endl;
             return new FunctionExpressionTranslator(fe, cfg);
         }
-        else if(VariableExpression* varExpr = dynamic_cast<VariableExpression*>(node))
+        else if(dynamic_cast<UnaryBinaryOperation*>(node))
         {
-            cout << "It's a VariableExpression - returning the right translator." << endl; 
-            return new VariableExpressionTranslator(varExpr, cfg);
+            cout << "It's a UnaryBinaryOperation..." << endl;
+            if (UnaryBinaryOperationOnVariable* unBinOpV = dynamic_cast<UnaryBinaryOperationOnVariable*>(node))
+            {
+                cout << "It's a UnaryBinaryOperationOnVariable - returning the right translator." << endl;
+                return new UnaryBinaryOperationOnVariableTranslator(unBinOpV, cfg);
+            }
+            else if (UnaryBinaryOperationOnExpression* unBinOpE = dynamic_cast<UnaryBinaryOperationOnExpression*>(node))
+            {
+                cout << "It's a UnaryBinaryOperationOnExpression - returning the right translator." << endl;
+                return new UnaryBinaryOperationOnExpressionTranslator(unBinOpE, cfg);
+            }
         }
-    } else if(dynamic_cast<Definition*>(node))
+        else if(dynamic_cast<LValueExpression*>(node))
+        {
+            cout << "It's a LValueExpression..." << endl;
+            if (VariableExpression* exprV = dynamic_cast<VariableExpression*>(node))
+            {
+                cout << "It's a VariableExpression - returning the right translator." << endl;
+                return new VariableExpressionTranslator(exprV, cfg);
+            }
+        }
+        else if(BinaryAffectionOperation* binAffExpr = dynamic_cast<BinaryAffectionOperation*>(node))
+        {
+            cout << "It's a BinaryAffectionOperation - returning the right translator." << endl;
+            return new BinaryAffectionOperationTranslator(binAffExpr, cfg);
+        }
+        else if(BinaryLogicOperation* binLogOp = dynamic_cast<BinaryLogicOperation*>(node))
+        {
+            cout << "It's a BinaryLogicOperation - returning the right translator." << endl;
+            return new BinaryLogicOperationTranslator(binLogOp, cfg);
+        }
+    }
+    else if(dynamic_cast<Definition*>(node))
     {
         cout << "It's a definition..." << endl;
         // check what type definition it is
@@ -115,14 +154,17 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
             cout << "It's a VariableDefinition - returning the right translator." << endl;
             return new VariableDefinitionTranslator(vDef, cfg);
         }
-    } else if(dynamic_cast<Instruction*>(node))
+    }
+    else if(dynamic_cast<Instruction*>(node))
     {
         cout << "It's an instruction..." << endl;
         if (ReturnInstruction* retInstr = dynamic_cast<ReturnInstruction*>(node)) {
             cout << "It's a ReturnInstruction - returning the right translator." << endl;
             return new ReturnInstructionTranslator(retInstr, cfg);
         }
-    } else {
+    }
+    else
+    {
         // check what type of other thing it is
     }
 

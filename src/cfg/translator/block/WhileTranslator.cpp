@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 
+#include "cfg/ir/comp/CmpInstruction.h"
+
 WhileTranslator::WhileTranslator(While *wh, CFG *cfg) : Translator(wh, cfg)
 {
     // Nothing else to do
@@ -29,19 +31,21 @@ SubGraph * WhileTranslator::translate(Table* table)
     // If the last register contains 1 or more, the condition is true
     BasicBlock* conditionBlockInput = csb->getInput();
     conditionBlockInput->giveLabel();
-    std::vector<BasicBlock*> conditionBlockOutputs = csb->getOutputs();
-    // TODO: do something to actually compare it ?
+    
+    // Add compare and right jump to the condition
+    BasicBlock* conditionBlockOutput = csb->getOutputs().back();
+    conditionBlockOutput->addInstruction(new CmpInstruction(
+        table->getLastDestination(conditionBlockOutput),
+        table->getOrCreateNumberOperand(0)));
+    conditionBlockOutput->setExitJumpType(BasicBlock::JumpType::Z);
+
     delete csb;
     delete ct;
 
     // Then create the block where to body will lie
     BasicBlock* body = new BasicBlock();
     // And be sure to link the condition's exitFalse to it
-    for(auto output: conditionBlockOutputs)
-    {
-        // NOTE: only one in theory, but hey...
-        output->setExitFalse(body);
-    }
+    conditionBlockOutput->setExitFalse(body);
 
     // Then create a variable to memorize the previous block
     // std::vector<BasicBlock*> previousBlocks;
@@ -64,13 +68,8 @@ SubGraph * WhileTranslator::translate(Table* table)
         }
     }
 
-    body->setExitTrue(conditionBlockInput);
-
-//    std::cout << "Body:" << std::endl;
-//    body->print(std::cout);
-//    std::cout << "Condition:" << std::endl;
-//    conditionBlockInput->print(std::cout);
+    body->setExitTrue(conditionBlockOutput);
 
     // Eventually return a subgraph describing what we just created
-    return new SubGraph(conditionBlockInput, conditionBlockOutputs);
+    return new SubGraph(conditionBlockInput, std::vector<BasicBlock*>(1, conditionBlockOutput));
 }
