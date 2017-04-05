@@ -1,6 +1,6 @@
-#include <stdint>
+#include <stdint.h>
 
 void main() {
    uint32_t a;
-   a = 1 >= 2;
+   a = 1 <= 2;
 }

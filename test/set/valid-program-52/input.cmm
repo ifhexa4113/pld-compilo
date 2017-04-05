@@ -1,6 +1,5 @@
 #include <stdint.h>
-#include <stdio.h>
 
 void main() {
-   putchar('a');
+   uint64_t a;
 }

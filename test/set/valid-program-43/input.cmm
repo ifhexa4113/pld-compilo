@@ -1,0 +1,10 @@
+#include <stdint.h>
+
+void main() {
+   uint32_t a;
+   uint32_t b;
+   b = 1;
+   for (a=0;a<10;a=a+1) {
+      b = b+1;
+   }
+}

@@ -1,5 +1,6 @@
 #include <stdint.h>
 
 void main() {
-   uint64_t a;
+   char a;
+   a = '\n';
 }
