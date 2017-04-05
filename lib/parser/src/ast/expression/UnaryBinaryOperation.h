@@ -18,7 +18,9 @@ class UnaryBinaryOperation : public Expression
 {
 public:
     UnaryBinaryOperation(UnaryBinaryOperator op_) : Expression(), op(op_) {};
+    ~UnaryBinaryOperation(){};
     virtual int walkTree() = 0;
+    UnaryBinaryOperator getOperator() { return op; };
 
 protected:
     UnaryBinaryOperator op;
