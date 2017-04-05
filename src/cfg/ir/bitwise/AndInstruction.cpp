@@ -9,15 +9,9 @@ AndInstruction::AndInstruction(Register *destination, Operand *param1, Operand *
 
 }
 
-AndInstruction::~AndInstruction() {
-    if(!dynamic_cast<Register*>(param1))
-    {
-        delete param1;
-    }
-    if(!dynamic_cast<Register*>(param2))
-    {
-        delete param2;
-    }
+AndInstruction::~AndInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void AndInstruction::print(std::ostream &ost) const {

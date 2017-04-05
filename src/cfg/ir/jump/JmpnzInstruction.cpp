@@ -8,8 +8,9 @@ JmpnzInstruction::JmpnzInstruction(std::string label) : IRInstruction(), label(l
 
 }
 
-JmpnzInstruction::~JmpnzInstruction() {
-
+JmpnzInstruction::~JmpnzInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void JmpnzInstruction::print(std::ostream &ost) const {

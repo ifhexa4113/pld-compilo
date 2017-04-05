@@ -9,15 +9,9 @@ MulInstruction::MulInstruction(Register *destination, Operand *param1, Operand *
 
 }
 
-MulInstruction::~MulInstruction() {
-    if(!dynamic_cast<Register*>(param1))
-    {
-        delete param1;
-    }
-    if(!dynamic_cast<Register*>(param2))
-    {
-        delete param2;
-    }
+MulInstruction::~MulInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void MulInstruction::print(std::ostream &ost) const {

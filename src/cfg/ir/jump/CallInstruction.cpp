@@ -11,8 +11,9 @@ CallInstruction::CallInstruction(std::string label_, std::vector<Register*> regi
 
 }
 
-CallInstruction::~CallInstruction() {
-
+CallInstruction::~CallInstruction()
+{
+    // Nothing else to do (the Table handles it)
 }
 
 void CallInstruction::print(std::ostream &ost) const {

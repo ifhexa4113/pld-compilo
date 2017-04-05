@@ -14,14 +14,7 @@ CmpInstruction::CmpInstruction(Operand *param1_, Operand *param2_) :
 
 CmpInstruction::~CmpInstruction() 
 {
-    if(!dynamic_cast<Register*>(param1))
-    {
-        delete param1;
-    }
-    if(!dynamic_cast<Register*>(param2))
-    {
-        delete param2;
-    }
+    // Nothing else to do (the Table handles it)
 }
 
 void CmpInstruction::print(std::ostream &ost) const 
