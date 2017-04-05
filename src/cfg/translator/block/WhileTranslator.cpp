@@ -53,56 +53,57 @@ SubGraph * WhileTranslator::translate(Table* table)
         conditionBlockOutput->setExitFalse(body);
         body->setExitTrue(conditionBlockInput);
     }
-
-    std::vector<BasicBlock*> previousOutputs;
-    if(Translator * t = getFactory().getTranslator(children.front(), cfg))
-    {
-        SubGraph* sb = t->translate(table);
-        body = sb->getInput();
-        if(body->getLabel() == "")
-        {
-            body->giveLabel();
-        }
-        conditionBlockOutput->setExitFalse(body);
-
-        std::cout << body->getLabel() << std::endl;
-        for(auto& instr : body->getInstructions())
-        {
-            instr->print(std::cout);
-        }
-
-        previousOutputs = sb->getOutputs();
-        delete sb;
-        delete t;
-    }
-
-    for(int i = 1; i < children.size(); i++)
-    {
-        if(Translator * t = getFactory().getTranslator(children[i], cfg))
+    else {
+        std::vector<BasicBlock*> previousOutputs;
+        if(Translator * t = getFactory().getTranslator(children.front(), cfg))
         {
             SubGraph* sb = t->translate(table);
-            BasicBlock* bb = sb->getInput();
-            if(bb->getLabel() == "")
+            body = sb->getInput();
+            if(body->getLabel() == "")
             {
-                // TODO merge instead of giving a label ?
-                bb->giveLabel();
+                body->giveLabel();
             }
-            for(BasicBlock* currentOutput : previousOutputs)
+            conditionBlockOutput->setExitFalse(body);
+
+            std::cout << body->getLabel() << std::endl;
+            for(auto& instr : body->getInstructions())
             {
-                currentOutput->setExitTrue(bb);
+                instr->print(std::cout);
             }
 
             previousOutputs = sb->getOutputs();
             delete sb;
             delete t;
         }
-    }
+
+        for(int i = 1; i < children.size(); i++)
+        {
+            if(Translator * t = getFactory().getTranslator(children[i], cfg))
+            {
+                SubGraph* sb = t->translate(table);
+                BasicBlock* bb = sb->getInput();
+                if(bb->getLabel() == "")
+                {
+                    // TODO merge instead of giving a label ?
+                    bb->giveLabel();
+                }
+                for(BasicBlock* currentOutput : previousOutputs)
+                {
+                    currentOutput->setExitTrue(bb);
+                }
+
+                previousOutputs = sb->getOutputs();
+                delete sb;
+                delete t;
+            }
+        }
 
 
-    // end of the loop, go back to the test condition
-    for(BasicBlock* finalOutput : previousOutputs)
-    {
-        finalOutput->setExitTrue(conditionBlockInput);
+        // end of the loop, go back to the test condition
+        for(BasicBlock* finalOutput : previousOutputs)
+        {
+            finalOutput->setExitTrue(conditionBlockInput);
+        }
     }
 
     // Eventually return a subgraph describing what we just created
