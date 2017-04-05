@@ -26,6 +26,7 @@ SubGraph * LiteralNumberTranslator::translate(Table* table)
 
     // Then create bases for the subgraph that we'll return
     BasicBlock* bb = new BasicBlock("");
+    bb->setTable(table);
     std::vector<BasicBlock*> outputs(1, bb);
 
     bb->addInstruction(new MovInstruction(table->getOrCreateRegister(), table->getOrCreateNumberOperand(litNumExpr->getValue())));
