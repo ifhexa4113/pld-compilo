@@ -22,14 +22,14 @@ using namespace std;
 bool errorManagerTest(string expectedErrorsTrace) {
 	ErrorManager& errorManager = ErrorManager::getInstance();
 	string errorsTrace = errorManager.getErrorsTrace();
-	std::cerr << std::endl << errorsTrace << std::endl; // to remove
+	//std::cerr << std::endl << errorsTrace << std::endl; // to remove
 	return expectedErrorsTrace.compare(errorsTrace) == 0;
 }
 
 bool astTest(AstNode* astNode, std::string expectedAstTrace) {
 	std::string astTrace = "";
 	astNode->fillAstTrace(astTrace);
-	std::cerr << std::endl << astTrace << std::endl; // to remove
+	//std::cerr << std::endl << astTrace << std::endl; // to remove
 	expectedAstTrace.erase(std::remove(expectedAstTrace.begin(), expectedAstTrace.end(), '\n'), expectedAstTrace.end());
 	expectedAstTrace.erase(std::remove(expectedAstTrace.begin(), expectedAstTrace.end(), '\r'), expectedAstTrace.end());
 	astTrace.erase(std::remove(astTrace.begin(), astTrace.end(), '\n'), astTrace.end());
