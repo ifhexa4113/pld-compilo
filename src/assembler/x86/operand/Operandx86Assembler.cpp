@@ -11,19 +11,24 @@
 #include <iostream>
 
 Operandx86Assembler::Operandx86Assembler(Operand *operand, AbstractBasicBlockAssembler *parent_block) {
+    std::cout << "Operand constructor" << std::endl;
     LiteralNumber *lit = nullptr;
     Register *reg = nullptr;
 
     if ((lit = dynamic_cast<LiteralNumber*>(operand)) != nullptr)
     {
+        std::cout << "Literal value, assigning" << std::endl;
+
         value = lit->getValue();
         type = operand_type::LITERAL;
     }
     else if ((reg = dynamic_cast<Register*>(operand)) != nullptr)
     {
+        std::cout << "Register value, assigning, parent block address " << parent_block << std::endl;
         value = parent_block->getOffset((Register*) operand);
         type = operand_type::VIRTUAL_REGISTER;
     }
+    std::cout << "end of constructor" << std::endl;
 }
 
 std::string Operandx86Assembler::toString() {

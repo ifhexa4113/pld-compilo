@@ -44,22 +44,29 @@ std::string x86BasicBlockAssembler::generateProlog() {
 }
 
 std::string x86BasicBlockAssembler::translateIR() {
+    std::cout << "translateIR() for " << getLabel() << std::endl;
     std::ostringstream stream;
 
     std::vector<IRInstruction *> instructions = source->getInstructions();
 
+    std::cout << "Tranlating ir instruction :" << std::endl;
     for (int current_index = 0; current_index < instructions.size(); current_index ++)
     {
+        std::cout << "Trying to translate another instruction" << std::endl;
         IRAbstractAssembler * translated_instruction = translateInstruction(instructions[current_index]);
-
+        std::cout << "Translation success" << std::endl;
         if (translated_instruction != nullptr)
         {
             //std::cout << "Translated mov instruction" << std::endl;
             stream << translated_instruction->translate();
+            std::cout << "Generated asm fon current instruction" << std::endl;
         }
     }
 
+
+    std::cout << "finished tranlating if" << std::endl;
     return stream.str();
+
 }
 
 std::string x86BasicBlockAssembler::generateEpilog() {
@@ -77,17 +84,23 @@ IRAbstractAssembler * x86BasicBlockAssembler::translateInstruction(IRInstruction
 
     if (dynamic_cast<MovInstruction *>(instruction) != nullptr)
     {
-
+        std::cout << "casting to mov" << std::endl;
         return new Movx86Assembler((MovInstruction*)instruction, this);
     }
     else if (dynamic_cast<CallInstruction *>(instruction) != nullptr)
     {
+        std::cout << "casting to call" << std::endl;
+
         return new Callx86Assembler((CallInstruction*) instruction, this);
     }
     else if (dynamic_cast<AddInstruction *>(instruction) != nullptr)
     {
+        std::cout << "casting to add" << std::endl;
+
         return new Addx86Assembler((AddInstruction*) instruction, this);
     }
+
+    std::cout << "casting failed" << std::endl;
 
     return nullptr;
 }
