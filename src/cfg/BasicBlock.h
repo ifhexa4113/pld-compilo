@@ -14,12 +14,12 @@ public:
         Z, N, NZ
     };
 
-    BasicBlock(std::string label_ = "$$unnamed$$", BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr, BasicBlock::JumpType exitJumpType_ = BasicBlock::JumpType::Z);
+    BasicBlock(std::string label_ = std::string("%%unnamed%%"), BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr, BasicBlock::JumpType exitJumpType_ = BasicBlock::JumpType::Z);
     ~BasicBlock();
 
     // Getters
     std::string getLabel() const;
-    std::vector<IRInstruction*> getInstructions() const;
+    std::vector<IRInstruction*>& getInstructions();
     BasicBlock* getExitTrue();
     BasicBlock* getExitFalse();
     BasicBlock::JumpType getExitJumpType() const;
@@ -38,7 +38,8 @@ public:
     // Others
     void addInstruction(IRInstruction* instruction);
     void merge(BasicBlock* otherBlock);
-    void print(std::ostream& ost) const;
+    void print(std::ostream& ost);
+    void giveLabel();
 
 protected:
     static int labelCounter;

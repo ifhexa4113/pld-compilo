@@ -33,8 +33,12 @@ SubGraph * BinaryArithmeticOperationTranslator::translate(Table* table)
 
     Translator* leftT = getFactory().getTranslator( binArithOp->getLExpression(), cfg);
     SubGraph* leftSb = leftT->translate(table);
-    Translator* rightT = getFactory().getTranslator( binArithOp->getLExpression(), cfg);
+    Translator* rightT = getFactory().getTranslator( binArithOp->getRExpression(), cfg);
     SubGraph* rightSb = rightT->translate(table);
+
+    // Merge block of the two expressions
+    bb->merge(leftSb->getInput());
+    bb->merge(rightSb->getInput());
 
     switch (binArithOp->getOperator()){
         case ArithmeticOperator::PLUS:

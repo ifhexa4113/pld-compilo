@@ -21,7 +21,7 @@ AddInstruction::~AddInstruction() {
 }
 
 void AddInstruction::print(std::ostream &ost) const {
-    ost << "ADD\t" << destination << ", " << param1 << ", " << param2;
+    ost << "ADD\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *AddInstruction::getParam1() const {

@@ -21,7 +21,7 @@ ModInstruction::~ModInstruction() {
 }
 
 void ModInstruction::print(std::ostream &ost) const {
-    ost << "MUL\t" << destination << ", " << param1 << ", " << param2;
+    ost << "MUL\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *ModInstruction::getParam1() const {

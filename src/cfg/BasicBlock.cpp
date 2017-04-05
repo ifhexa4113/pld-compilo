@@ -1,5 +1,6 @@
 #include "BasicBlock.h"
 #include <sstream>
+#include <iostream>
 
 int BasicBlock::labelCounter = 0;
 
@@ -7,9 +8,9 @@ int BasicBlock::labelCounter = 0;
 
 BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* exitFalse_, BasicBlock::JumpType exitJumpType_) :
     label(([&label_]() {
-        if(label_ == "$$unnamed$$") {
+        if(label_ == "%%unnamed%%") {
             std::stringstream ss;
-            ss << "$bb" << BasicBlock::labelCounter++;
+            ss << "%bb" << BasicBlock::labelCounter++;
             return ss.str();
         }
         return label_;
@@ -27,23 +28,20 @@ BasicBlock::BasicBlock(std::string label_, BasicBlock* exitTrue_, BasicBlock* ex
 
 BasicBlock::~BasicBlock()
 {
+    // Delete each instruction
     for(IRInstruction* instruction: instructions)
     {
         delete instruction;
     }
-    if(exitTrue && exitTrue != this)
-    {
-        delete exitTrue;
-    }
-    if(exitFalse && exitFalse != this)
-    {
-        delete exitFalse;
-    }
+    // Delete table if needed
     if(isPrologable() && table)
     {
         // Only the BB which will generate a prolog are able to destroy a Table
         delete table;
     }
+
+    // NOTE: since basic blocks are organized as a graph,
+    //       it's the CFG that will destroy them.
 }
 
 // ---------------------------------------- Getters
@@ -53,7 +51,7 @@ std::string BasicBlock::getLabel() const
     return label;
 }
 
-std::vector<IRInstruction *> BasicBlock::getInstructions() const
+std::vector<IRInstruction *>& BasicBlock::getInstructions()
 {
     return instructions;
 }
@@ -147,8 +145,13 @@ void BasicBlock::merge(BasicBlock * otherBlock)
     otherBlock->setExitFalse(nullptr);
 }
 
-void BasicBlock::print(std::ostream &ost) const
+void BasicBlock::print(std::ostream &ost)
 {
+    if(isColored())
+    {
+        return;
+    }
+    setColored();
     if(label != "")
     {
         ost << label << ":" << std::endl;
@@ -157,17 +160,32 @@ void BasicBlock::print(std::ostream &ost) const
     {
         instruction->print(ost);
     }
-    if(exitTrue && !(exitTrue->isColored()))
+    if(exitTrue)
     {
-        ost << "JMP\t " << exitTrue->getLabel() << std::endl;
-        exitTrue->setColored();
-        exitTrue->print(ost);
+        if(!(exitTrue->isColored()))
+        {
+            exitTrue->print(ost);
+        } else {
+            ost << "JMP\t " << exitTrue->getLabel() << std::endl;
+        }
     }
-    if(exitFalse && !(exitFalse->isColored()))
+    if(exitFalse)
     {
-        ost << "JMP\t" << exitFalse->getLabel() << std::endl;
-        exitFalse->setColored();
-        exitFalse->print(ost);
+        ost << "JMPNZ\t" << exitFalse->getLabel() << std::endl;
+        if(!(exitFalse->isColored()))
+        {
+            exitFalse->print(ost);
+        }
+    }
+}
+
+void BasicBlock::giveLabel()
+{
+    if(label == "")
+    {
+        std::stringstream ss;
+        ss << "%bb" << BasicBlock::labelCounter++;
+        label = ss.str();
     }
 }
 

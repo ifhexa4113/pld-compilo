@@ -21,7 +21,7 @@ MulInstruction::~MulInstruction() {
 }
 
 void MulInstruction::print(std::ostream &ost) const {
-    ost << "MUL\t" << destination << ", " << param1 << ", " << param2;
+    ost << "MUL\t" << *destination << ", " << *param1 << ", " << *param2 << std::endl;
 }
 
 Operand *MulInstruction::getParam1() const {

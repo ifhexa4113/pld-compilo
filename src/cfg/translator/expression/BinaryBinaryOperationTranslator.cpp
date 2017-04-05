@@ -38,6 +38,10 @@ SubGraph* BinaryBinaryOperationTranslator::translate(Table* table)
     Translator* rightT = getFactory().getTranslator(binBinOp->getRExpression(), cfg);
     SubGraph* rightSb = rightT->translate(table);
 
+    // Merge block of the two expressions
+    bb->merge(leftSb->getInput());
+    bb->merge(rightSb->getInput());
+
     switch(binBinOp->getOperator())
     {
     case BinaryBinaryOperator::XOR:

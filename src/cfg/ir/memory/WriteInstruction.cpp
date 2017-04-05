@@ -20,7 +20,7 @@ WriteInstruction::~WriteInstruction() {
 }
 
 void WriteInstruction::print(std::ostream &ost) const {
-    ost << "WRITE\t" << address << ", " << value;
+    ost << "WRITE\t" << *address << ", " << *value << std::endl;
 }
 
 const Operand *WriteInstruction::getAddress() const {
