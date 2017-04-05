@@ -5,6 +5,7 @@
 #include "block/WhileTranslator.h"
 #include "block/ForTranslator.h"
 #include "block/IfTranslator.h"
+#include "block/BlockTranslator.h"
 #include "definition/VariableDefinitionTranslator.h"
 #include "definition/FunctionDefinitionTranslator.h"
 #include "instruction/ReturnInstructionTranslator.h"
@@ -87,6 +88,11 @@ Translator* TranslatorFactory::getTranslator(AstNode* node, CFG* cfg)
         {
             cout << "It's an If - returning the right translator." << endl;
             return new IfTranslator(ifBlock, cfg);
+        }
+        else if(Block* block = dynamic_cast<Block*>(node))
+        {
+            cout << "It's an Block - returning the right translator." << endl;
+            return new BlockTranslator(block, cfg);
         }
     }
     else if(dynamic_cast<Expression*>(node))
