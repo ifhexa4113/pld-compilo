@@ -28,9 +28,16 @@ std::string x86BasicBlockAssembler::generateProlog() {
     // subl $variable_count * 4, %esp
 
     // PAS LE TEMPS DE NIAISER
+#ifdef __linux__
+    stream << "\tpushq\t%rbp" << std::endl;
+    stream << "\tmovq\t%rsp, %rbp" << std::endl;
+    stream << "\tsubq\t$" << variable_count * 4 << ", %esp" << std::endl;
+#elif _WIN32
     stream << "\tpushl\t%ebp" << std::endl;
     stream << "\tmovl\t%esp, %ebp" << std::endl;
     stream << "\tsubl\t$" << variable_count * 4 << ", %esp" << std::endl;
+#endif
+
     //std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
 
     return stream.str();
@@ -87,9 +94,7 @@ IRAbstractAssembler * x86BasicBlockAssembler::translateInstruction(IRInstruction
 
 std::string x86BasicBlockAssembler::getLabel() {
     std::ostringstream stream;
-    std::cout << "Label !" << std::endl;
-    stream <<"_" << source->getLabel() << ":" << std::endl;
-    std::cout << ":)" << std::endl;
+    stream << x86BasicBlockAssembler::getLabelPrefix() << source->getLabel() << ":" << std::endl;
     return stream.str();
 }
 
@@ -97,7 +102,7 @@ std::string x86BasicBlockAssembler::getIntro() {
     std::ostringstream stream;
 
     stream << "\t.text" << std::endl;
-    stream << "\t.globl\t_main" << std::endl;
+    stream << "\t.globl\t" << getLabelPrefix() << "main" << std::endl;
 
     return stream.str();
 }
@@ -139,4 +144,14 @@ std::string x86BasicBlockAssembler::getJump(std::string label, BasicBlock::JumpT
 
 AbstractBasicBlockAssembler * x86BasicBlockAssembler::constructMe(BasicBlock *source) {
     return new x86BasicBlockAssembler(source, false);
+}
+
+std::string x86BasicBlockAssembler::getLabelPrefix() {
+#ifdef __linux__
+    return "";
+#elif _WIN32
+    return "_";
+#else
+
+#endif
 }

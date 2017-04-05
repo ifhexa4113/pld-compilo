@@ -15,7 +15,7 @@ using namespace std;
 
 int main()
 {
-    /*Ast ast;
+    Ast ast;
     CmmProgram& program = ast.getProgram();
 
     //cout << "Creating AST..." << endl;
@@ -25,7 +25,7 @@ int main()
     //cout << "Creating CFG..." << endl;
     CFG cfg(&ast);
     //cout << "CFG done:" << endl;
-    cfg.print(cout);
+    //cfg.print(cout);
 
     x86BasicBlockAssembler assembler(cfg.getInput(), true);
 
@@ -36,9 +36,9 @@ int main()
     stream << assembler.translate();
 
     stream.close();
-    return result;*/
+    return result;
 
-    BasicBlock * block = new BasicBlock("foo");
+    /*BasicBlock * block = new BasicBlock("foo");
     BasicBlock * jump_true = new BasicBlock("bar");
     BasicBlock * jump_false = new BasicBlock("bor");
     BasicBlock * end = new BasicBlock("end");
@@ -75,5 +75,5 @@ int main()
 
     std::string value = blockAssembler.translate();
     std::cout << "Block output : \n" << value << std::endl;
-    return 0;
+    return 0;*/
 }

@@ -27,7 +27,11 @@ public:
 
     AbstractBasicBlockAssembler * constructMe(BasicBlock *source) override;
 
+    int getCurrentVarSize();
+
     IRAbstractAssembler * translateInstruction(IRInstruction *instruction);
+
+    static std::string getLabelPrefix();
 };
 
 
