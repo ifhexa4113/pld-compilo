@@ -2,7 +2,7 @@
 // Created by Element on 03/04/2017.
 //
 
-#include <cfg/ir/basic/AddInstruction.h>
+#include "cfg/ir/basic/AddInstruction.h"
 #include "catch.h"
 #include "assembler/x86/x86BasicBlockAssembler.h"
 #include <iostream>

@@ -9,8 +9,9 @@
 #include "ast/block/CmmProgram.h"
 #include "ast/SymbolTableStack.h"
 #include "ast/ErrorManager.h"
+#include "ast/block/CmmProgram.h"
 #include "cfg/CFG.h"
-#include "../lib/parser/src/ast/block/CmmProgram.h"
+
 
 using namespace std;
 
