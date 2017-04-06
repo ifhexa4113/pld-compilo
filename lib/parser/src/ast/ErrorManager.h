@@ -8,6 +8,7 @@
 class ErrorManager
 {
 public:
+    // Error enum
 	enum Error {
 		UNKNOWN_LVALUE_SYMBOL,
 		UNKNOWN_FUNCTION_SYMBOL,
@@ -18,18 +19,19 @@ public:
 		RETURN_MISSING
 	};
 
+    // Singleton pattern
 	static ErrorManager& getInstance();
-
-	void addEncounteredError(Error encounteredError, std::string errorSourceName);
-
-	void printEncounteredErrorsNumber();
-
-	void printEncounteredErrors();
-
-	std::string getErrorsTrace();
-
     ErrorManager& operator= (const ErrorManager&)   = delete;
     ErrorManager(const ErrorManager&)               = delete;
+
+    // Getters
+    std::string getErrorsTrace();
+    std::vector<Error> getEncounteredErrors();
+
+    // Others
+	void addEncounteredError(Error encounteredError, std::string errorSourceName);
+	void printEncounteredErrorsNumber();
+	void printEncounteredErrors();
 
 private:
 	ErrorManager();

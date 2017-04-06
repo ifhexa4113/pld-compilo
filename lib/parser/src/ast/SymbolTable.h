@@ -10,7 +10,7 @@ class SymbolTable
 {
 public:
     SymbolTable();
-    virtual ~SymbolTable();
+    ~SymbolTable();
 
     /**
      * Returns a pointer to the symbol if the entry exists,
@@ -34,6 +34,16 @@ public:
      * @param name The key to the symbol
      */
     bool contains(std::string name);
+
+    /**
+     * Returns an iterator on the first item of the table.
+     */
+    std::map<std::string,Declaration*>::iterator begin();
+
+    /**
+     * Returns an iterator on en empty item.
+     */
+    std::map<std::string,Declaration*>::iterator end();
 
 private:
     std::map<std::string,Declaration*> table;

@@ -123,7 +123,7 @@ EXECS = $(EXE1) $(EXE2) $(EXE3)
 W = -W
 WA = -Wall
 STDLIB = -std=gnu++11
-INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib))
+INCLUDES = $(foreach lib,$(INCLUDEPATH),-I $(lib)) -I $(SRCPATH)
 
 CFLAGS = $(INCLUDES)
 CUTESTFLAGS = $(CFLAGS) -I $(LIBPATH)/catch/$(INCLUDEFOLDER) -I $(SRCPATH)
@@ -205,7 +205,7 @@ endif
 
 #Variables pour les options d'edition des liens-----------------
 
-LDFLAGS =
+LDFLAGS = 
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
@@ -257,7 +257,7 @@ $(EXE3): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(OBJLIB) $(OBJNRTEST)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< -g $(CFLAGS)
 $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
@@ -309,6 +309,7 @@ run-utests: $(EXE2)
 	$(EXE2)
 
 run-nrtests: $(EXE3) $(NRTESTS)
+	@echo [92mTESTS DONE[0m
 
 #Construct folders tree
 test-tree: libs-test-tree $(UTESTDIRTOCREATE)

@@ -38,6 +38,11 @@ std::vector<AstNode *> Block::getChildren()
     return children;
 }
 
+SymbolTable Block::getSymbolTable()
+{
+    return symbolTable;
+}
+
 void Block::addChildren(AstNode *child)
 {
     children.push_back(child);

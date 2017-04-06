@@ -1,15 +1,27 @@
 #include <iostream>
 #include "CmmProgram.h"
 
+#include "ast/declaration/FunctionDeclaration.h"
+#include "ast/declaration/LValueDeclaration.h"
+#include "ast/SymbolTable.h"
+
 CmmProgram::CmmProgram() : Block()
 {
-    // Nothing else to do
+    FunctionDeclaration* putcharFunc = new FunctionDeclaration("putchar", Type::VOID_T, std::vector<LValueDeclaration*>(1));
+    FunctionDeclaration* getcharFunc = new FunctionDeclaration("getchar", Type::CHAR_T, std::vector<LValueDeclaration*>(0));
+
+    symbolTable.put(putcharFunc->getName(), putcharFunc);
+    symbolTable.put(getcharFunc->getName(), getcharFunc);
 }
 
 CmmProgram::CmmProgram(std::vector<AstNode*> children_) :
     Block(children_)
 {
-    // Nothing else to do
+    FunctionDeclaration* putcharFunc = new FunctionDeclaration("putchar", Type::VOID_T, std::vector<LValueDeclaration*>(1));
+    FunctionDeclaration* getcharFunc = new FunctionDeclaration("getchar", Type::CHAR_T, std::vector<LValueDeclaration*>(0));
+
+    symbolTable.put(putcharFunc->getName(), putcharFunc);
+    symbolTable.put(getcharFunc->getName(), getcharFunc);
 }
 
 CmmProgram::~CmmProgram()

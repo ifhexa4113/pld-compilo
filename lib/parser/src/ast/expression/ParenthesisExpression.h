@@ -15,6 +15,7 @@ public:
     bool checkNonVoidType(SymbolTableStack& stack);
     void fillAstTrace(std::string& astTrace);
     bool checkReturnType(Type, SymbolTableStack&){return false;};
+    Expression* getExpression() const;
 
 protected:
     Expression* expression;

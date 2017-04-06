@@ -6,11 +6,10 @@
 class Ast
 {
 public:
-
     CmmProgram& getProgram() { return root; };
 
 protected:
     CmmProgram root;
 };
 
-#endif
+#endif //AST_H
