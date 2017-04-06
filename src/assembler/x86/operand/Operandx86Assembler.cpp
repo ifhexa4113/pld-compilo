@@ -91,7 +91,12 @@ std::string Operandx86Assembler::toString() {
             break;
         }
         case operand_type::VIRTUAL_REGISTER : {
+#ifdef __linux__
+            stm << value << "(%rsp)";
+#elif _WIN32
             stm << value << "(%esp)";
+#endif
+            
         }
         default:
             break;
