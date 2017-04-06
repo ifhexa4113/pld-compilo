@@ -1,6 +1,10 @@
 #include <iostream>
 #include "BinaryLogicOperation.h"
 #include "NullExpression.h"
+#include "ast/ErrorManager.h"
+
+#include <algorithm>
+#include <typeinfo>
 
 BinaryLogicOperation::BinaryLogicOperation(LogicOperator op_, Expression* lExpression_, Expression* rExpression_) :
     Expression(),
@@ -74,4 +78,27 @@ Expression* BinaryLogicOperation::getRExpression()
 Expression* BinaryLogicOperation::getLExpression()
 {
     return lExpression;
+}
+
+void BinaryLogicOperation::fillSymbolTable(SymbolTableStack& stack)
+{
+    lExpression->fillSymbolTable(stack);
+    rExpression->fillSymbolTable(stack);
+}
+
+Type BinaryLogicOperation::getType(SymbolTableStack& stack)
+{
+    Type lType = lExpression->getType(stack);
+    Type rType = rExpression->getType(stack);
+    return static_cast<Type>(std::max<int>(static_cast<int>(lType), static_cast<int>(rType)));
+}
+
+bool BinaryLogicOperation::checkNonVoidType(SymbolTableStack& stack)
+{
+    return lExpression->checkNonVoidType(stack) && rExpression->checkNonVoidType(stack);
+}
+
+void BinaryLogicOperation::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "BINARY LOGIC OP\n";
 }

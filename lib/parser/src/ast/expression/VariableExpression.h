@@ -10,6 +10,8 @@ public:
     VariableExpression(std::string name_);
     ~VariableExpression();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
 };
 
 #endif

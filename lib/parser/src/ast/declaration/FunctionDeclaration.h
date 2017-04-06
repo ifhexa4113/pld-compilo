@@ -2,21 +2,29 @@
 #define FUNCTION_H
 
 #include <string>
+#include <vector>
 #include "Type.h"
 #include "Declaration.h"
+#include "LValueDeclaration.h"
 #include "ast/definition/FunctionDefinition.h"
 
 class FunctionDeclaration : public Declaration
 {
 public:
-    FunctionDeclaration(std::string name, Type type, int nbArgs);
+    FunctionDeclaration(std::string name_, Type type_);
+    FunctionDeclaration(std::string name_, Type type_, std::vector<LValueDeclaration*> arguments_);
     ~FunctionDeclaration();
     int walkTree();
     int getNbArgs();
     FunctionDefinition* toEmptyDefinition();
 
+    std::vector<LValueDeclaration*>& getArguments();
+
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
+
 protected:
-    int nbArgs;
+    std::vector<LValueDeclaration*> arguments;
 };
 
 #endif

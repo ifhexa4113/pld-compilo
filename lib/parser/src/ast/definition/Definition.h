@@ -4,6 +4,7 @@
 #include <string>
 #include "ast/AstNode.h"
 #include "ast/declaration/Type.h"
+
 class Declaration;
 
 class Definition : public virtual AstNode
@@ -15,6 +16,8 @@ public:
     virtual Declaration* getDeclaration();
     Type getType();
     std::string getName() const;
+
+    virtual void fillSymbolTable(SymbolTableStack& stack);
 
 protected:
     Declaration* declaration;

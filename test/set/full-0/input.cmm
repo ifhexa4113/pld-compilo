@@ -1,0 +1,14 @@
+uint64_t foo(uint32_t a) {
+    uint64_t b = 0;
+    if (a > 0)
+    {
+        for (uint64_t i = 0; i < 10; i++)
+            b++;
+    }
+    return b;
+}
+
+void main() {
+    uint32_t nb = 4;
+    uint64_t a = foo(nb);
+}

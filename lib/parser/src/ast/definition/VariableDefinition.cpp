@@ -1,5 +1,8 @@
 #include "VariableDefinition.h"
 #include "ast/expression/NullExpression.h"
+#include "ast/expression/FunctionExpression.h"
+#include "ast/ErrorManager.h"
+#include <iostream>
 
 VariableDefinition::VariableDefinition(LValueDeclaration* declaration_, Expression* rExpression_) :
     Definition(declaration_),
@@ -24,4 +27,20 @@ int VariableDefinition::walkTree()
 Expression * VariableDefinition::getRExpression()
 {
     return rExpression;
+}
+
+void VariableDefinition::fillSymbolTable(SymbolTableStack& stack)
+{
+    Definition::fillSymbolTable(stack);
+    rExpression->fillSymbolTable(stack);
+    if (!rExpression->checkNonVoidType(stack))
+    {
+        ErrorManager& errorManager = ErrorManager::getInstance();
+        errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
+    }
+}
+
+void VariableDefinition::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "VAR DEF\n";
 }

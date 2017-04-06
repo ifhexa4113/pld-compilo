@@ -19,3 +19,18 @@ int64_t LiteralNumberExpression::getValue()
     return value;
 }
 
+Type LiteralNumberExpression::getType(SymbolTableStack&)
+{
+    return Type::INT64_T;
+}
+
+ bool LiteralNumberExpression::checkNonVoidType(SymbolTableStack&)
+ {
+     return true;
+ }
+
+void LiteralNumberExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "LITERAL NUMBER EXPR\n";
+}
+

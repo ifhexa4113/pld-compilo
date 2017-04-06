@@ -16,6 +16,9 @@ public:
 	AstNode* getInitialization();
     Expression* getIncrement();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
+
 protected:
     AstNode* initialization; // TODO : can be a declaration
     Expression* increment;

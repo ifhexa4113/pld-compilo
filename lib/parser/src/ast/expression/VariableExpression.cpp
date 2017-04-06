@@ -18,3 +18,7 @@ int VariableExpression::walkTree()
     return 0;
 }
 
+void VariableExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "VAR EXPR\n";
+}

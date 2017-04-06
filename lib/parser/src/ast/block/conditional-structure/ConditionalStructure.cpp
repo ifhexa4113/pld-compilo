@@ -1,5 +1,8 @@
 #include "ConditionalStructure.h"
 #include "ast/expression/NullExpression.h"
+#include "ast/expression/FunctionExpression.h"
+#include "ast/ErrorManager.h"
+#include <iostream>
 
 ConditionalStructure::ConditionalStructure(Expression* condition_) :
     Block(),
@@ -34,4 +37,16 @@ int ConditionalStructure::walkTree()
 Expression * ConditionalStructure::getCondition()
 {
     return condition;
+}
+
+void ConditionalStructure::fillSymbolTable(SymbolTableStack& stack)
+{
+    condition->fillSymbolTable(stack);
+    Block::fillSymbolTable(stack);
+
+    if (!condition->checkNonVoidType(stack))
+    {
+        ErrorManager& errorManager = ErrorManager::getInstance();
+        errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_VOID_TYPE, "");
+    }
 }

@@ -10,6 +10,10 @@ public:
     ~ArrayExpression();
     int walkTree();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
+
 protected:
     Expression* index;
 };

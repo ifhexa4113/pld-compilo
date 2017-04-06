@@ -1,7 +1,0 @@
-void foo() {
-    while(i <= 10){
-        doSomething();
-        char c =0;
-        i += 2;
-    }
-}

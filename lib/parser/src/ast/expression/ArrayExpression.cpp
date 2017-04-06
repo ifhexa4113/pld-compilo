@@ -22,3 +22,14 @@ int ArrayExpression::walkTree()
     std::cout << name << "[" << index->walkTree() << "]";
     return 0;
 }
+
+void ArrayExpression::fillSymbolTable(SymbolTableStack& stack)
+{
+    LValueExpression::fillSymbolTable(stack);
+    index->fillSymbolTable(stack);
+}
+
+void ArrayExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "ARRAY EXPR\n";
+}

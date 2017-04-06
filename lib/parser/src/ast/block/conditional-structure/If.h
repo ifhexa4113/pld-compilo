@@ -12,6 +12,7 @@ public:
 	If(AstNode* condition_, std::vector<AstNode*> ifStat_, std::vector<AstNode*> elseStat_);
     ~If();
     int walkTree();
+	void fillAstTrace(std::string& astTrace);
 
 	Block* getIfBlock() { return ifBlock; };
 	Block* getElseBlock() {return elseBlock; };

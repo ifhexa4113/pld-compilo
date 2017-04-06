@@ -1,5 +1,6 @@
 #include "VariableDeclaration.h"
 #include "ast/expression/NullExpression.h"
+#include <iostream>
 
 VariableDeclaration::VariableDeclaration(std::string name_, Type type_) : LValueDeclaration(name_, type_)
 {
@@ -19,4 +20,9 @@ int VariableDeclaration::walkTree()
 VariableDefinition * VariableDeclaration::toEmptyDefinition()
 {
     return new VariableDefinition(this, new NullExpression());
+}
+
+void VariableDeclaration::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "VAR DECL\n";
 }

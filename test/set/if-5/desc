@@ -1,0 +1,1 @@
+It should parse a simple if with a null expression as a condition.

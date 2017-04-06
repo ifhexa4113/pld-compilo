@@ -1,0 +1,1 @@
+It should parse a function declaration and definition with an inadequate number of arguments.

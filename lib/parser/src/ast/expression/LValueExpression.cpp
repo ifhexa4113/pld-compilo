@@ -1,4 +1,9 @@
+#include <iostream>
+
 #include "LValueExpression.h"
+#include "ast/declaration/Declaration.h"
+#include "ast/ErrorManager.h"
+
 
 LValueExpression::LValueExpression(std::string name_) :
     Expression(),
@@ -20,5 +25,31 @@ int LValueExpression::walkTree()
 std::string LValueExpression::getName()
 {
     return name;
+}
+
+Type LValueExpression::getType(SymbolTableStack& stack)
+{
+    return (stack.getSymbol(name))->getType();
+}
+
+void LValueExpression::fillSymbolTable(SymbolTableStack& stack)
+{
+    if(!stack.checkSymbol(name))
+    {
+		ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::UNKNOWN_LVALUE_SYMBOL, name);
+    }
+}
+
+bool LValueExpression::checkNonVoidType(SymbolTableStack& stack)
+{
+    if (stack.checkSymbol(name))
+    {
+        return (stack.getSymbol(name))->checkNonVoidType(stack);
+    }
+    else
+    {
+        return true;
+    } 
 }
 

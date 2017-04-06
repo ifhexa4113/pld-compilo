@@ -9,6 +9,10 @@ public:
     ArrayDefinition(LValueDeclaration* declaration_);
     ~ArrayDefinition();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
+
+    // TODO missing an expression !
 };
 
 #endif //ARRAY_DEFINITION_H

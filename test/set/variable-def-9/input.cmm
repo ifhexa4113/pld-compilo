@@ -1,0 +1,5 @@
+void foo() {}
+
+void someFunction() {
+    char i = foo() + 1;
+}

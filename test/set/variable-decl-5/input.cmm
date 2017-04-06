@@ -1,0 +1,4 @@
+char someFunction() {
+    uint64_t a;
+    uint64_t a;
+}

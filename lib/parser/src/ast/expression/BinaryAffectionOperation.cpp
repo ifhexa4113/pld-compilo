@@ -73,3 +73,24 @@ Expression* BinaryAffectionOperation::getRExpression()
 {
     return rExpression;
 }
+
+void BinaryAffectionOperation::fillSymbolTable(SymbolTableStack& stack)
+{
+    lvalue->fillSymbolTable(stack);
+    rExpression->fillSymbolTable(stack);
+}
+
+Type BinaryAffectionOperation::getType(SymbolTableStack& stack)
+{
+    return lvalue->getType(stack);
+}
+
+bool BinaryAffectionOperation::checkNonVoidType(SymbolTableStack& stack)
+{
+    return rExpression->checkNonVoidType(stack);
+}
+
+void BinaryAffectionOperation::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "BINARY AFFECT\n";
+}

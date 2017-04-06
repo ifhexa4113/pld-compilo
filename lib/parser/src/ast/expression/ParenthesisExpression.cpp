@@ -21,6 +21,24 @@ int ParenthesisExpression::walkTree()
     return 0;
 }
 
+void ParenthesisExpression::fillSymbolTable(SymbolTableStack& stack)
+{
+    expression->fillSymbolTable(stack);
+}
+
+Type ParenthesisExpression::getType(SymbolTableStack& stack)
+{
+    return expression->getType(stack);
+}
+
+bool ParenthesisExpression::checkNonVoidType(SymbolTableStack& stack) {
+    return expression->checkNonVoidType(stack);
+}
+
+void ParenthesisExpression::fillAstTrace(std::string& astTrace) {
+    astTrace += "PARENTHESIS EXPR\n";
+}
+
 Expression* ParenthesisExpression::getExpression() const
 {
     return expression;

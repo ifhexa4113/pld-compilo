@@ -15,6 +15,12 @@ public:
     std::string getName();
     std::vector<Expression*> getParameters();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
+    bool checkNonVoidType(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
+
 protected:
     std::string name;
     std::vector<Expression*> parameters;

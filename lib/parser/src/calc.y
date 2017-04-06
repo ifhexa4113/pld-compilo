@@ -219,7 +219,7 @@ int yylex(void);
 %right OP_ASSIGN OP_ASSIGN_ADD OP_ASSIGN_MINUS OP_ASSIGN_DIV OP_ASSIGN_TIMES OP_ASSIGN_MOD OP_ASSIGN_OR OP_ASSIGN_AND OP_ASSIGN_XOR OP_ASSIGN_RSHIFT OP_ASSIGN_LSHIFT
 %left OP_EQ OP_EQ_NOT OP_EQ_GREATER OP_EQ_LESSER
 %left OP_PLUS OP_MINUS OP_TIMES OP_DIV OP_MOD
-%left OP_OR OP_AND OP_XOR OP_GREATER OP_LESSER OP_NOT
+%left OP_OR OP_AND OP_GREATER OP_LESSER OP_NOT
 %left OP_BIN_OR OP_BIN_AND OP_BIN_XOR OP_BIN_NOT OP_BIN_RSHIFT OP_BIN_LSHIFT
 %left OP_UN_INC OP_UN_DEC
 %right K_ELSE // preserve shift, but don't really know where is the ambiguity...
@@ -247,7 +247,7 @@ bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block(*$2); del
           ;
           
 bloc_expr : bloc_expr statement { $1->push_back($2); $$ = $1; }
-          | bloc_expr decl_def_stat SYM_SEMICOLON { for(int i = 0; i< $2->size(); i++) $1->push_back((*$2)[i]); $$ = $1; }
+          | bloc_expr decl_def_stat SYM_SEMICOLON { for(unsigned int i = 0; i< $2->size(); i++) $1->push_back((*$2)[i]); $$ = $1; }
           | statement { $$ = new std::vector<AstNode*>(1, $1); }
           | decl_def_stat SYM_SEMICOLON { $$ = new std::vector<AstNode*>(); for(int i = 0; i< $1->size(); i++) $$->push_back((*$1)[i]); }
           ;
@@ -271,12 +271,10 @@ decl_arg  : decl_arg SYM_COMMA decl_var { $1->push_back($3); $$ = $1; }
           ;
           
 decl_func : type_retour IDENTIFIER SYM_OPEN decl_arg SYM_CLOSE {
-                int size = 0;
-                if($4 != nullptr)
-                {
-                    size = static_cast<int>($4->size());
-                }
-                $$ = new FunctionDeclaration(std::string($2), $1, size);
+                if($4 == nullptr)
+                    $$ = new FunctionDeclaration(std::string($2), $1);
+                else $$ = new FunctionDeclaration(std::string($2), $1, *$4);
+                delete $4;
             }
           ;
        

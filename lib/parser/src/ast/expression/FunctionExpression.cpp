@@ -1,5 +1,9 @@
 #include <iostream>
 #include "FunctionExpression.h"
+#include "ast/declaration/FunctionDeclaration.h"
+
+#include "ast/declaration/Declaration.h"
+#include "ast/ErrorManager.h"
 
 FunctionExpression::FunctionExpression(std::string name_) :
     FunctionExpression(name_, std::vector<Expression*>())
@@ -43,4 +47,50 @@ std::string FunctionExpression::getName()
 std::vector<Expression *> FunctionExpression::getParameters()
 {
     return parameters;
+}
+
+Type FunctionExpression::getType(SymbolTableStack& stack)
+{
+    if (stack.checkSymbol(name))
+        return (stack.getSymbol(name))->getType();
+    return Type::VOID_T; // TODO ????????
+}
+
+void FunctionExpression::fillSymbolTable(SymbolTableStack& stack)
+{
+    if(!stack.checkSymbol(name))
+    {
+		ErrorManager& errorManager = ErrorManager::getInstance();
+		errorManager.addEncounteredError(ErrorManager::UNKNOWN_FUNCTION_SYMBOL, name);
+    }
+
+    // TODO stack.getSymbol can be null ?
+    if(FunctionDeclaration* functionDeclaration = dynamic_cast<FunctionDeclaration*>(stack.getSymbol(name)))
+    {
+        if(static_cast<int>(parameters.size()) != functionDeclaration->getNbArgs())
+        {
+			ErrorManager& errorManager = ErrorManager::getInstance();
+			errorManager.addEncounteredError(ErrorManager::INAPPROPRIATE_ARGUMENTS_NUMBER, name);
+        }
+    }
+
+    for(auto parameter : parameters)
+        parameter->fillSymbolTable(stack);
+}
+
+bool FunctionExpression::checkNonVoidType(SymbolTableStack& stack)
+{
+    if (stack.checkSymbol(name))
+    {
+        return (stack.getSymbol(name))->checkNonVoidType(stack);
+    }
+    else
+    {
+        return true;
+    }
+}
+
+void FunctionExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "FUNCTION EXPR\n";
 }

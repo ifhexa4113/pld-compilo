@@ -18,3 +18,10 @@ int If::walkTree()
 {
     return 0;
 }
+
+void If::fillAstTrace(std::string& astTrace)
+{
+	astTrace += "IF\n";
+	for (auto child : children)
+        child->fillAstTrace(astTrace);
+}

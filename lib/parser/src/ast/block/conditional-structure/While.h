@@ -13,6 +13,7 @@ public:
     While(Expression* condition_, std::vector<AstNode*> children_);
     ~While();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
 };
 
 #endif //WHILE_H

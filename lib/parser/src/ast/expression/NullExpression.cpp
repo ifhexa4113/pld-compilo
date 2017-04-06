@@ -14,3 +14,18 @@ int NullExpression::walkTree()
 {
     return 0;
 }
+
+Type NullExpression::getType(SymbolTableStack&)
+{
+    return Type::VOID_T;
+}
+
+bool NullExpression::checkNonVoidType(SymbolTableStack&)
+{
+    return true;
+}
+
+void NullExpression::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "NULL EXPR\n";
+}

@@ -1,4 +1,5 @@
 #include "SymbolTable.h"
+#include "declaration/Declaration.h"
 #include <iostream>
 
 SymbolTable::SymbolTable()
@@ -8,13 +9,14 @@ SymbolTable::SymbolTable()
 
 SymbolTable::~SymbolTable()
 {
-    for(auto& pair : table)
-    {
-        if(pair.second != nullptr)
-        {
-            delete pair.second;
-        }
-    }
+    // TODO whol delete the Declaration* node ?
+    // for(auto& pair : table)
+    // {
+    //     if(pair.second != nullptr)
+    //     {
+    //         delete pair.second;
+    //     }
+    // }
 }
 
 Declaration* SymbolTable::get(std::string name)

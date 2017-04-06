@@ -13,6 +13,7 @@ public:
     virtual ~LValueDeclaration();
     virtual int walkTree() = 0;
     virtual Definition* toEmptyDefinition() = 0;
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
 };
 
 #endif

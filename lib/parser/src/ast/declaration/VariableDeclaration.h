@@ -13,6 +13,8 @@ public:
     ~VariableDeclaration();
     int walkTree();
     VariableDefinition* toEmptyDefinition();
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
 };
 
 #endif

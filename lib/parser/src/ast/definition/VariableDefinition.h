@@ -16,6 +16,10 @@ public:
         return dynamic_cast<LValueDeclaration*>(declaration);
     };
 
+    void fillSymbolTable(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
+
 protected:
     Expression* rExpression;
 };

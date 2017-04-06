@@ -12,7 +12,7 @@ Block::Block(std::vector<AstNode*> children_) :
     AstNode(),
     children(children_)
 {
-    // TODO: fill symbols table
+
 }
 
 Block::~Block()
@@ -46,4 +46,30 @@ SymbolTable Block::getSymbolTable()
 void Block::addChildren(AstNode *child)
 {
     children.push_back(child);
+}
+
+void Block::fillSymbolTable(SymbolTableStack& stack)
+{
+    stack.push(symbolTable);
+    for(auto child : children)
+        child->fillSymbolTable(stack);
+    stack.pop();
+}
+
+void Block::fillAstTrace(std::string& astTrace)
+{
+    astTrace += "BLOCK\n";
+    for (auto child : children)
+        child->fillAstTrace(astTrace);
+}
+
+bool Block::checkReturnType(Type type, SymbolTableStack& stack)
+{
+    bool checkReturn = false;
+    for (auto child : children)
+    {
+        if (child->checkReturnType(type, stack) == true)
+        checkReturn = true;
+    }
+    return checkReturn;
 }

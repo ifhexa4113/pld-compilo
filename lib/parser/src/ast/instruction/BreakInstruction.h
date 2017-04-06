@@ -8,6 +8,8 @@ class BreakInstruction : public Instruction
 public:
     BreakInstruction();
     int walkTree();
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
 };
 
 #endif

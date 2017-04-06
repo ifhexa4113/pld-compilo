@@ -15,6 +15,10 @@ public:
     int walkTree();
     std::vector<Expression*> getListExpression();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
+
 protected:
     std::vector<Expression*> listExpression;
 };

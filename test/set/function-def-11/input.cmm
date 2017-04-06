@@ -1,0 +1,9 @@
+void foo()
+{
+  uint64_t a = 1;
+}
+
+uint64_t main()
+{
+  uint64_t b = 1 + foo();
+}

@@ -22,6 +22,12 @@ public:
     Expression* getLExpression();
     BinaryBinaryOperator getOperator();
 
+    void fillSymbolTable(SymbolTableStack& stack);
+    Type getType(SymbolTableStack& stack);
+    bool checkNonVoidType(SymbolTableStack& stack);
+    void fillAstTrace(std::string& astTrace);
+    bool checkReturnType(Type, SymbolTableStack&){return false;};
+
 protected:
     BinaryBinaryOperator op;
     Expression* lExpression;
