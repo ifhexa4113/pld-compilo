@@ -54,3 +54,8 @@ std::string ErrorManager::getErrorsTrace()
 {
 	return encounteredErrorsTrace;
 }
+
+std::vector<Error> ErrorManager::getEncounteredErrors()
+{
+    return encounteredErrors;
+}
