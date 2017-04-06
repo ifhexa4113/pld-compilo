@@ -6,9 +6,6 @@
 #include <algorithm>
 #include <string>
 #include <cctype>
-#include "module/module.h"
-#include "module1/module1.h"
-#include "module1/submodule1/module1.h"
 #include "calc.tab.h"
 
 #include "ast/Ast.h"
@@ -99,5 +96,4 @@ int main(int argc, char *argv[]) {
 	}
 
 	return !(symbolTableTest && astTestResult);
-	//return 0;
 }
