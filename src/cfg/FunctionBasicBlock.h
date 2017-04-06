@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "BasicBlock.h"
-#include "ast/declaration/LValueDeclaration.h"
 
 class FunctionBasicBlock : public BasicBlock
 {
@@ -12,11 +11,11 @@ public:
         : BasicBlock(label_, exitTrue_, exitFalse_, exitJumpType_), args() {};
     ~FunctionBasicBlock() {};
 
-    void setArgs(std::vector<LValueDeclaration*> args_) { args = args_; };
-    std::vector<LValueDeclaration*> getArgs() { return args; };
+    void setArgs(std::vector<Register*> args_) { args = args_; };
+    std::vector<Register*> getArgs() { return args; };
 
 protected:
-    std::vector<LValueDeclaration*> args;
+    std::vector<Register*> args;
 };
 
 #endif //PLD_COMPILO_FUNCTIONBASICBLOCK_H

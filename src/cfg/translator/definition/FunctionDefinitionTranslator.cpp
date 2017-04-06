@@ -53,7 +53,12 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
     std::vector<BasicBlock*> previousBlocks;
 
     // Add function's arguments
-    functionBlock->setArgs(dynamic_cast<FunctionDeclaration*>(fDef->getDeclaration())->getArguments());
+    std::vector<Register*> args;
+    for(auto arg: dynamic_cast<FunctionDeclaration*>(fDef->getDeclaration())->getArguments())
+    {
+        args.push_back(table->getRegister(arg->getName()));
+    }
+    functionBlock->setArgs(args);
 
     // For each child, link subgraphs
     for(AstNode* child: fDef->getChildren())
