@@ -38,9 +38,7 @@ std::string x86BasicBlockAssembler::generateProlog() {
     stream << "\tmovl\t%esp, %ebp" << std::endl;
     stream << "\tsubl\t$" << variable_count * 4 << ", %esp" << std::endl;
 #endif
-
-    //std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
-
+    
     return stream.str();
 }
 

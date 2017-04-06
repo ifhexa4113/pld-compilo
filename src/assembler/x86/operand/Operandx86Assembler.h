@@ -9,7 +9,7 @@
 #include <assembler/abstract/AbstractBasicBlockAssembler.h>
 
 /**
- * Abstract class that allows for the translation between IR operands and Assembler operands
+ *  Class that allows for the translation between IR operands and x86 Assembler operands
  */
 class Operandx86Assembler {
 public:

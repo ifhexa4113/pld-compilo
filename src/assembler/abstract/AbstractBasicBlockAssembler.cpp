@@ -81,7 +81,7 @@ std::string AbstractBasicBlockAssembler::translate() {
             exit_true->setColored(true);
 
             AbstractBasicBlockAssembler *abba_true = constructMe(exit_true);
-            stream << "# GENERATING TRUE OUTPUT for " << getLabel() << "\n\n";
+            stream << "\n# GENERATING TRUE OUTPUT for " << getLabel() << "\n";
             stream << abba_true->translate();
 
             delete abba_true;
@@ -102,7 +102,7 @@ std::string AbstractBasicBlockAssembler::translate() {
             exit_false->setColored(true);
 
             AbstractBasicBlockAssembler * abba_false = constructMe(exit_false);
-            stream << "# GENERATING FALSE OUTPUT for " << getLabel() << "\n\n";
+            stream << "\n# GENERATING FALSE OUTPUT for " << getLabel() << "\n";
             stream << abba_false->translate();
             delete abba_false;
         }
