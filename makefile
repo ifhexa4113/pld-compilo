@@ -214,7 +214,7 @@ LDFLAGS =
 #Regles implicites a conserver----------------------------------
 .SUFFIXES: #aucune
 #---------------------------------------------------------------
-.IGNORE: run-nrtests $(NRTESTS) $(NRTARGETPREFIX)%
+#.IGNORE: run-nrtests $(NRTESTS) $(NRTARGETPREFIX)%
 
 #Regles de construction-----------------------------------------
 #Specify default rule (names here are just a convention)
