@@ -25,4 +25,4 @@ before_script:
   - flex --version
 
 script:
-  - make OS=unix && make OS=unix u-tests && make OS=unix nr-tests && make OS=unix run-utests
+  - make OS=unix tests
