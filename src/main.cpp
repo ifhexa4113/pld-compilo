@@ -19,14 +19,18 @@ int main()
     // Parse program
     Ast ast;
     CmmProgram& program = ast.getProgram();
-    int result = yyparse(program);
+    yyparse(program);
     SymbolTableStack stack;
     program.fillSymbolTable(stack);
 
-    // Show errors
+    // Show errors if needed
     ErrorManager& errorManager = ErrorManager::getInstance();
-    errorManager.printEncounteredErrorsNumber();
-    errorManager.printEncounteredErrors();
+    if(errorManager.getEncounteredErrors().size() > 0)
+    {
+        errorManager.printEncounteredErrorsNumber();
+        errorManager.printEncounteredErrors();
+        return errorManager.getEncounteredErrors().size();
+    }
 
     // Create CFG (IR)
     CFG cfg(&ast);
@@ -38,5 +42,5 @@ int main()
     stream << assembler.translate();
     stream.close();
 
-    return result;
+    return 0;
 }
