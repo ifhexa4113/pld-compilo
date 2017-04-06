@@ -49,6 +49,10 @@ protected:
     BasicBlock* exitFalse;
     BasicBlock::JumpType exitJumpType;
     Table* table;
+public:
+    Table *getTable() const;
+
+protected:
     bool colored;
     bool prologable;
 

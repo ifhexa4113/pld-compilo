@@ -106,9 +106,9 @@ Register* Table::getLastDestination(BasicBlock *bb)
     return nullptr;
 }
 
-std::map<Register *, RegisterInfo> & Table::getAllRegisters()
+std::map<Register *, RegisterInfo> * Table::getAllRegisters()
 {
-    return regToInfo;
+    return &regToInfo;
 }
 
 void Table::print(std::ostream &stream)

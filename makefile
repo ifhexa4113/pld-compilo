@@ -205,7 +205,7 @@ endif
 
 #Variables pour les options d'edition des liens-----------------
 
-LDFLAGS =
+LDFLAGS = 
 #---------------------------------------------------------------
 
 #Dependances a reconstruire de maniere systematique-------------
@@ -257,7 +257,7 @@ $(EXE3): $(filter-out %$(MAINFILE).$(OFILE),$(OBJ)) $(OBJLIB) $(OBJNRTEST)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(OBJPATH)/$(MAINFILE).$(OFILE): $(SRCPATH)/$(MAINFILE).$(SRCFILE) $(HEAD)
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< -g $(CFLAGS)
 $(OBJPATH)/%.$(OFILE) : $(SRCPATH)/%.$(SRCFILE) $(SRCPATH)/%.$(HEADFILE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 

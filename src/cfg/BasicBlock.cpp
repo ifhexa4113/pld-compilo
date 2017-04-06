@@ -224,3 +224,7 @@ void BasicBlock::giveLabel()
         label = ss.str();
     }
 }
+
+Table *BasicBlock::getTable() const {
+    return table;
+}

@@ -35,7 +35,6 @@ public:
 
     // Getters
     std::string getName() const;
-    int getValue() const;
 
 protected:
     /**
