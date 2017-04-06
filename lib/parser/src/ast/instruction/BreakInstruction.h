@@ -1,9 +1,9 @@
 #ifndef BREAK_INSTRUCTION_H
 #define BREAK_INSTRUCTION_H
 
-#include "../AstNode.h"
+#include "Instruction.h"
 
-class BreakInstruction : public AstNode
+class BreakInstruction : public Instruction
 {
 public:
     BreakInstruction();

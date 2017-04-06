@@ -1,13 +1,14 @@
 %code requires {
     #include <vector>
     #include <string>
+    #include <iostream>
 
     #include "ast/AstNode.h"
     #include "ast/block/CmmProgram.h"
     #include "ast/NullNode.h"
-    #include "ast/keyword-instruction/ReturnInstruction.h"
-    #include "ast/keyword-instruction/BreakInstruction.h"
-    #include "ast/keyword-instruction/ContinueInstruction.h"
+    #include "ast/instruction/ReturnInstruction.h"
+    #include "ast/instruction/BreakInstruction.h"
+    #include "ast/instruction/ContinueInstruction.h"
 
     // Includes for expressions
     #include "ast/expression/Expression.h"
@@ -63,9 +64,9 @@
 #include "ast/AstNode.h"
 #include "ast/block/CmmProgram.h"
 #include "ast/NullNode.h"
-#include "ast/keyword-instruction/ReturnInstruction.h"
-#include "ast/keyword-instruction/BreakInstruction.h"
-#include "ast/keyword-instruction/ContinueInstruction.h"
+#include "ast/instruction/ReturnInstruction.h"
+#include "ast/instruction/BreakInstruction.h"
+#include "ast/instruction/ContinueInstruction.h"
 
 // Includes for expressions
 #include "ast/expression/Expression.h"
@@ -215,11 +216,11 @@ int yylex(void);
 %token <sval> IDENTIFIER
 %token ERROR
 
+%right OP_ASSIGN OP_ASSIGN_ADD OP_ASSIGN_MINUS OP_ASSIGN_DIV OP_ASSIGN_TIMES OP_ASSIGN_MOD OP_ASSIGN_OR OP_ASSIGN_AND OP_ASSIGN_XOR OP_ASSIGN_RSHIFT OP_ASSIGN_LSHIFT
+%left OP_EQ OP_EQ_NOT OP_EQ_GREATER OP_EQ_LESSER
 %left OP_PLUS OP_MINUS OP_TIMES OP_DIV OP_MOD
 %left OP_OR OP_AND OP_GREATER OP_LESSER OP_NOT
-%left OP_EQ OP_EQ_NOT OP_EQ_GREATER OP_EQ_LESSER
 %left OP_BIN_OR OP_BIN_AND OP_BIN_XOR OP_BIN_NOT OP_BIN_RSHIFT OP_BIN_LSHIFT
-%left OP_ASSIGN OP_ASSIGN_ADD OP_ASSIGN_MINUS OP_ASSIGN_DIV OP_ASSIGN_TIMES OP_ASSIGN_MOD OP_ASSIGN_OR OP_ASSIGN_AND OP_ASSIGN_XOR OP_ASSIGN_RSHIFT OP_ASSIGN_LSHIFT
 %left OP_UN_INC OP_UN_DEC
 %right K_ELSE // preserve shift, but don't really know where is the ambiguity...
 
@@ -246,7 +247,7 @@ bloc      : SYM_BLOCK_OPEN bloc_expr SYM_BLOCK_CLOSE  { $$ = new Block(*$2); del
           ;
           
 bloc_expr : bloc_expr statement { $1->push_back($2); $$ = $1; }
-          | bloc_expr decl_def_stat SYM_SEMICOLON { for(int i = 0; i< $2->size(); i++) $1->push_back((*$2)[i]); $$ = $1; }
+          | bloc_expr decl_def_stat SYM_SEMICOLON { for(unsigned int i = 0; i< $2->size(); i++) $1->push_back((*$2)[i]); $$ = $1; }
           | statement { $$ = new std::vector<AstNode*>(1, $1); }
           | decl_def_stat SYM_SEMICOLON { $$ = new std::vector<AstNode*>(); for(int i = 0; i< $1->size(); i++) $$->push_back((*$1)[i]); }
           ;
@@ -342,7 +343,14 @@ for_stat  : K_FOR SYM_OPEN for_init SYM_SEMICOLON expr_or_null SYM_SEMICOLON exp
 
 while_stat  : K_WHILE SYM_OPEN expr SYM_CLOSE statement {
                 std::vector<AstNode*> v;
-                v.push_back($5);
+                Block* b = dynamic_cast<Block*>($5);
+                if(b != nullptr && dynamic_cast<ConditionalStructure*>($5) == nullptr) {
+                    for(AstNode* child: b->getChildren()) {
+                        v.push_back(child);
+                    }
+                } else {
+                    v.push_back($5);
+                }
                 $$ = new While($3, v); }
             ;
 

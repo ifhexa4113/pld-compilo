@@ -1,0 +1,7 @@
+void foo() {
+    char a = 'a';
+    while(a < ('z' + 1)) {
+        putchar(a);
+        a++;
+    }
+}

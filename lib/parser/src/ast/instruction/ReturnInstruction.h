@@ -1,10 +1,10 @@
 #ifndef RETURN_H
 #define RETURN_H
 
-#include "ast/AstNode.h"
+#include "Instruction.h"
 #include "ast/expression/Expression.h"
 
-class ReturnInstruction : public AstNode
+class ReturnInstruction : public Instruction
 {
 public:
     ReturnInstruction(Expression* value_);

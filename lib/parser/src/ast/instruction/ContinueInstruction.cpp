@@ -2,7 +2,7 @@
 #include "ContinueInstruction.h"
 
 ContinueInstruction::ContinueInstruction() :
-    AstNode()
+        Instruction()
 {
     // Nothing else to do
 }

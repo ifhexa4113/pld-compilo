@@ -37,3 +37,8 @@ void Definition::fillSymbolTable(SymbolTableStack& stack)
     if(!stack.checkSymbolImmediate(declaration->getName()))
         stack.addEntry(declaration->getName(), declaration);
 }
+
+std::string Definition::getName() const
+{
+    return declaration->getName();
+}

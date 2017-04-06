@@ -39,3 +39,13 @@ bool SymbolTable::contains(std::string name)
 {
     return table.count(name) != 0;
 }
+
+std::map<std::string, Declaration *>::iterator SymbolTable::begin()
+{
+    return table.begin();
+}
+
+std::map<std::string, Declaration *>::iterator SymbolTable::end()
+{
+    return table.end();
+}

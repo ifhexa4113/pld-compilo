@@ -12,6 +12,9 @@ public:
     ~VariableDefinition();
     int walkTree();
     Expression* getRExpression();
+    LValueDeclaration* getDeclaration() override {
+        return dynamic_cast<LValueDeclaration*>(declaration);
+    };
 
     void fillSymbolTable(SymbolTableStack& stack);
     void fillAstTrace(std::string& astTrace);

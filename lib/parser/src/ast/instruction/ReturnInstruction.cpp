@@ -4,7 +4,7 @@
 #include "ast/ErrorManager.h"
 
 ReturnInstruction::ReturnInstruction(Expression* value_) :
-    AstNode(),
+    Instruction(),
     value(value_)
 {
     if(value == nullptr) {

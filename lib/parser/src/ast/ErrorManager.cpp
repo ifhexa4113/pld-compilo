@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "ErrorManager.h"
 
 ErrorManager::ErrorManager() :
@@ -30,7 +31,9 @@ void ErrorManager::addEncounteredError(Error encounteredError, std::string error
 {
 	encounteredErrors.push_back(encounteredError);
 	errorsSourcesNames.push_back(errorSourceName);
-	encounteredErrorsTrace += std::to_string(static_cast<int>(encounteredError));
+    std::stringstream ss;
+    ss << encounteredErrorsTrace << static_cast<int>(encounteredError);
+	encounteredErrorsTrace = ss.str();
 }
 
 void ErrorManager::printEncounteredErrorsNumber()
