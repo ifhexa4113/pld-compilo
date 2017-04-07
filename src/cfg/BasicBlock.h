@@ -15,7 +15,7 @@ public:
     };
 
     BasicBlock(std::string label_ = std::string("%%unnamed%%"), BasicBlock* exitTrue_ = nullptr, BasicBlock* exitFalse_ = nullptr, BasicBlock::JumpType exitJumpType_ = BasicBlock::JumpType::Z);
-    ~BasicBlock();
+    virtual ~BasicBlock();
 
     // Getters
     std::string getLabel() const;

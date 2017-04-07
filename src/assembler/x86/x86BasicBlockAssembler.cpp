@@ -11,6 +11,7 @@
 #include <cfg/ir/basic/AddInstruction.h>
 #include <assembler/x86/basic/Addx86Assembler.h>
 #include <assembler/x86/cmp/Cmpx86Assembler.h>
+#include <cfg/FunctionBasicBlock.h>
 #include "x86BasicBlockAssembler.h"
 
 
@@ -22,7 +23,7 @@ x86BasicBlockAssembler::x86BasicBlockAssembler(BasicBlock *source, bool generate
 std::string x86BasicBlockAssembler::generateProlog() {
 
     std::ostringstream stream;
-    //std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
+    std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
 
     // pushl %epb
     // movl %esp, %epb
@@ -38,7 +39,20 @@ std::string x86BasicBlockAssembler::generateProlog() {
     stream << "\tmovl\t%esp, %ebp" << std::endl;
     stream << "\tsubl\t$" << variable_count * 4 << ", %esp" << std::endl;
 #endif
-    
+
+    FunctionBasicBlock * fb = dynamic_cast<FunctionBasicBlock*>(source);
+
+    if (fb != nullptr)
+    {
+        std::vector<Register*> registers = fb->getArgs();
+        std::cout << "Generating argument assignment" << std::endl;
+        for (int param_index = registers.size() - 1; param_index >=0 ; param_index --)
+        {
+            stream << Movx86Assembler::getString(
+                    Operandx86Assembler::getCallRegister(param_index),
+                    Operandx86Assembler(registers.at(param_index), this));
+        }
+    }
     return stream.str();
 }
 
@@ -46,7 +60,7 @@ std::string x86BasicBlockAssembler::translateIR() {
     //std::cout << "translateIR() for " << getLabel() << std::endl;
     std::ostringstream stream;
 
-    std::vector<IRInstruction *> instructions = source->getInstructions();
+    std::vector<IRInstruction *> & instructions = source->getInstructions();
 
     //std::cout << "Tranlating ir instruction :" << std::endl;
     for (int current_index = 0; current_index < instructions.size(); current_index ++)
