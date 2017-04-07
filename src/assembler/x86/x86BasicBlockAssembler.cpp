@@ -33,7 +33,7 @@ std::string x86BasicBlockAssembler::generateProlog() {
 #ifdef __linux__
     stream << "\tpushq\t%rbp" << std::endl;
     stream << "\tmovq\t%rsp, %rbp" << std::endl;
-    stream << "\tsubq\t$" << variable_count * 4 << ", %esp" << std::endl;
+    stream << "\tsubq\t$" << variable_count * 4 << ", %rsp" << std::endl;
 #elif _WIN32
     stream << "\tpushl\t%ebp" << std::endl;
     stream << "\tmovl\t%esp, %ebp" << std::endl;
@@ -168,7 +168,7 @@ std::string x86BasicBlockAssembler::getJump(std::string label, BasicBlock::JumpT
         }
     }
 
-    stream << "_" << label << std::endl;
+    stream << getLabelPrefix() << label << std::endl;
 
     //std::cout << "Exiting jump generation " << std::endl;
 
