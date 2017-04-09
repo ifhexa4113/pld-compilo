@@ -29,6 +29,7 @@ public:
     std::vector<Error> getEncounteredErrors();
 
     // Others
+	bool checkEncouteredError();
 	void addEncounteredError(Error encounteredError, std::string errorSourceName);
 	void printEncounteredErrorsNumber();
 	void printEncounteredErrors();

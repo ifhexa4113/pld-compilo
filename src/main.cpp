@@ -8,6 +8,7 @@
 
 #include "ast/Ast.h"
 #include "ast/block/CmmProgram.h"
+#include "ast/ErrorManager.h"
 #include "cfg/CFG.h"
 #include "../lib/parser/src/ast/block/CmmProgram.h"
 
@@ -21,6 +22,13 @@ int main()
     //cout << "Creating AST..." << endl;
     int result = yyparse(program);
     //cout << "AST done" << endl;
+
+    ErrorManager& errorManager = ErrorManager::getInstance();
+    if (errorManager.checkEncouteredError()) 
+    {
+        return result;
+    }
+
 
     //cout << "Creating CFG..." << endl;
     CFG cfg(&ast);
