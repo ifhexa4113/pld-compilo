@@ -75,16 +75,41 @@ Here's what it can do:
 * `+ ++` operators
 * Parenthesised operations, infinitely
 * Variables scopes
-* Binary operators `> >= < <= &&`
+* Binary operators `> >= < <= && !=`
 * `while` loops, with or without block nor condition
 * Variables definitions and declarations
 * Functions definitions and declarations
 * Boolean expressions evaluation
 * `putchar` call
-* Variable assignation
+* Variable assignation (`=`, `+=`)
 * **One lined multiple variables assignation**
 
 Here's an example of a program we can compile and run:
+```c
+void main()
+{
+    char a = 'a';
+    while(a <= 'z') {
+        if(a == 'q') {
+            putchar('!');
+        } else {
+            putchar(a);
+        }
+        a++;
+    }
+}
+```
+With the following command:
+```shell
+bin\gmm.exe test.c -c
+gcc out.s
+a.exe
+```
+
+The output is:
+```shell
+abcdefghijklmnop!rstuvwxy
+```
 
 ## What it can't do
 ### Front
