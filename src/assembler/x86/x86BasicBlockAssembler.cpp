@@ -23,7 +23,7 @@ x86BasicBlockAssembler::x86BasicBlockAssembler(BasicBlock *source, bool generate
 std::string x86BasicBlockAssembler::generateProlog() {
 
     std::ostringstream stream;
-    std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
+    //std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
 
     // pushl %epb
     // movl %esp, %epb
