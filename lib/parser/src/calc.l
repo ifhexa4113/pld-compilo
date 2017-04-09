@@ -52,8 +52,8 @@
 %option noyywrap
 
 type_char   char
-type_int32  uint32_t
-type_int64  uint64_t
+type_int32  uint32_t|int32_t
+type_int64  uint64_t|int64_t
 type_void   void
 key_break   break
 key_cont    continue
