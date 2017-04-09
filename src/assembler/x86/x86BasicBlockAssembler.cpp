@@ -45,7 +45,6 @@ std::string x86BasicBlockAssembler::generateProlog() {
     if (fb != nullptr)
     {
         std::vector<Register*> registers = fb->getArgs();
-        std::cout << "Generating argument assignment" << std::endl;
         for (int param_index = registers.size() - 1; param_index >=0 ; param_index --)
         {
             stream << Movx86Assembler::getString(

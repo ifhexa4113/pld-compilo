@@ -34,8 +34,6 @@ SubGraph * FunctionExpressionTranslator::translate(Table* table)
     std::vector<Register*> registers;
     std::vector<Expression*> params = functionExpression->getParameters();
 
-    std::cout << "FCALL: There are " << params.size() << " parameters" << std::endl;
-
     for (auto param: params){
         Translator* translator = getFactory().getTranslator(param, cfg);
         SubGraph* subGraph = translator->translate(table);

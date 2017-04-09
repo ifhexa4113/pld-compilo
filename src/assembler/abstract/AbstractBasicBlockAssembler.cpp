@@ -11,38 +11,23 @@
 
 std::string AbstractBasicBlockAssembler::translate() {
     std::ostringstream stream;
-    std::cout << "Generating asm " << std::endl;
-
     stream << "# TRANSLATING << " << source->getLabel() <<  "\n\n";
-
-    std::cout << "INTRO" << std::endl;
-
     if (generate_intro)
     {
         stream << getIntro();
     }
-    std::cout << "LABEL" << std::endl;
-
     stream << getLabel();
-
-    std::cout << "PROLOG" << std::endl;
-
 
     if (source->isPrologable())
     {
         stream << generateProlog();
     }
 
-    std::cout << "IR" << std::endl;
-
     stream << translateIR();
-
-    //std::cout << "IR done" << std::endl;
 
     BasicBlock * exit_true = source->getExitTrue();
     BasicBlock * exit_false = source->getExitFalse();
 
-    //std::cout << "Before jumps" << std::endl;;
     if ((exit_true) != nullptr)
     {
         if ((exit_false) != nullptr)
@@ -86,7 +71,6 @@ std::string AbstractBasicBlockAssembler::translate() {
 
             delete abba_true;
         } else {
-            std::cout << exit_true->getLabel() << " is colored, skipping ..." << std::endl;
         }
     }
 
@@ -94,7 +78,6 @@ std::string AbstractBasicBlockAssembler::translate() {
     {
         if (!exit_false->isColored())
         {
-            std::cout << "Generating exit_false" << std::endl;
             /*if (exit_false->getTable() == nullptr)
             {
                 exit_false->setTable(table);
