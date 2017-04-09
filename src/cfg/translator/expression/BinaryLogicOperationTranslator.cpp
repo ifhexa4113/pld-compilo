@@ -86,7 +86,7 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
         case LogicOperator::NOT_EQUAL:
         {
             trueBlock->addInstruction(new MovInstruction(
-                commonRegister, 
+                commonRegister,
                 table->getOrCreateNumberOperand(1)));
             falseBlock->addInstruction(new MovInstruction(
                 commonRegister, 
@@ -121,10 +121,10 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
          {
              trueBlock->addInstruction(new MovInstruction(
                      commonRegister,
-                     table->getOrCreateNumberOperand(0)));
+                     table->getOrCreateNumberOperand(1)));
              falseBlock->addInstruction(new MovInstruction(
                      commonRegister,
-                     table->getOrCreateNumberOperand(1)));
+                     table->getOrCreateNumberOperand(0)));
              inputBlock->setExitJumpType(BasicBlock::JumpType::N);
              break;
          }
@@ -132,10 +132,10 @@ SubGraph* BinaryLogicOperationTranslator::translate(Table* table)
          {
              trueBlock->addInstruction(new MovInstruction(
                      commonRegister,
-                     table->getOrCreateNumberOperand(0)));
+                     table->getOrCreateNumberOperand(1)));
              falseBlock->addInstruction(new MovInstruction(
                      commonRegister,
-                     table->getOrCreateNumberOperand(1)));
+                     table->getOrCreateNumberOperand(0)));
              inputBlock->setExitJumpType(BasicBlock::JumpType::NZ);
              break;
          }
