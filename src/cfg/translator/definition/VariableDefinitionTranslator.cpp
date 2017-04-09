@@ -3,6 +3,7 @@
 #include "cfg/ir/RegisterInstruction.h"
 #include "cfg/ir/basic/MovInstruction.h"
 #include "cfg/ir/operand/Register.h"
+#include "ast/expression/NullExpression.h"
 
 VariableDefinitionTranslator::VariableDefinitionTranslator(VariableDefinition *variableDef, CFG *cfg) :
     Translator(variableDef, cfg)
@@ -23,6 +24,11 @@ SubGraph * VariableDefinitionTranslator::translate(Table* table)
     {
         std::cerr << "VariableDefinitionTranslator::translate() : ERROR - associated node is not a VariableDefinition" << std::endl;
         return nullptr;
+    }
+
+    if(dynamic_cast<NullExpression*>(vDef->getRExpression())) {
+        BasicBlock* emptyBlock = new BasicBlock("");
+        return new SubGraph(emptyBlock, std::vector<BasicBlock*>(1, emptyBlock));
     }
 
     Translator* exprTranslator = getFactory().getTranslator(vDef->getRExpression(), cfg);
