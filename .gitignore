@@ -17,6 +17,8 @@ lib/*/include/
 #In case of bad manipulation
 *.o
 *.exe
+*.s
+*.out
 
 #Others
 *.pdf
