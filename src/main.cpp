@@ -2,7 +2,6 @@
 #include <cstdio>
 #include <cassert>
 #include <fstream>
-//#include <stdio.h>
 
 #include "calc.tab.h"
 #include "assembler/x86/x86BasicBlockAssembler.h"
@@ -12,6 +11,7 @@
 #include "ast/ErrorManager.h"
 #include "cfg/CFG.h"
 #include "ast/block/CmmProgram.h"
+#include "ast/SymbolTableStack.h"
 
 using namespace std;
 
@@ -95,6 +95,9 @@ int main(int argc, char** argv)
         fclose(yyin);
     }
 
+    SymbolTableStack stack;
+    program.fillSymbolTable(stack);
+
     ErrorManager& errorManager = ErrorManager::getInstance();
     int encounteredErrorsNumber = errorManager.getEncounteredErrorsNumber();
     if (encounteredErrorsNumber > 0)
@@ -133,7 +136,7 @@ void usage() {
     cout << "More parameters:\terror. You can't do that." << endl << endl;
     cout << "--- Options ---" << endl;
     cout << "-h\t(or --help) prints the help." << endl;
-    cout << "-i\tgenerates IR code into ir.out" << endl;
+    cout << "-i\t" << endl;
     cout << "-c\tgenerates assembly code into out.s" << endl;
     cout << "NOTE: these options are exclusive." << endl;
 }
