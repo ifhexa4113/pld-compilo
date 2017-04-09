@@ -27,6 +27,7 @@ int main()
     int encounteredErrorsNumber = errorManager.getEncounteredErrorsNumber();
     if (encounteredErrorsNumber > 0) 
     {
+        errorManager.printEncounteredErrors();
         return encounteredErrorsNumber;
     }
 

@@ -45,6 +45,9 @@ int main(int argc, char *argv[]) {
 	SymbolTableStack stack;
 	program.fillSymbolTable(stack); 
 
+	ErrorManager& errorManager = ErrorManager::getInstance();
+	std::cerr << std::endl;
+	errorManager.printEncounteredErrors();
 
 	// Symbol table test by checking ErrorManager behaviour
 	std::ifstream errorsInputStream;
@@ -63,11 +66,11 @@ int main(int argc, char *argv[]) {
 	}
 	if (symbolTableTest)
 	{
-		std::cerr << std::endl << "Symbol table test : SUCCESS" << std::endl;
+		std::cerr << "Symbol table test : SUCCESS" << std::endl;
 	}
 	else
 	{
-		std::cerr << std::endl << "Symbol table test : FAIL" << std::endl;
+		std::cerr << "Symbol table test : FAIL" << std::endl;
 	}
 
 	// Ast test
