@@ -27,6 +27,7 @@ SubGraph * VariableDefinitionTranslator::translate(Table* table)
     }
 
     if(dynamic_cast<NullExpression*>(vDef->getRExpression())) {
+        table->getOrCreateRegister(vDef->getDeclaration());
         BasicBlock* emptyBlock = new BasicBlock("");
         return new SubGraph(emptyBlock, std::vector<BasicBlock*>(1, emptyBlock));
     }
