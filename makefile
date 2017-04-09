@@ -288,7 +288,7 @@ else
 	@echo [92mNon-regression tests build in release mode[0m
 endif
 
-tests: all u-tests nr-tests
+test: all u-tests nr-tests
 	@echo UNIT TESTS
 	$(EXE2)
 	@echo NON-REGRESSION TESTS

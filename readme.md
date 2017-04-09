@@ -237,7 +237,7 @@ will be run if the others succeeded.
 * **run**: run the project.
 * **run-utests**: run the unit tests.
 * **run-nrtests**: run the non-regression tests.
-* **tests**: build and run all the tests, unit and non-regression.
+* **test**: build and run all the tests, unit and non-regression.
 * **test-tree**: copy the folders' tree in `src` under `test`. Same for libs.
 * **clean**: remove all .o files.
 * **mrproper**: remove whole build and bin folders.
