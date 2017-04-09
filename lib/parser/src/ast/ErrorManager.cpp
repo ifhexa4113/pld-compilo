@@ -6,7 +6,6 @@ ErrorManager::ErrorManager() :
     encounteredErrors(), errorsSourcesNames(),
     errorsMessage(), encounteredErrorsTrace("")
 {
-	std::cout << "ErrorManager creation" << std::endl; // TODO remove
     errorsMessage.insert(std::make_pair(UNKNOWN_LVALUE_SYMBOL, "Error: use of unknown symbol "));
     errorsMessage.insert(std::make_pair(UNKNOWN_FUNCTION_SYMBOL, "Error: use of unknown symbol "));
     errorsMessage.insert(std::make_pair(SYMBOL_REDECLARATION, "Error : redeclaration of symbol "));
@@ -18,7 +17,7 @@ ErrorManager::ErrorManager() :
 
 ErrorManager::~ErrorManager()
 {
-	std::cout << "ErrorManager destruction" << std::endl;
+
 }
 
 ErrorManager& ErrorManager::getInstance()
