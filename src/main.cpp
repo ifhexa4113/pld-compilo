@@ -24,9 +24,10 @@ int main()
     //cout << "AST done" << endl;
 
     ErrorManager& errorManager = ErrorManager::getInstance();
-    if (errorManager.checkEncouteredError()) 
+    int encounteredErrorsNumber = errorManager.getEncounteredErrorsNumber();
+    if (encounteredErrorsNumber > 0) 
     {
-        return result;
+        return encounteredErrorsNumber;
     }
 
 

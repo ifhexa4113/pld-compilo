@@ -26,13 +26,9 @@ ErrorManager& ErrorManager::getInstance()
 	return instance;
 }
 
-bool ErrorManager::checkEncouteredError()
+int ErrorManager::getEncounteredErrorsNumber()
 {
-	if (encounteredErrors.size() > 0)
-	{
-		return true;
-	}
-	return false;
+	return encounteredErrors.size();
 }
 
 void ErrorManager::addEncounteredError(Error encounteredError, std::string errorSourceName)

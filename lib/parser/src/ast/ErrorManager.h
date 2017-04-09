@@ -27,9 +27,9 @@ public:
     // Getters
     std::string getErrorsTrace();
     std::vector<Error> getEncounteredErrors();
+	int getEncounteredErrorsNumber();
 
     // Others
-	bool checkEncouteredError();
 	void addEncounteredError(Error encounteredError, std::string errorSourceName);
 	void printEncounteredErrorsNumber();
 	void printEncounteredErrors();
