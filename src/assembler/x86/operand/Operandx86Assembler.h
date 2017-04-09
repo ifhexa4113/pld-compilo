@@ -9,7 +9,7 @@
 #include <assembler/abstract/AbstractBasicBlockAssembler.h>
 
 /**
- * Abstract class that allows for the translation between IR operands and Assembler operands
+ *  Class that allows for the translation between IR operands and x86 Assembler operands
  */
 class Operandx86Assembler {
 public:
@@ -26,11 +26,19 @@ public:
     };
 
     enum register_type {
-        ADD
+        A,
+        B,
+        C,
+        D,
+        E,
+        SI,
+        DI,
+        BP
     };
 
     //static Operandx86Assembler getWorkRegister(work_register id);
     static Operandx86Assembler getVirtualRegister(int offset);
+    static Operandx86Assembler getCallRegister(int position);
     static Operandx86Assembler getPhysicalRegister(register_type id);
     operand_type getType() const;
 

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <assembler/x86/basic/Movx86Assembler.h>
 #include <iostream>
+#include <assembler/x86/x86BasicBlockAssembler.h>
 #include "Callx86Assembler.h"
 
 Callx86Assembler::Callx86Assembler(CallInstruction *instruction, AbstractBasicBlockAssembler *parent_block)
@@ -24,9 +25,9 @@ std::string Callx86Assembler::translate() const {
     {
         stream << Movx86Assembler::getString(
                 Operandx86Assembler(registers.at(param_index),parent_block),
-                Operandx86Assembler::getVirtualRegister(param_index * 4));
+                Operandx86Assembler::getCallRegister(param_index));
     }
 
-    stream << "\tcall\t_" << instruction->getLabel() << std::endl;
+    stream << "\tcall\t" << x86BasicBlockAssembler::getLabelPrefix() << instruction->getLabel() << std::endl;
     return stream.str();
 }

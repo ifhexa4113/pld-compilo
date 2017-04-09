@@ -1,6 +1,6 @@
-void foo() {
+void main() {
     char a = 'a';
-    while(a < ('z' + 1)) {
+    while(a != ('z' + 1)) {
         putchar(a);
         a++;
     }

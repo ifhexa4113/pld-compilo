@@ -11,24 +11,106 @@
 
 std::string AbstractBasicBlockAssembler::translate() {
     std::ostringstream stream;
-    std::cout << "Generating asm " << variable_count << std::endl;
+    std::cout << "Generating asm " << std::endl;
+
+    stream << "# TRANSLATING << " << source->getLabel() <<  "\n\n";
+
+    std::cout << "INTRO" << std::endl;
+
     if (generate_intro)
     {
         stream << getIntro();
     }
+    std::cout << "LABEL" << std::endl;
 
     stream << getLabel();
+
+    std::cout << "PROLOG" << std::endl;
+
 
     if (source->isPrologable())
     {
         stream << generateProlog();
     }
 
+    std::cout << "IR" << std::endl;
+
     stream << translateIR();
 
-    if (source->isPrologable())
+    //std::cout << "IR done" << std::endl;
+
+    BasicBlock * exit_true = source->getExitTrue();
+    BasicBlock * exit_false = source->getExitFalse();
+
+    //std::cout << "Before jumps" << std::endl;;
+    if ((exit_true) != nullptr)
+    {
+        if ((exit_false) != nullptr)
+        {
+            stream << getJump(exit_true->getLabel(), exit_true->getExitJumpType());
+            stream << getJump(exit_false->getLabel(), BasicBlock::JumpType::NUL);
+        }
+        else
+        {
+            stream << getJump(exit_true->getLabel(), BasicBlock::JumpType::NUL);
+        }
+    }
+    else if ((exit_false) == nullptr)
     {
         stream << generateEpilog();
+    }
+    else
+    {
+        // Edge case : while without bloc
+        stream << getJump(exit_false->getLabel(), exit_false->getExitJumpType());
+        stream << generateEpilog();
+
+        //std::cout << "###### ERROR : A BASIC BLOCK HAS A FALSE OUTPUT BUT NOT A TRUE ONE #######" << std::endl;
+    }
+
+
+    if (exit_true != nullptr) {
+        if (!exit_true->isColored()) {
+            //std::cout << "Generating exit_true" << std::endl;
+
+            /*if (exit_true->getTable() == nullptr)
+            {
+                std::cout << "No table detected, assigning current table" << std::endl;
+                exit_true->setTable(table);
+            }*/
+            exit_true->setColored(true);
+
+            AbstractBasicBlockAssembler *abba_true = constructMe(exit_true);
+            stream << "\n# GENERATING TRUE OUTPUT for " << getLabel() << "\n";
+            stream << abba_true->translate();
+
+            delete abba_true;
+        } else {
+            std::cout << exit_true->getLabel() << " is colored, skipping ..." << std::endl;
+        }
+    }
+
+    if (exit_false != nullptr)
+    {
+        if (!exit_false->isColored())
+        {
+            std::cout << "Generating exit_false" << std::endl;
+            /*if (exit_false->getTable() == nullptr)
+            {
+                exit_false->setTable(table);
+            }*/
+            exit_false->setColored(true);
+
+            AbstractBasicBlockAssembler * abba_false = constructMe(exit_false);
+            stream << "\n# GENERATING FALSE OUTPUT for " << getLabel() << "\n";
+            stream << abba_false->translate();
+            delete abba_false;
+        }
+        else
+        {
+            std::cout << exit_false->getLabel() << " is colored, skipping ..." << std::endl;
+        }
+
     }
 
     return stream.str();
@@ -36,37 +118,57 @@ std::string AbstractBasicBlockAssembler::translate() {
 
 AbstractBasicBlockAssembler::AbstractBasicBlockAssembler(BasicBlock *source, bool generate_intro)
         : source(source), generate_intro(generate_intro), variable_count(-1){
-    Table* table = source->getTable();
-    auto map = table->getAllRegisters();
-    auto it = map->begin();
-    int variable_index = 1;
-    max_argument_count = 0;
+    //std::cout << "Constructor ABBA for " << source->getLabel() << std::endl;
 
-    for(IRInstruction * intr : source->getInstructions())
+    Table* table = source->getTable();
+
+    if (generate_intro)
     {
-        // do cast and stuff
-        CallInstruction * cast = dynamic_cast<CallInstruction *>(intr);
-        if (cast != nullptr)
+        int variable_index = 1;
+        max_argument_count = 0;
+
+
+
+        //std::cout << "Getting instruction" << std::endl;
+
+        for(IRInstruction * intr : source->getInstructions())
         {
-            int args = cast->getRegisters().size();
-            if (max_argument_count < args)
+            // do cast and stuff
+            CallInstruction * cast = dynamic_cast<CallInstruction *>(intr);
+            if (cast != nullptr)
             {
-                max_argument_count = args;
+                int args = cast->getRegisters().size();
+                if (max_argument_count < args)
+                {
+                    max_argument_count = args;
+                }
             }
         }
+        variable_index += max_argument_count;
+        //std::cout << "Got instructions" << std::endl;
+        auto map = table->getAllRegisters();
+        std::map<Register *, RegisterInfo >::iterator it = map->begin();
+        while (map != nullptr && it != map->end()) {
+            //std::cout << "..." << std::endl;
+            it->second.setOffset(variable_index * 4);
+            variable_index++;
+            it++;
+        }
+        variable_count = variable_index;
+        //std::cout << variable_count << std::endl;
+    } else
+    {
+        //std::cout << "Skiping table generation" << std::endl;
     }
-    variable_index += max_argument_count;
 
-    while (it != map->end()) {
-        it->second.setOffset(variable_index * 4);
-        variable_index++;
-        it++;
-    }
-    variable_count = variable_index;
-    std::cout << variable_count << std::endl;
+    //std::cout << "Quiting constructor" << std::endl;
 }
 
 int AbstractBasicBlockAssembler::getOffset(Register *reg) {
     return source->getTable()->getRegisterInfo(reg).getOffset();
+}
+
+AbstractBasicBlockAssembler::~AbstractBasicBlockAssembler() {
+
 }
 

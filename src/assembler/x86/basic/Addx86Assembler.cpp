@@ -29,7 +29,7 @@ std::string Addx86Assembler::translate() const {
      *  add <mem>,<con>
      */
 
-    Operandx86Assembler add_register = Operandx86Assembler::getPhysicalRegister(Operandx86Assembler::register_type::ADD);
+    Operandx86Assembler add_register = Operandx86Assembler::getPhysicalRegister(Operandx86Assembler::register_type::A);
 
     // Handle different dest and param1
     if (dest.getValue() != param1.getValue())
@@ -53,7 +53,7 @@ std::string Addx86Assembler::translate() const {
     }*/
 
     // Do the add Operation
-    stm << "\tadd\t" << param2.toString() << ", " << add_register.toString() << std::endl;
+    stm << "\taddl\t" << param2.toString() << ", " << add_register.toString() << std::endl;
 
     stm << Movx86Assembler::getString(add_register, dest);
 

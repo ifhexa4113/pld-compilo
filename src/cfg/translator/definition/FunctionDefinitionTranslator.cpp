@@ -1,5 +1,7 @@
 #include "FunctionDefinitionTranslator.h"
 #include "ast/SymbolTable.h"
+#include "ast/declaration/FunctionDeclaration.h"
+#include "cfg/FunctionBasicBlock.h"
 #include <iostream>
 
 FunctionDefinitionTranslator::FunctionDefinitionTranslator(FunctionDefinition* functionDef, CFG* cfg) : Translator(functionDef, cfg)
@@ -41,7 +43,7 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
     }
 
     // Then create bases for the subgraph that we'll return
-    BasicBlock* functionBlock = new BasicBlock(fDef->getName());    // The function block; input of the subgraph
+    FunctionBasicBlock* functionBlock = new FunctionBasicBlock(fDef->getName());    // The function block; input of the subgraph
     functionBlock->setTable(table);
     functionBlock->setPrologable(true);
     // NOTE: the two previous lines are ESSENTIAL to avoid memory leaks
@@ -49,6 +51,14 @@ SubGraph * FunctionDefinitionTranslator::translate(Table* table)
 
     // Then create a variable to memorize the previous block
     std::vector<BasicBlock*> previousBlocks;
+
+    // Add function's arguments
+    std::vector<Register*> args;
+    for(auto arg: dynamic_cast<FunctionDeclaration*>(fDef->getDeclaration())->getArguments())
+    {
+        args.push_back(table->getRegister(arg->getName()));
+    }
+    functionBlock->setArgs(args);
 
     // For each child, link subgraphs
     for(AstNode* child: fDef->getChildren())
