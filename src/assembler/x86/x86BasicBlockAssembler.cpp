@@ -63,7 +63,7 @@ std::string x86BasicBlockAssembler::translateIR() {
     std::vector<IRInstruction *> & instructions = source->getInstructions();
 
     //std::cout << "Tranlating ir instruction :" << std::endl;
-    for (int current_index = 0; current_index < instructions.size(); current_index ++)
+    for (unsigned int current_index = 0; current_index < instructions.size(); current_index ++)
     {
         //std::cout << "Trying to translate another instruction" << std::endl;
         IRAbstractAssembler * translated_instruction = translateInstruction(instructions[current_index]);
