@@ -23,7 +23,7 @@ x86BasicBlockAssembler::x86BasicBlockAssembler(BasicBlock *source, bool generate
 std::string x86BasicBlockAssembler::generateProlog() {
 
     std::ostringstream stream;
-    std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
+    //std::cout << "WAT THE FUCK " << variable_count * 4 << std::endl;
 
     // pushl %epb
     // movl %esp, %epb
@@ -63,7 +63,7 @@ std::string x86BasicBlockAssembler::translateIR() {
     std::vector<IRInstruction *> & instructions = source->getInstructions();
 
     //std::cout << "Tranlating ir instruction :" << std::endl;
-    for (int current_index = 0; current_index < instructions.size(); current_index ++)
+    for (unsigned int current_index = 0; current_index < instructions.size(); current_index ++)
     {
         //std::cout << "Trying to translate another instruction" << std::endl;
         IRAbstractAssembler * translated_instruction = translateInstruction(instructions[current_index]);
